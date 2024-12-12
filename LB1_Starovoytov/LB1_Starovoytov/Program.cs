@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static LB1_Starovoytov.Classes;
 
 namespace LB1_Starovoytov
 {
@@ -10,6 +11,103 @@ namespace LB1_Starovoytov
     {
         static void Main(string[] args)
         {
+            // a. Создаем два списка персон
+
+            Person person1 = new Person("Иванов", "Иванов", 30, Gender.Male);
+            Person person2 = new Person("Мария", "Васильева", 25, Gender.Female);
+            Person person3 = new Person("Петр", "Стрельцов", 35, Gender.Male);
+            Person person4 = new Person("Андрей", "Алексеевич", 50, Gender.Male);
+            Person person5 = new Person("Ольга", "Андреевна", 55, Gender.Female);
+            Person person6 = new Person("Светлана", "Игоревна", 60, Gender.Female);
+
+            PersonList firstList = new PersonList();
+
+            PersonList secondList = new PersonList();
+
+            firstList.AddPerson(person1);
+            firstList.AddPerson(person2);
+            firstList.AddPerson(person3);
+            secondList.AddPerson(person4);
+            secondList.AddPerson(person5);
+            secondList.AddPerson(person6);
+
+
+
+
+            // b. Выводим содержимое каждого списка
+
+            Console.WriteLine("\nВторой список:");
+            foreach (var people in firstList.people)
+            {
+                Console.WriteLine(people.FirstName + " " + people.LastName + " " + people.Age + " " + people.Sex);
+            }
+
+            Console.WriteLine("\nВторой список:");
+            foreach (var people in secondList.people)
+            {
+                Console.WriteLine(people.FirstName + " " + people.LastName + " " + people.Age + " " + people.Sex);
+            }
+
+            Console.ReadKey(); // Ожидание нажатия клавиши
+
+            // c. Добавляем нового человека в первый список
+            firstList.AddPerson(new Person("Анна", "Владимирована", 20, Gender.Female));
+            Console.WriteLine("\nПосле добавления Анны в первый список:");
+            foreach (var person in firstList.people)
+            {
+                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
+            }
+
+            Console.ReadKey(); // Ожидание нажатия клавиши
+
+            // d. Копируем второго человека из первого списка во второй
+            secondList.AddPerson(firstList.people[1]); // Копируем Мария
+            Console.WriteLine("\nПосле копирования Марии во второй список:");
+            Console.WriteLine("Первый список:");
+            foreach (var person in firstList.people)
+            {
+                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
+            }
+
+            Console.WriteLine("\nВторой список:");
+            foreach (var person in secondList.people)
+            {
+                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
+            }
+
+            Console.ReadKey(); // Ожидание нажатия клавиши
+
+            // e. Удаляем второго человека из первого списка
+            firstList.RemovePersonByIndex(1); // Удаляем Мария
+            Console.WriteLine("\nПосле удаления Марии из первого списка:");
+            Console.WriteLine("Первый список:");
+            foreach (var person in firstList.people)
+            {
+                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
+            }
+
+            Console.WriteLine("\nВторой список:");
+            foreach (var person in secondList.people)
+            {
+                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
+            }
+
+            Console.ReadKey(); // Ожидание нажатия клавиши
+
+            // f. Очищаем второй список
+            secondList.ClearList();
+            Console.WriteLine("\nПосле очистки второго списка:");
+            Console.WriteLine("Первый список:");
+            foreach (var person in firstList.people)
+            {
+                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
+            }
+
+            Console.WriteLine("\nВторой список очищен.");
+            Console.ReadKey(); // Ожидание нажатия клавиши
+            
+            
+
         }
     }
 }
