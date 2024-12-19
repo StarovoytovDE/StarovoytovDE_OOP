@@ -5,3 +5,11 @@
 /.vs
 *.vsidx
 /LB1_Starovoytov/LB1_Starovoytov/bin/Debug
+*.json
+/Classes/Classes/obj
+/LB1_Starovoytov/.vs/LB1_Starovoytov/v17/DocumentLayout.json
+/LB1_Starovoytov/.vs/LB1_Starovoytov/v17/DocumentLayout.backup.json
+*.wsuo
+/LB1_Starovoytov/.vs/LB1_Starovoytov/v17/.suo
+*.suo
+/LB1_Starovoytov/LB1_Starovoytov/obj/Release
