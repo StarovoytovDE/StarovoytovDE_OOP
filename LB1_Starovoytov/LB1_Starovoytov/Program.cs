@@ -32,8 +32,6 @@ namespace LB1_Starovoytov
             secondList.AddPerson(person6);
 
 
-
-
             // b. Выводим содержимое каждого списка
 
             Console.WriteLine("\nВторой список:");

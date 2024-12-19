@@ -6,14 +6,8 @@ using System.Threading.Tasks;
 
 namespace LB1_Starovoytov
 {
-    internal class Classes
+    internal partial class Classes
     {
-        public enum Gender
-        {
-            Male,
-            Female
-        }
-
         public class Person
         {
             // Свойства класса
