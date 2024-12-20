@@ -4,8 +4,11 @@ namespace LB1_Starovoytov
 {
     internal partial class Classes
     {
+        //TODO: XML
         public class PersonList
         {
+            //TODO: encapsulation
+
             public List<Person> people;
 
             public PersonList()
@@ -57,6 +60,7 @@ namespace LB1_Starovoytov
                 people.Clear();
             }
 
+            //TODO: to property
             // Метод для получения количества элементов в списке
             public int GetCount()
             {

@@ -30,12 +30,14 @@ namespace LB1_Starovoytov
 
             // b. Выводим содержимое каждого списка
 
+            //TODO: duplication
             Console.WriteLine("\nВторой список:");
             foreach (var people in firstList.people)
             {
                 Console.WriteLine(people.FirstName + " " + people.LastName + " " + people.Age + " " + people.Sex);
             }
 
+            //TODO: duplication
             Console.WriteLine("\nВторой список:");
             foreach (var people in secondList.people)
             {
@@ -46,6 +48,7 @@ namespace LB1_Starovoytov
 
             // c. Добавляем нового человека в первый список
             firstList.AddPerson(new Person("Анна", "Владимирована", 20, Gender.Female));
+            //TODO: duplication
             Console.WriteLine("\nПосле добавления Анны в первый список:");
             foreach (var person in firstList.people)
             {
@@ -57,12 +60,13 @@ namespace LB1_Starovoytov
             // d. Копируем второго человека из первого списка во второй
             secondList.AddPerson(firstList.people[1]); // Копируем Мария
             Console.WriteLine("\nПосле копирования Марии во второй список:");
+            //TODO: duplication
             Console.WriteLine("Первый список:");
             foreach (var person in firstList.people)
             {
                 Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
             }
-
+            //TODO: duplication
             Console.WriteLine("\nВторой список:");
             foreach (var person in secondList.people)
             {
@@ -74,12 +78,13 @@ namespace LB1_Starovoytov
             // e. Удаляем второго человека из первого списка
             firstList.RemovePersonByIndex(1); // Удаляем Мария
             Console.WriteLine("\nПосле удаления Марии из первого списка:");
+            //TODO: duplication
             Console.WriteLine("Первый список:");
             foreach (var person in firstList.people)
             {
                 Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
             }
-
+            //TODO: duplication
             Console.WriteLine("\nВторой список:");
             foreach (var person in secondList.people)
             {
@@ -91,6 +96,7 @@ namespace LB1_Starovoytov
             // f. Очищаем второй список
             secondList.ClearList();
             Console.WriteLine("\nПосле очистки второго списка:");
+            //TODO: duplication
             Console.WriteLine("Первый список:");
             foreach (var person in firstList.people)
             {

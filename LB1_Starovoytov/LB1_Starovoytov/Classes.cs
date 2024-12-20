@@ -2,8 +2,10 @@
 
 namespace LB1_Starovoytov
 {
+    //TODO: XML
     internal partial class Classes
     {
+        //TODO: XML
         public class Person
         {
             // Свойства класса
@@ -12,6 +14,7 @@ namespace LB1_Starovoytov
             public int Age { get; }
             public Gender Sex { get; }
 
+            //TODO: const
             private static readonly int minAge = 0;
             private static readonly int maxAge = 125;
 
@@ -64,6 +67,7 @@ namespace LB1_Starovoytov
 
             private static readonly int HaveAttempts = 5;
 
+            //TODO: extract
             // Метод для создания объекта `Person` с проверками и повторными попытками
             public static Person ReadPersonFromConsole()
             {
@@ -148,6 +152,7 @@ namespace LB1_Starovoytov
                 string[] randomLastNames = { "Иванов", "Сергеев", "Стрельцов", "Алексеев", "Андреева", "Игорева" };
                 Random random = new Random();
 
+                //TODO: duplication
                 int ageMin = 0;
                 int ageMax = 125;
 
@@ -159,6 +164,7 @@ namespace LB1_Starovoytov
                 return new Person(firstName, lastName, age, sex);
             }
 
+            //TODO: rename
             // Метод для отображения информации о человеке
             public string DisplayInfo()
             {
