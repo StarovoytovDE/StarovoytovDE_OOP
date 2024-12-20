@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static LB1_Starovoytov.Classes;
 
 namespace LB1_Starovoytov
@@ -103,8 +99,40 @@ namespace LB1_Starovoytov
 
             Console.WriteLine("\nВторой список очищен.");
             Console.ReadKey(); // Ожидание нажатия клавиши
-            
-            
+
+            // Задание 4: Ввод данных с консоли
+            Console.WriteLine("Добавьте нового человека во второй список из консоли:");
+            try
+            {
+                var consolePerson = Classes.Person.ReadPersonFromConsole();
+                secondList.AddPerson(consolePerson);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ошибка ввода данных: " + e.Message);
+            }
+
+            // Вывод содержимого второго списка после добавления пользователя
+            Console.WriteLine("\nВторой список после добавления из консоли:");
+            foreach (var person in secondList.people)
+            {
+                Console.WriteLine(person.DisplayInfo());
+            }
+
+            // Задание 5: Добавление случайного человека
+
+            Console.WriteLine("\nДобавляем случайного человека во второй список:");
+            secondList.AddPerson(Classes.Person.GetRandomPerson());
+
+            // Вывод содержимого второго списка после добавления случайного человека
+            Console.WriteLine("\nВторой список после добавления случайного человека:");
+            foreach (var person in secondList.people)
+            {
+                Console.WriteLine(person.DisplayInfo());
+            }
+
+            Console.WriteLine("\nДля выхода нажмите любую клавишу...");
+            Console.ReadKey();
 
         }
     }
