@@ -103,10 +103,7 @@ namespace LB1_Starovoytov
 
             // Вывод содержимого второго списка после добавления пользователя
             Console.WriteLine("\nВторой список после добавления из консоли:");
-            foreach (var person in secondList.People)
-            {
-                Console.WriteLine(person.GetInfo());
-            }
+            Person.PrintPersonList(secondList);
 
             // Задание 5: Добавление случайного человека
 
@@ -115,10 +112,7 @@ namespace LB1_Starovoytov
 
             // Вывод содержимого второго списка после добавления случайного человека
             Console.WriteLine("\nВторой список после добавления случайного человека:");
-            foreach (var person in secondList.People)
-            {
-                Console.WriteLine(person.GetInfo());
-            }
+            Person.PrintPersonList(secondList);
 
             Console.WriteLine("\nДля выхода нажмите любую клавишу...");
             Console.ReadKey();
