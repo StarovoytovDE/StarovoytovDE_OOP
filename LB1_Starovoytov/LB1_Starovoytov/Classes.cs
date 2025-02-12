@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace LB1_Starovoytov
 {
@@ -99,18 +100,14 @@ namespace LB1_Starovoytov
 
             /// <summary>
             /// Приводит имя или фамилию к правильному регистру (первая буква заглавная, остальные строчные).
+            /// Сохраняет дефисы между словами.
             /// </summary>
             /// <param name="name">Имя или фамилия для обработки.</param>
             /// <returns>Имя или фамилия в правильном регистре.</returns>
             private string CapitalizeName(string name)
             {
-                // Разделяем по пробелам/дефисам и обрабатываем каждую часть
-                var parts = name.Split(new[] { ' ', '-' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < parts.Length; i++)
-                {
-                    parts[i] = char.ToUpper(parts[i][0]) + parts[i].Substring(1).ToLower();
-                }
-                return string.Join(" ", parts); // Собираем имя обратно
+                // Регулярное выражение для поиска слов, разделённых пробелами или дефисами
+                return Regex.Replace(name.ToLower(), @"\b(\w)", m => m.Value.ToUpper());
             }
 
             //TODO: extract +
