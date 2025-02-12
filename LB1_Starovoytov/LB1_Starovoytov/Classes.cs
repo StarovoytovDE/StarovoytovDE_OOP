@@ -2,23 +2,63 @@
 
 namespace LB1_Starovoytov
 {
-    //TODO: XML
+    //TODO: XML +
+    /// <summary>
+    /// Внутренний частичный класс, содержащий основные сущности и логику программы.
+    /// </summary>
     internal partial class Classes
     {
-        //TODO: XML
+        //TODO: XML +
+        /// <summary>
+        /// Класс, представляющий человека (Person).
+        /// Содержит информацию о имени, фамилии, возрасте и поле.
+        /// </summary>
         public class Person
         {
-            // Свойства класса
+            /// <summary>
+            /// Имя.
+            /// </summary>
             public string FirstName { get; }
+
+            /// <summary>
+            /// Фамилия.
+            /// </summary>
             public string LastName { get; }
+
+            /// <summary>
+            /// Возраст.
+            /// </summary>
             public int Age { get; }
+
+            /// <summary>
+            /// Пол.
+            /// </summary>
             public Gender Sex { get; }
 
-            //TODO: const
-            private static readonly int minAge = 0;
-            private static readonly int maxAge = 125;
+            //TODO: const +
+            /// <summary>
+            /// Минимальный допустимый возраст.
+            /// </summary>
+            private const int minAge = 0;
 
-            // Конструктор класса
+            /// <summary>
+            /// Максимальный допустимый возраст.
+            /// </summary>
+            private const int maxAge = 125;
+
+            /// <summary>
+            /// Количество попыток для ввода данных.
+            /// </summary>
+            private const int haveAttempts = 5;
+
+            /// <summary>
+            /// Конструктор для создания объекта Person.
+            /// </summary>
+            /// <param name="firstName">Имя человека.</param>
+            /// <param name="lastName">Фамилия человека.</param>
+            /// <param name="age">Возраст человека.</param>
+            /// <param name="sex">Пол человека.</param>
+            /// <exception cref="ArgumentException">Выбрасывается, если имя, фамилия или возраст не соответствуют требованиям.</exception>
             public Person(string firstName, string lastName, int age, Gender sex)
             {
                 if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
@@ -46,14 +86,22 @@ namespace LB1_Starovoytov
                 Sex = sex;
             }
 
-            // Метод для проверки имени или фамилии
+            /// <summary>
+            /// Метод для проверки соответствия имени или фамилии допустимым символам.
+            /// </summary>
+            /// <param name="name">Имя или фамилия для проверки.</param>
+            /// <returns>True, если имя или фамилия соответствуют требованиям, иначе False.</returns>
             private static bool IsValidName(string name)
             {
                 // Регулярное выражение: поддерживает буквы русского и латинского алфавита, пробелы и дефисы
                 return System.Text.RegularExpressions.Regex.IsMatch(name, @"^[a-zA-Zа-яА-ЯёЁ\s-]+$");
             }
 
-            // Метод для приведения имени/фамилии в нужный регистр
+            /// <summary>
+            /// Приводит имя или фамилию к правильному регистру (первая буква заглавная, остальные строчные).
+            /// </summary>
+            /// <param name="name">Имя или фамилия для обработки.</param>
+            /// <returns>Имя или фамилия в правильном регистре.</returns>
             private string CapitalizeName(string name)
             {
                 // Разделяем по пробелам/дефисам и обрабатываем каждую часть
@@ -65,64 +113,95 @@ namespace LB1_Starovoytov
                 return string.Join(" ", parts); // Собираем имя обратно
             }
 
-            private static readonly int HaveAttempts = 5;
-
-            //TODO: extract
-            // Метод для создания объекта `Person` с проверками и повторными попытками
-            public static Person ReadPersonFromConsole()
+            //TODO: extract +
+            /// <summary>
+            /// Вложенный класс, содержащий методы для валидации данных.
+            /// </summary>
+            public static class Validator
             {
-                string firstName = ReadWithValidation("Введите имя: ", HaveAttempts, input =>
-                {
-                    if (string.IsNullOrWhiteSpace(input))
-                    { 
-                        return "Имя не может быть пустым!";
-                    }
-                    if (!IsValidName(input))
-                    {
-                        return "Имя должно содержать только русские или английские буквы, пробелы и дефисы!";
-                    }
-                    return null;
-                });
-
-                string lastName = ReadWithValidation("Введите фамилию: ", HaveAttempts, input =>
+                /// <summary>
+                /// Проверяет имя или фамилию на соответствие требованиям.
+                /// </summary>
+                /// <param name="input">Входная строка для проверки.</param>
+                /// <param name="fieldName">Название поля (например, "Имя" или "Фамилия").</param>
+                /// <returns>Сообщение об ошибке, если проверка не пройдена, иначе null.</returns>
+                public static string ValidateName(string input, string fieldName)
                 {
                     if (string.IsNullOrWhiteSpace(input))
                     {
-                        return "Фамилия не может быть пустой!";
+                        return $"{fieldName} не может быть пустым!";
                     }
                     if (!IsValidName(input))
                     {
-                        return "Фамилия должна содержать только русские или английские буквы, пробелы и дефисы!";
-                    }
-                     return null;
-                });
-
-                string ageInput = ReadWithValidation("Введите возраст: ", HaveAttempts, input =>
-                {
-                    if (!int.TryParse(input, out int ageI) || (ageI < minAge) || (ageI > maxAge)) 
-                    {
-                        return $"Возраст не должен быть отрицательным числом и не превышать {maxAge} лет!";
+                        return $"{fieldName} должна содержать только русские или английские буквы, пробелы и дефисы!";
                     }
                     return null;
-                });
+                }
 
-                int age = int.Parse(ageInput);
+                /// <summary>
+                /// Проверяет возраст на соответствие допустимому диапазону.
+                /// </summary>
+                /// <param name="input">Входная строка для проверки.</param>
+                /// <param name="minAge">Минимальный допустимый возраст.</param>
+                /// <param name="maxAge">Максимальный допустимый возраст.</param>
+                /// <returns>Сообщение об ошибке, если проверка не пройдена, иначе null.</returns>
+                public static string ValidateAge(string input, int minAge, int maxAge)
+                {
+                    if (!int.TryParse(input, out int age) || age < minAge || age > maxAge)
+                    {
+                        return $"Возраст должен быть числом от {minAge} до {maxAge} лет!";
+                    }
+                    return null;
+                }
 
-                string genderInput = ReadWithValidation("Введите пол (Male/Female): ", HaveAttempts, input =>
+                /// <summary>
+                /// Проверяет, соответствует ли введенное значение допустимым значениям пола.
+                /// </summary>
+                /// <param name="input">Входная строка для проверки.</param>
+                /// <returns>Сообщение об ошибке, если проверка не пройдена, иначе null.</returns>
+                public static string ValidateGender(string input)
                 {
                     if (!Enum.TryParse(input, true, out Gender _))
                     {
                         return "Пол должен быть 'Male' или 'Female'!";
                     }
-                     return null;
-                });
+                    return null;
+                }
+            }
+
+            /// <summary>
+            /// Создает объект Person, запрашивая данные у пользователя через консоль.
+            /// </summary>
+            /// <returns>Объект Person, созданный на основе введенных данных.</returns>
+            public static Person ReadPersonFromConsole()
+            {
+                string firstName = ReadWithValidation("Введите имя: ", haveAttempts, input =>
+                    Validator.ValidateName(input, "Имя"));
+
+                string lastName = ReadWithValidation("Введите фамилию: ", haveAttempts, input =>
+                    Validator.ValidateName(input, "Фамилия"));
+
+                string ageInput = ReadWithValidation("Введите возраст: ", haveAttempts, input =>
+                    Validator.ValidateAge(input, minAge, maxAge));
+
+                int age = int.Parse(ageInput);
+
+                string genderInput = ReadWithValidation("Введите пол (Male/Female): ", haveAttempts, input =>
+                    Validator.ValidateGender(input));
 
                 Gender sex = (Gender)Enum.Parse(typeof(Gender), genderInput, true);
 
                 return new Person(firstName, lastName, age, sex);
             }
 
-            // Обобщённый метод для чтения данных с повторными попытками
+            /// <summary>
+            /// Обобщённый метод для чтения данных с консоли с повторными попытками и валидацией.
+            /// </summary>
+            /// <param name="prompt">Сообщение, которое отображается пользователю.</param>
+            /// <param name="maxAttempts">Максимальное количество попыток ввода.</param>
+            /// <param name="validate">Функция для валидации введенных данных.</param>
+            /// <returns>Введенные данные, прошедшие валидацию.</returns>
+            /// <exception cref="ArgumentException">Выбрасывается, если исчерпаны все попытки ввода.</exception>
             private static string ReadWithValidation(string prompt, int maxAttempts, Func<string, string> validate)
             {
                 int attempts = 0;
@@ -145,7 +224,10 @@ namespace LB1_Starovoytov
                 throw new ArgumentException("Исчерпаны все попытки ввода.");
             }
 
-            //Метод для создание случайного человека
+            /// <summary>
+            /// Создание случайного человека.
+            /// </summary>
+            /// <returns>Объект Person со случайными данными.</returns>
             public static Person GetRandomPerson()
             {
                 string[] randomFirstNames = { "Иван", "Мария", "Петр", "Андрей", "Ольга", "Светлана" };
@@ -161,10 +243,25 @@ namespace LB1_Starovoytov
             }
 
             //TODO: rename +
-            // Метод для отображения информации о человеке
+            /// <summary>
+            /// Возвращает строку с информацией о человеке.
+            /// </summary>
+            /// <returns>Строка, содержащая имя, фамилию, возраст и пол человека.</returns>
             public string GetInfo()
             {
                 return $"{FirstName} {LastName}, Возраст: {Age}, Пол: {Sex}";
+            }
+
+            /// <summary>
+            /// Выводит содержимое списка персон на консоль.
+            /// </summary>
+            /// <param name="personList">Список персон для вывода.</param>
+            public static void PrintPersonList(PersonList personList)
+            {
+                foreach (var person in personList.People)
+                {
+                    Console.WriteLine(person.GetInfo());
+                }
             }
         }
     }

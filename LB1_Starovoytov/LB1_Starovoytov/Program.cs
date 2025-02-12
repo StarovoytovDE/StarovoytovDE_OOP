@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using static LB1_Starovoytov.Classes;
 
 namespace LB1_Starovoytov
 {
+    /// <summary>
+    /// Главный класс программы, содержащий точку входа.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// Точка входа в программу.
+        /// </summary>
+        /// <param name="args">Аргументы командной строки.</param>
         static void Main(string[] args)
         {
             // a. Создаем два списка персон
@@ -27,81 +35,56 @@ namespace LB1_Starovoytov
             secondList.AddPerson(person5);
             secondList.AddPerson(person6);
 
+           // b. Выводим содержимое каждого списка
 
-            // b. Выводим содержимое каждого списка
-
-            //TODO: duplication
+            //TODO: duplication +
+            Console.WriteLine("\nПервый список:");
+            Person.PrintPersonList(firstList);
+            
+            //TODO: duplication +
             Console.WriteLine("\nВторой список:");
-            foreach (var people in firstList.people)
-            {
-                Console.WriteLine(people.FirstName + " " + people.LastName + " " + people.Age + " " + people.Sex);
-            }
-
-            //TODO: duplication
-            Console.WriteLine("\nВторой список:");
-            foreach (var people in secondList.people)
-            {
-                Console.WriteLine(people.FirstName + " " + people.LastName + " " + people.Age + " " + people.Sex);
-            }
+            Person.PrintPersonList(secondList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
             // c. Добавляем нового человека в первый список
             firstList.AddPerson(new Person("Анна", "Владимирована", 20, Gender.Female));
-            //TODO: duplication
+            //TODO: duplication +
             Console.WriteLine("\nПосле добавления Анны в первый список:");
-            foreach (var person in firstList.people)
-            {
-                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
-            }
+            Person.PrintPersonList(firstList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
             // d. Копируем второго человека из первого списка во второй
-            secondList.AddPerson(firstList.people[1]); // Копируем Мария
+            secondList.AddPerson(firstList.People[1]); // Копируем Мария
             Console.WriteLine("\nПосле копирования Марии во второй список:");
-            //TODO: duplication
+            //TODO: duplication +
             Console.WriteLine("Первый список:");
-            foreach (var person in firstList.people)
-            {
-                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
-            }
-            //TODO: duplication
+            Person.PrintPersonList(firstList);
+            //TODO: duplication +
             Console.WriteLine("\nВторой список:");
-            foreach (var person in secondList.people)
-            {
-                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
-            }
+            Person.PrintPersonList(secondList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
             // e. Удаляем второго человека из первого списка
             firstList.RemovePersonByIndex(1); // Удаляем Мария
             Console.WriteLine("\nПосле удаления Марии из первого списка:");
-            //TODO: duplication
+            //TODO: duplication +
             Console.WriteLine("Первый список:");
-            foreach (var person in firstList.people)
-            {
-                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
-            }
-            //TODO: duplication
+            Person.PrintPersonList(firstList);
+            //TODO: duplication +
             Console.WriteLine("\nВторой список:");
-            foreach (var person in secondList.people)
-            {
-                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
-            }
+            Person.PrintPersonList(secondList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
             // f. Очищаем второй список
             secondList.ClearList();
             Console.WriteLine("\nПосле очистки второго списка:");
-            //TODO: duplication
+            //TODO: duplication +
             Console.WriteLine("Первый список:");
-            foreach (var person in firstList.people)
-            {
-                Console.WriteLine(person.FirstName + " " + person.LastName + " " + person.Age + " " + person.Sex);
-            }
+            Person.PrintPersonList(firstList);
 
             Console.WriteLine("\nВторой список очищен.");
             Console.ReadKey(); // Ожидание нажатия клавиши
@@ -120,26 +103,25 @@ namespace LB1_Starovoytov
 
             // Вывод содержимого второго списка после добавления пользователя
             Console.WriteLine("\nВторой список после добавления из консоли:");
-            foreach (var person in secondList.people)
+            foreach (var person in secondList.People)
             {
-                Console.WriteLine(person.DisplayInfo());
+                Console.WriteLine(person.GetInfo());
             }
 
             // Задание 5: Добавление случайного человека
 
-            Console.WriteLine("\nДобавляем случайного человека во второй список:");
+            Console.WriteLine("\nДобавляем случайного человека во второй список.");
             secondList.AddPerson(Classes.Person.GetRandomPerson());
 
             // Вывод содержимого второго списка после добавления случайного человека
             Console.WriteLine("\nВторой список после добавления случайного человека:");
-            foreach (var person in secondList.people)
+            foreach (var person in secondList.People)
             {
-                Console.WriteLine(person.DisplayInfo());
+                Console.WriteLine(person.GetInfo());
             }
 
             Console.WriteLine("\nДля выхода нажмите любую клавишу...");
             Console.ReadKey();
-
         }
     }
 }

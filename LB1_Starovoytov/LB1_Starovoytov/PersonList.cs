@@ -1,71 +1,100 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LB1_Starovoytov
 {
     internal partial class Classes
     {
-        //TODO: XML
+        //TODO: XML +
+        /// <summary>
+        /// Класс, представляющий список людей (Person).
+        /// Предоставляет методы для управления списком: добавление, удаление, поиск и очистка.
+        /// </summary>
         public class PersonList
         {
-            //TODO: encapsulation
+            //TODO: encapsulation +
 
-            public List<Person> people;
+            // Приватное поле для хранения списка людей
+            private readonly List<Person> people;
 
+            /// <summary>
+            /// Конструктор по умолчанию для инициализации нового списка людей.
+            /// </summary>
             public PersonList()
             {
                 people = new List<Person>();
             }
 
-            // Метод для добавления элемента
+            // Свойство для доступа к списку (только для чтения)
+            public IReadOnlyList<Person> People => people.AsReadOnly();
+
+            /// <summary>
+            ///  Метод для добавления человека в список.
+            /// </summary>
+            /// <param name="person">Объект типа Person, который нужно добавить в список.</param>
             public void AddPerson(Person person)
             {
                 people.Add(person);
-
             }
 
-            // Метод для удаления элемента по объекту
+            /// <summary>
+            /// Метод для удаления человека из списка по объекту.
+            /// </summary>
+            /// <param name="person">Объект типа Person, который нужно удалить из списка.</param>
             public void RemovePerson(Person person)
             {
                 people.Remove(person);
             }
 
-            // Метод для удаления элемента по индексу
+            /// <summary>
+            /// Метод для удаления человека из списка по индексу.
+            /// </summary>
+            /// <param name="index">Индекс элемента, который нужно удалить.</param>
             public void RemovePersonByIndex(int index)
             {
-                if (index >= 0 && index < people.Count)
+                if (index >= 0 && index < People.Count)
                 {
                     people.RemoveAt(index);
                 }
             }
 
-            // Метод для поиска элемента по индексу
+            /// <summary>
+            /// Метод для возврата человека из списка по индексу.
+            /// </summary>
+            /// <param name="index">Индекс элемента, который нужно вернуть.</param>
+            /// <returns>Объект типа Person, если индекс корректен; в противном случае — null.</returns>
             public Person GetPersonByIndex(int index)
             {
-                if (index >= 0 && index < people.Count)
+                if (index >= 0 && index < People.Count)
                 {
                     return people[index];
                 }
                 return null;
             }
 
-            // Метод для получения индекса элемента
+            /// <summary>
+            /// Метод для возврата индекса указанного человека в списке.
+            /// </summary>
+            /// <param name="person">Объект типа Person, индекс которого нужно найти.</param>
+            /// <returns>Индекс объекта в списке, если он найден; в противном случае — -1.</returns>
             public int GetIndexOfPerson(Person person)
             {
                 return people.IndexOf(person);
             }
 
-            // Метод для очистки списка
+            /// <summary>
+            /// Метод для очистки всего списка.
+            /// </summary>
             public void ClearList()
             {
                 people.Clear();
             }
 
-            //TODO: to property
-            // Метод для получения количества элементов в списке
-            public int GetCount()
-            {
-                return people.Count;
-            }
+            //TODO: to property +
+            /// <summary>
+            /// Метод для получения количества элементов в списке.
+            /// </summary>
+            public int Count => people.Count;
         }
     }
 }
