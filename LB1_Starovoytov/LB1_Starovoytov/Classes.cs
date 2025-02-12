@@ -152,21 +152,17 @@ namespace LB1_Starovoytov
                 string[] randomLastNames = { "Иванов", "Сергеев", "Стрельцов", "Алексеев", "Андреева", "Игорева" };
                 Random random = new Random();
 
-                //TODO: duplication
-                int ageMin = 0;
-                int ageMax = 125;
-
                 string firstName = randomFirstNames[random.Next(randomFirstNames.Length)];
                 string lastName = randomLastNames[random.Next(randomLastNames.Length)];
-                int age = random.Next(ageMin, ageMax); // Возраст случайно от ageMin до ageMax
+                int age = random.Next(minAge, maxAge); // Возраст случайно от minAge до maxAge
                 Gender sex = (Gender)random.Next(0, 2); // Пол случайно Male или Female
 
                 return new Person(firstName, lastName, age, sex);
             }
 
-            //TODO: rename
+            //TODO: rename +
             // Метод для отображения информации о человеке
-            public string DisplayInfo()
+            public string GetInfo()
             {
                 return $"{FirstName} {LastName}, Возраст: {Age}, Пол: {Sex}";
             }
