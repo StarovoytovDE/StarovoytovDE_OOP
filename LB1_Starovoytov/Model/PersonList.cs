@@ -10,7 +10,9 @@ namespace LB1_Starovoytov
     /// </summary>
     public class PersonList
     {
-        // Приватное поле для хранения списка людей
+        /// <summary>
+        /// Приватное поле для хранения списка людей
+        /// </summary>
         private readonly List<Person> _people;
 
         /// <summary>

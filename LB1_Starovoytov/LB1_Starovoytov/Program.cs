@@ -58,7 +58,6 @@ namespace LB1_Starovoytov
         /// иначе null.</returns>
         public static string ValidateGender(string input)
         {
-            //BUG: +
             if (!Enum.TryParse(input, true, out Gender gender)
                 || !Enum.IsDefined(typeof(Gender), gender))
             {
