@@ -4,8 +4,7 @@
     /// <summary>
     /// Класс, содержащий перечисление для определения пола.
     /// </summary>
-    internal partial class Classes
-    {
+
         //TODO: XML +
         /// <summary>
         /// Перечисление, определяющее пол.
@@ -21,5 +20,5 @@
             /// </summary>
             Female
         }
-    }
+
 }

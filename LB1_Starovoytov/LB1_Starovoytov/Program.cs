@@ -92,7 +92,7 @@ namespace LB1_Starovoytov
             Console.WriteLine("Добавьте нового человека во второй список из консоли:");
             try
             {
-                var consolePerson = Classes.Person.ReadPersonFromConsole();
+                var consolePerson = Person.ReadPersonFromConsole();
                 secondList.AddPerson(consolePerson);
             }
             catch (Exception e)
@@ -107,7 +107,7 @@ namespace LB1_Starovoytov
             // Задание 5: Добавление случайного человека
 
             Console.WriteLine("\nДобавляем случайного человека во второй список.");
-            secondList.AddPerson(Classes.Person.GetRandomPerson());
+            secondList.AddPerson(Person.GetRandomPerson());
 
             // Вывод содержимого второго списка после добавления случайного человека
             Console.WriteLine("\nВторой список после добавления случайного человека:");

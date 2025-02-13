@@ -3,13 +3,6 @@ using System.Text.RegularExpressions;
 
 namespace LB1_Starovoytov
 {
-    //TODO: XML +
-    /// <summary>
-    /// Внутренний частичный класс, содержащий основные сущности и логику программы.
-    /// </summary>
-    internal partial class Classes
-    {
-        //TODO: XML +
         /// <summary>
         /// Класс, представляющий человека (Person).
         /// Содержит информацию о имени, фамилии, возрасте и поле.
@@ -261,5 +254,4 @@ namespace LB1_Starovoytov
                 }
             }
         }
-    }
 }

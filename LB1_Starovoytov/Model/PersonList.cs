@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace LB1_Starovoytov
 {
-    internal partial class Classes
-    {
+
         //TODO: XML +
         /// <summary>
         /// Класс, представляющий список людей (Person).
@@ -96,5 +95,5 @@ namespace LB1_Starovoytov
             /// </summary>
             public int Count => people.Count;
         }
-    }
+
 }
