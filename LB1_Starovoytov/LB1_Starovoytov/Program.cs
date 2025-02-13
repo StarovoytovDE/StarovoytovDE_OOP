@@ -66,11 +66,10 @@ namespace LB1_Starovoytov
             return null;
         }
 
-        //TODO: RSDN +
         /// <summary>
         /// Количество попыток для ввода данных.
         /// </summary>
-        private const int _haveAttempts = 5;
+        private const int HaveAttempts = 5;
 
         /// <summary>
         /// Создает объект Person, запрашивая данные у пользователя через консоль.
@@ -79,19 +78,19 @@ namespace LB1_Starovoytov
         public static Person ReadPersonFromConsole()
         {
             string firstName = ReadWithValidation("Введите имя: ",
-                _haveAttempts, input => ValidateName(input, "Имя"));
+                HaveAttempts, input => ValidateName(input, "Имя"));
 
             string lastName = ReadWithValidation("Введите фамилию: ",
-                _haveAttempts, input => ValidateName(input, "Фамилия"));
+                HaveAttempts, input => ValidateName(input, "Фамилия"));
 
             string ageInput = ReadWithValidation("Введите возраст: ",
-                _haveAttempts, input =>
+                HaveAttempts, input =>
                 ValidateAge(input, Person.MinAge, Person.MaxAge));
 
             int age = int.Parse(ageInput);
 
             string genderInput = ReadWithValidation("Введите пол (Male/Female): ",
-                _haveAttempts, input => ValidateGender(input));
+                HaveAttempts, input => ValidateGender(input));
 
             Gender sex = (Gender)Enum.Parse(typeof(Gender), genderInput, true);
 
