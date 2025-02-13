@@ -58,8 +58,9 @@ namespace LB1_Starovoytov
         /// иначе null.</returns>
         public static string ValidateGender(string input)
         {
-            //BUG:
-            if (!Enum.TryParse(input, true, out Gender _))
+            //BUG: +
+            if (!Enum.TryParse(input, true, out Gender gender)
+                || !Enum.IsDefined(typeof(Gender), gender))
             {
                 return "Пол должен быть 'Male' или 'Female'!";
             }
@@ -158,11 +159,11 @@ namespace LB1_Starovoytov
             secondList.AddPerson(person5);
             secondList.AddPerson(person6);
 
-           // b. Выводим содержимое каждого списка
+            // b. Выводим содержимое каждого списка
 
             Console.WriteLine("\nПервый список:");
             Person.PrintPersonList(firstList);
-            
+
             Console.WriteLine("\nВторой список:");
             Person.PrintPersonList(secondList);
 
@@ -179,12 +180,12 @@ namespace LB1_Starovoytov
 
             // d. Копируем второго человека из первого списка во второй
             // Копируем Мария
-            secondList.AddPerson(firstList.People[1]); 
+            secondList.AddPerson(firstList.People[1]);
             Console.WriteLine("\nПосле копирования Марии во второй список:");
-            
+
             Console.WriteLine("Первый список:");
             Person.PrintPersonList(firstList);
-            
+
             Console.WriteLine("\nВторой список:");
             Person.PrintPersonList(secondList);
 
@@ -192,7 +193,7 @@ namespace LB1_Starovoytov
 
             // e. Удаляем второго человека из первого списка
             // Удаляем Мария
-            firstList.RemovePersonByIndex(1); 
+            firstList.RemovePersonByIndex(1);
             Console.WriteLine("\nПосле удаления Марии из первого списка:");
 
             Console.WriteLine("Первый список:");
