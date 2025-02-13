@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static LB1_Starovoytov.Classes;
 
 namespace LB1_Starovoytov
 {
