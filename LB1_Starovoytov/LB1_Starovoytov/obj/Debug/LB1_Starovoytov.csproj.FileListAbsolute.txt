@@ -1,7 +1,0 @@
-C:\OOP\GitStarovoytov_OOP\LB1_Starovoytov\LB1_Starovoytov\bin\Debug\LB1_Starovoytov.exe.config
-C:\OOP\GitStarovoytov_OOP\LB1_Starovoytov\LB1_Starovoytov\bin\Debug\LB1_Starovoytov.exe
-C:\OOP\GitStarovoytov_OOP\LB1_Starovoytov\LB1_Starovoytov\bin\Debug\LB1_Starovoytov.pdb
-C:\OOP\GitStarovoytov_OOP\LB1_Starovoytov\LB1_Starovoytov\obj\Debug\LB1_Starovoytov.csproj.AssemblyReference.cache
-C:\OOP\GitStarovoytov_OOP\LB1_Starovoytov\LB1_Starovoytov\obj\Debug\LB1_Starovoytov.csproj.CoreCompileInputs.cache
-C:\OOP\GitStarovoytov_OOP\LB1_Starovoytov\LB1_Starovoytov\obj\Debug\LB1_Starovoytov.exe
-C:\OOP\GitStarovoytov_OOP\LB1_Starovoytov\LB1_Starovoytov\obj\Debug\LB1_Starovoytov.pdb

@@ -5,7 +5,8 @@ namespace LB1_Starovoytov
 {
     /// <summary>
     /// Класс, представляющий список людей (Person).
-    /// Предоставляет методы для управления списком: добавление, удаление, поиск и очистка.
+    /// Предоставляет методы для управления списком: добавление, удаление,
+    /// поиск и очистка.
     /// </summary>
     public class PersonList
     {
@@ -28,7 +29,8 @@ namespace LB1_Starovoytov
         /// <summary>
         ///  Метод для добавления человека в список.
         /// </summary>
-        /// <param name="person">Объект типа Person, который нужно добавить в список.</param>
+        /// <param name="person">Объект типа Person, который нужно добавить
+        /// в список.</param>
         public void AddPerson(Person person)
         {
             _people.Add(person);
@@ -37,7 +39,8 @@ namespace LB1_Starovoytov
         /// <summary>
         /// Метод для удаления человека из списка по объекту.
         /// </summary>
-        /// <param name="person">Объект типа Person, который нужно удалить из списка.</param>
+        /// <param name="person">Объект типа Person, который нужно удалить из
+        /// списка.</param>
         public void RemovePerson(Person person)
         {
             _people.Remove(person);
@@ -59,7 +62,8 @@ namespace LB1_Starovoytov
         /// Метод для возврата человека из списка по индексу.
         /// </summary>
         /// <param name="index">Индекс элемента, который нужно вернуть.</param>
-        /// <returns>Объект типа Person, если индекс корректен; в противном случае — null.</returns>
+        /// <returns>Объект типа Person, если индекс корректен; в противном
+        /// случае — null.</returns>
         public Person GetPersonByIndex(int index)
         {
             if (index >= 0 && index < People.Count)
@@ -72,8 +76,10 @@ namespace LB1_Starovoytov
         /// <summary>
         /// Метод для возврата индекса указанного человека в списке.
         /// </summary>
-        /// <param name="person">Объект типа Person, индекс которого нужно найти.</param>
-        /// <returns>Индекс объекта в списке, если он найден; в противном случае — -1.</returns>
+        /// <param name="person">Объект типа Person, индекс которого нужно
+        /// найти.</param>
+        /// <returns>Индекс объекта в списке, если он найден; в противном
+        /// случае — -1.</returns>
         public int GetIndexOfPerson(Person person)
         {
             return _people.IndexOf(person);
