@@ -9,21 +9,23 @@ namespace LB1_Starovoytov
     /// </summary>
     public class PersonList
     {
-        //TODO: RSDN
+        //TODO: RSDN +
         // Приватное поле для хранения списка людей
-        private readonly List<Person> people;
+        private readonly List<Person> _people;
 
         /// <summary>
         /// Конструктор по умолчанию для инициализации нового списка людей.
         /// </summary>
         public PersonList()
         {
-            people = new List<Person>();
+            _people = new List<Person>();
         }
 
-        //TODO: XML
-        // Свойство для доступа к списку (только для чтения)
-        public IReadOnlyList<Person> People => people.AsReadOnly();
+        //TODO: XML +
+        /// <summary>
+        /// Свойство для доступа к списку (только для чтения)
+        /// </summary>
+        public IReadOnlyList<Person> People => _people.AsReadOnly();
 
         /// <summary>
         ///  Метод для добавления человека в список.
@@ -31,7 +33,7 @@ namespace LB1_Starovoytov
         /// <param name="person">Объект типа Person, который нужно добавить в список.</param>
         public void AddPerson(Person person)
         {
-            people.Add(person);
+            _people.Add(person);
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace LB1_Starovoytov
         /// <param name="person">Объект типа Person, который нужно удалить из списка.</param>
         public void RemovePerson(Person person)
         {
-            people.Remove(person);
+            _people.Remove(person);
         }
 
         /// <summary>
@@ -51,7 +53,7 @@ namespace LB1_Starovoytov
         {
             if (index >= 0 && index < People.Count)
             {
-                people.RemoveAt(index);
+                _people.RemoveAt(index);
             }
         }
 
@@ -64,7 +66,7 @@ namespace LB1_Starovoytov
         {
             if (index >= 0 && index < People.Count)
             {
-                return people[index];
+                return _people[index];
             }
             return null;
         }
@@ -76,7 +78,7 @@ namespace LB1_Starovoytov
         /// <returns>Индекс объекта в списке, если он найден; в противном случае — -1.</returns>
         public int GetIndexOfPerson(Person person)
         {
-            return people.IndexOf(person);
+            return _people.IndexOf(person);
         }
 
         /// <summary>
@@ -84,12 +86,12 @@ namespace LB1_Starovoytov
         /// </summary>
         public void ClearList()
         {
-            people.Clear();
+            _people.Clear();
         }
 
         /// <summary>
         /// Метод для получения количества элементов в списке.
         /// </summary>
-        public int Count => people.Count;
+        public int Count => _people.Count;
     }
 }
