@@ -36,11 +36,9 @@ namespace LB1_Starovoytov
 
            // b. Выводим содержимое каждого списка
 
-            //TODO: duplication +
             Console.WriteLine("\nПервый список:");
             Person.PrintPersonList(firstList);
             
-            //TODO: duplication +
             Console.WriteLine("\nВторой список:");
             Person.PrintPersonList(secondList);
 
@@ -48,19 +46,20 @@ namespace LB1_Starovoytov
 
             // c. Добавляем нового человека в первый список
             firstList.AddPerson(new Person("Анна", "Владимирована", 20, Gender.Female));
-            //TODO: duplication +
+
             Console.WriteLine("\nПосле добавления Анны в первый список:");
             Person.PrintPersonList(firstList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
             // d. Копируем второго человека из первого списка во второй
-            secondList.AddPerson(firstList.People[1]); // Копируем Мария
+            // Копируем Мария
+            secondList.AddPerson(firstList.People[1]); 
             Console.WriteLine("\nПосле копирования Марии во второй список:");
-            //TODO: duplication +
+            
             Console.WriteLine("Первый список:");
             Person.PrintPersonList(firstList);
-            //TODO: duplication +
+            
             Console.WriteLine("\nВторой список:");
             Person.PrintPersonList(secondList);
 
@@ -69,10 +68,10 @@ namespace LB1_Starovoytov
             // e. Удаляем второго человека из первого списка
             firstList.RemovePersonByIndex(1); // Удаляем Мария
             Console.WriteLine("\nПосле удаления Марии из первого списка:");
-            //TODO: duplication +
+
             Console.WriteLine("Первый список:");
             Person.PrintPersonList(firstList);
-            //TODO: duplication +
+
             Console.WriteLine("\nВторой список:");
             Person.PrintPersonList(secondList);
 
@@ -81,7 +80,7 @@ namespace LB1_Starovoytov
             // f. Очищаем второй список
             secondList.ClearList();
             Console.WriteLine("\nПосле очистки второго списка:");
-            //TODO: duplication +
+
             Console.WriteLine("Первый список:");
             Person.PrintPersonList(firstList);
 
