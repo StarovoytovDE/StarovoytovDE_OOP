@@ -9,8 +9,6 @@ namespace LB1_Starovoytov
     /// </summary>
     internal class Program
     {
-
-        //TODO: extract ?
         /// <summary>
         /// Проверяет имя или фамилию на соответствие требованиям.
         /// </summary>
@@ -53,6 +51,7 @@ namespace LB1_Starovoytov
         /// <returns>Сообщение об ошибке, если проверка не пройдена, иначе null.</returns>
         public static string ValidateGender(string input)
         {
+            //BUG:
             if (!Enum.TryParse(input, true, out Gender _))
             {
                 return "Пол должен быть 'Male' или 'Female'!";
@@ -60,7 +59,7 @@ namespace LB1_Starovoytov
             return null;
         }
 
-        //TODO: remove? +?
+        //TODO: RSDN
         /// <summary>
         /// Количество попыток для ввода данных.
         /// </summary>

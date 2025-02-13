@@ -9,7 +9,6 @@ namespace LB1_Starovoytov
     /// </summary>
     public class PersonList
     {
-        //TODO: RSDN +
         // Приватное поле для хранения списка людей
         private readonly List<Person> _people;
 
@@ -21,7 +20,6 @@ namespace LB1_Starovoytov
             _people = new List<Person>();
         }
 
-        //TODO: XML +
         /// <summary>
         /// Свойство для доступа к списку (только для чтения)
         /// </summary>

@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 
 namespace LB1_Starovoytov
 {
-    //TODO: rename file +
     /// <summary>
     /// Класс, представляющий человека (Person).
     /// Содержит информацию о имени, фамилии, возрасте и поле.
@@ -30,13 +29,11 @@ namespace LB1_Starovoytov
         /// </summary>
         public Gender Sex { get; }
 
-        //TODO: RSDN +
         /// <summary>
         /// Минимальный допустимый возраст.
         /// </summary>
         public const int MinAge = 0;
 
-        //TODO: RSDN +
         /// <summary>
         /// Максимальный допустимый возраст.
         /// </summary>
@@ -52,7 +49,8 @@ namespace LB1_Starovoytov
         /// <exception cref="ArgumentException">Выбрасывается, если имя, фамилия или возраст не соответствуют требованиям.</exception>
         public Person(string firstName, string lastName, int age, Gender sex)
         {
-            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+            if (string.IsNullOrWhiteSpace(firstName) 
+                || string.IsNullOrWhiteSpace(lastName))
             {
                 throw new ArgumentException("Имя и фамилия не могут быть пустыми!");
             }           
