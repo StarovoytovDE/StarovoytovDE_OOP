@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
 
 namespace LB1_Starovoytov
 {
@@ -9,266 +10,117 @@ namespace LB1_Starovoytov
     /// </summary>
     internal class Program
     {
-
-        /// <summary>
-        /// Создание случайного человека.
-        /// </summary>
-        /// <returns>Объект Person со случайными данными.</returns>
-        public static PersonBase GetRandomPerson()
-        {
-            string[] randomFirstNames = { "Иван", "Мария", "Петр", "Андрей",
-                "Ольга", "Светлана" };
-            string[] randomLastNames = { "Иванов", "Сергеев", "Стрельцов",
-                "Алексеев", "Андреева", "Игорева" };
-            Random random = new Random();
-
-            string firstName =
-                randomFirstNames[random.Next(randomFirstNames.Length)];
-            string lastName =
-                randomLastNames[random.Next(randomLastNames.Length)];
-            // Возраст случайно от minAge до maxAge
-            int ageNumber = random.Next(MinAge, MaxAge);
-            DateTime age = BuildBirthDateFromAge(ageNumber);
-            // Пол случайно Male или Female
-            Gender sex = (Gender)random.Next(0, 2);
-
-            return new PersonBase(firstName, lastName, age, sex);
-        }
-
-
-        /// <summary>
-        /// Проверяет имя или фамилию на соответствие требованиям.
-        /// </summary>
-        /// <param name="input">Входная строка для проверки.</param>
-        /// <param name="fieldName">Название поля (например, "Имя"
-        /// или "Фамилия").</param>
-        /// <returns>Сообщение об ошибке, если проверка не пройдена,
-        /// иначе null.</returns>
-        public static string ValidateName(string input, string fieldName)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return $"{fieldName} не может быть пустым!";
-            }
-            if (!PersonBase.IsValidName(input))
-            {
-                return $"{fieldName} должна содержать только русские или" +
-                    $"английские буквы, пробелы и дефисы!";
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Проверяет возраст на соответствие допустимому диапазону.
-        /// </summary>
-        /// <param name="input">Входная строка для проверки.</param>
-        /// <param name="minAge">Минимальный допустимый возраст.</param>
-        /// <param name="maxAge">Максимальный допустимый возраст.</param>
-        /// <returns>Сообщение об ошибке, если проверка не пройдена,
-        /// иначе null.</returns>
-        public static string ValidateAge(string input, int minAge, int maxAge)
-        {
-            if (!int.TryParse(input, out int age) || age < minAge
-                || age > maxAge)
-            {
-                return $"Возраст должен быть числом от {minAge}" +
-                    $"до {maxAge} лет!";
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Проверка на соответствие введенного значения допустимым значениям.
-        /// </summary>
-        /// <param name="input">Входная строка для проверки.</param>
-        /// <returns>Сообщение об ошибке, если проверка не пройдена,
-        /// иначе null.</returns>
-        public static string ValidateGender(string input)
-        {
-            if (!Enum.TryParse(input, true, out Gender gender)
-                || !Enum.IsDefined(typeof(Gender), gender))
-            {
-                return "Пол должен быть 'Male' или 'Female'!";
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Количество попыток для ввода данных.
-        /// </summary>
-        private const int HaveAttempts = 5;
-
-        /// <summary>
-        /// Создает объект Person, запрашивая данные у пользователя через консоль.
-        /// </summary>
-        /// <returns>Объект Person, созданный на основе введенных данных.</returns>
-        public static PersonBase ReadPersonFromConsole()
-        {
-            string firstName = ReadWithValidation("Введите имя: ",
-                HaveAttempts, input => ValidateName(input, "Имя"));
-
-            string lastName = ReadWithValidation("Введите фамилию: ",
-                HaveAttempts, input => ValidateName(input, "Фамилия"));
-
-            string ageInput = ReadWithValidation("Введите возраст: ",
-                HaveAttempts, input =>
-                ValidateAge(input, PersonBase.MinAge, PersonBase.MaxAge));
-
-            int age = int.Parse(ageInput);
-
-            string genderInput = ReadWithValidation("Введите пол (Male/Female): ",
-                HaveAttempts, input => ValidateGender(input));
-
-            Gender sex = (Gender)Enum.Parse(typeof(Gender), genderInput, true);
-
-            return new PersonBase(firstName, lastName, age, sex);
-        }
-
-        /// <summary>
-        /// Обобщённый метод для чтения данных с консоли с повторными
-        /// попытками и валидацией.
-        /// </summary>
-        /// <param name="prompt">Сообщение, которое отображается пользователю.</param>
-        /// <param name="maxAttempts">Максимальное количество попыток ввода.</param>
-        /// <param name="validate">Функция для валидации введенных данных.</param>
-        /// <returns>Введенные данные, прошедшие валидацию.</returns>
-        /// <exception cref="ArgumentException">Выбрасывается,
-        /// если исчерпаны все попытки ввода.</exception>
-        private static string ReadWithValidation(string prompt,
-            int maxAttempts, Func<string, string> validate)
-        {
-            int attempts = 0;
-
-            while (attempts < maxAttempts)
-            {
-                Console.Write(prompt);
-                string input = Console.ReadLine()?.Trim();
-
-                string errorMessage = validate(input);
-                if (errorMessage == null)
-                {
-                    return input;
-                }
-
-                Console.WriteLine($"Ошибка: {errorMessage}");
-                attempts++;
-                Console.WriteLine($"Осталось попыток:" +
-                    $"{maxAttempts - attempts}\n");
-            }
-            throw new ArgumentException("Исчерпаны все попытки ввода.");
-        }
-
+        private const int PeopleCount = 7;
+        private static readonly Random Random = new Random();
 
         /// <summary>
         /// Точка входа в программу.
         /// </summary>
         /// <param name="args">Аргументы командной строки.</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            // a. Создаем два списка персон
+            var people = new PersonList();
 
-            PersonBase person1 = new PersonBase("Иванов", "Иванов", 30, Gender.Male);
-            PersonBase person2 = new PersonBase("Мария", "Васильева", 25, Gender.Female);
-            PersonBase person3 = new PersonBase("Петр", "Стрельцов", 35, Gender.Male);
-            PersonBase person4 = new PersonBase("Андрей", "Алексеевич", 50, Gender.Male);
-            PersonBase person5 = new PersonBase("Ольга", "Андреевна", 55, Gender.Female);
-            PersonBase person6 = new PersonBase("Светлана", "Игоревна", 60, Gender.Female);
+            CreateRandomPeople(people);
 
-            PersonList firstList = new PersonList();
+            Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
+            Console.ReadLine();
 
-            PersonList secondList = new PersonList();
-            
-            firstList.AddPerson(person1);
-            firstList.AddPerson(person2);
-            firstList.AddPerson(person3);
-            secondList.AddPerson(person4);
-            secondList.AddPerson(person5);
-            secondList.AddPerson(person6);
+            PrintPeopleDescriptions(people);
 
-            // b. Выводим содержимое каждого списка
+            Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
+            Console.ReadLine();
 
-            Console.WriteLine("\nПервый список:");
-            PersonBase.PrintPersonList(firstList);
-
-            Console.WriteLine("\nВторой список:");
-            PersonBase.PrintPersonList(secondList);
-
-            Console.ReadKey(); // Ожидание нажатия клавиши
-
-            // c. Добавляем нового человека в первый список
-            firstList.AddPerson(new PersonBase("Анна", "Владимирована", 20,
-                Gender.Female));
-
-            Console.WriteLine("\nПосле добавления Анны в первый список:");
-            PersonBase.PrintPersonList(firstList);
-
-            Console.ReadKey(); // Ожидание нажатия клавиши
-
-            // d. Копируем второго человека из первого списка во второй
-            // Копируем Мария
-            secondList.AddPerson(firstList.People[1]);
-            Console.WriteLine("\nПосле копирования Марии во второй список:");
-
-            Console.WriteLine("Первый список:");
-            PersonBase.PrintPersonList(firstList);
-
-            Console.WriteLine("\nВторой список:");
-            PersonBase.PrintPersonList(secondList);
-
-            Console.ReadKey(); // Ожидание нажатия клавиши
-
-            // e. Удаляем второго человека из первого списка
-            // Удаляем Мария
-            firstList.RemovePersonByIndex(1);
-            Console.WriteLine("\nПосле удаления Марии из первого списка:");
-
-            Console.WriteLine("Первый список:");
-            PersonBase.PrintPersonList(firstList);
-
-            Console.WriteLine("\nВторой список:");
-            PersonBase.PrintPersonList(secondList);
-
-            Console.ReadKey(); // Ожидание нажатия клавиши
-
-            // f. Очищаем второй список
-            secondList.ClearList();
-            Console.WriteLine("\nПосле очистки второго списка:");
-
-            Console.WriteLine("Первый список:");
-            PersonBase.PrintPersonList(firstList);
-
-            Console.WriteLine("\nВторой список очищен.");
-            Console.ReadKey(); // Ожидание нажатия клавиши
-
-            // Задание 4: Ввод данных с консоли
-            Console.WriteLine("Добавьте нового человека во второй список" +
-                "из консоли:");
-            try
-            {
-                var consolePerson = ReadPersonFromConsole();
-                secondList.AddPerson(consolePerson);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Ошибка ввода данных: " + e.Message);
-            }
-
-            // Вывод содержимого второго списка после добавления пользователя
-            Console.WriteLine("\nВторой список после добавления из консоли:");
-            PersonBase.PrintPersonList(secondList);
-
-            // Задание 5: Добавление случайного человека
-
-            Console.WriteLine("\nДобавляем случайного человека во второй список.");
-            secondList.AddPerson(PersonBase.GetRandomPerson());
-
-            // Вывод содержимого второго списка после добавления случайного человека
-            Console.WriteLine("\nВторой список после добавления" +
-                "случайного человека:");
-            PersonBase.PrintPersonList(secondList);
+            DemonstrateFourthPersonType(people);
 
             Console.WriteLine("\nДля выхода нажмите любую клавишу...");
             Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Создаёт и добавляет в список случайных взрослых и детей.
+        /// </summary>
+        /// <param name="people">Список, который требуется заполнить.</param>
+        private static void CreateRandomPeople(PersonList people)
+        {
+            var generatedPeople = new List<PersonBase>
+            {
+                Adult.CreateRandomAdult(),
+                Child.CreateRandomChild()
+            };
+
+            while (generatedPeople.Count < PeopleCount)
+            {
+                PersonBase person = Random.Next(2) == 0
+                    ? (PersonBase)Adult.CreateRandomAdult()
+                    : Child.CreateRandomChild();
+                generatedPeople.Add(person);
+            }
+
+            foreach (var person in generatedPeople.OrderBy(_ => Random.Next()))
+            {
+                people.AddPerson(person);
+            }
+
+            int adultCount = generatedPeople.Count(person => person is Adult);
+            int childCount = generatedPeople.Count - adultCount;
+
+            Console.WriteLine("a. Создан список PersonList с семью людьми.");
+            Console.WriteLine($"   В списке взрослых: {adultCount}, детей: {childCount}.");
+        }
+
+        /// <summary>
+        /// Выводит подробное описание всех людей из списка.
+        /// </summary>
+        /// <param name="people">Список людей.</param>
+        private static void PrintPeopleDescriptions(PersonList people)
+        {
+            Console.WriteLine("\nb. Подробное описание людей в списке:");
+
+            int index = 1;
+            foreach (var person in people.People)
+            {
+                Console.WriteLine($"\nЧеловек #{index}:");
+                Console.WriteLine(person.GetInformation());
+                index++;
+            }
+        }
+
+        /// <summary>
+        /// Определяет тип четвертого человека и вызывает метод, присущий классу.
+        /// </summary>
+        /// <param name="people">Список людей.</param>
+        private static void DemonstrateFourthPersonType(PersonList people)
+        {
+            Console.WriteLine("\nc. Определение типа четвертого человека:");
+
+            if (people.Count < 4)
+            {
+                Console.WriteLine("   В списке меньше четырех человек.");
+                return;
+            }
+
+            PersonBase fourthPerson = people.GetPersonByIndex(3);
+
+            switch (fourthPerson)
+            {
+                case Adult adult:
+                    Console.WriteLine("   Четвертый человек — взрослый.");
+                    bool wasMarried = adult.IsMarried;
+                    adult.AnnulMarriage();
+                    Console.WriteLine(wasMarried
+                        ? "   Вызван метод AnnulMarriage(): брак расторгнут."
+                        : "   Вызван метод AnnulMarriage(): подтверждено отсутствие брака.");
+                    break;
+                case Child child:
+                    Console.WriteLine("   Четвертый человек — ребенок.");
+                    Console.WriteLine("   Вызов метода GetParentSummary():");
+                    Console.WriteLine("   " + child.GetParentSummary());
+                    break;
+                default:
+                    Console.WriteLine("   Тип четвертого человека определить не удалось.");
+                    break;
+            }
         }
     }
 }

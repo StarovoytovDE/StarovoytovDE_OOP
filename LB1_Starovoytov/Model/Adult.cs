@@ -254,6 +254,7 @@ namespace Model
             {
                 partner.Spouse = null;
             }
+        }
 
                     /// <summary>
                     /// Создаёт взрослого человека со случайно сгенерированными данными.
@@ -363,5 +364,5 @@ namespace Model
             return start.AddDays(Random.Next(range + 1));
         }
     }
-    }
-}
+ }
+

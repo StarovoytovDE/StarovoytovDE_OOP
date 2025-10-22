@@ -189,6 +189,15 @@ namespace Model
         }
 
         /// <summary>
+        /// Возвращает краткое текстовое описание родителей ребёнка.
+        /// </summary>
+        /// <returns>Строка с информацией о родителях.</returns>
+        public string GetParentSummary()
+        {
+            return BuildParentInformation();
+        }
+
+        /// <summary>
         /// Создаёт ребёнка со случайными параметрами.
         /// </summary>
         /// <returns>Экземпляр класса <see cref="Child"/>.</returns>
