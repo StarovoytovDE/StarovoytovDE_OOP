@@ -12,6 +12,8 @@ namespace Model
     /// </summary>
     public class Adult : PersonBase
     {
+        //TODO: XML
+        //TOOD: refactor
         private static readonly Random Random = new Random();
 
         private static readonly IReadOnlyList<string> MaleFirstNames = new[]
@@ -55,6 +57,7 @@ namespace Model
             "ГУ МВД России по Республике Татарстан"
         };
 
+        //TODO: XML
         private static readonly Regex PhoneRegex = new Regex(
                     @"^\+(?:\d[ \-]?){10,15}$",
                     RegexOptions.Compiled | RegexOptions.CultureInvariant);

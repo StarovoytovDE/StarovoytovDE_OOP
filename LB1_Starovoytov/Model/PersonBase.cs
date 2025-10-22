@@ -30,6 +30,7 @@ namespace LB1_Starovoytov
         /// </summary>
         public DateTime DateOfBirth { get; protected set; }
 
+        //TODO: XML
         private int _age;
 
         /// </summary>
@@ -208,6 +209,7 @@ namespace LB1_Starovoytov
             if (age < MinAge || age > MaxAge)
             {
                 throw new ArgumentOutOfRangeException(nameof(age),
+                    //TODO: duplication
                     "Возраст должен быть в пределах от 0 до 125 лет.");
             }
         }

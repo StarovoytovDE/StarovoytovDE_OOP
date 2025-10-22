@@ -10,7 +10,9 @@ namespace LB1_Starovoytov
     /// </summary>
     internal class Program
     {
+        //TODO: XML
         private const int PeopleCount = 7;
+        //TODO: XML
         private static readonly Random Random = new Random();
 
         /// <summary>
@@ -104,7 +106,9 @@ namespace LB1_Starovoytov
 
             switch (fourthPerson)
             {
+                //TODO: RSDN
                 case Adult adult:
+                {
                     Console.WriteLine("   Четвертый человек — взрослый.");
                     bool wasMarried = adult.IsMarried;
                     adult.AnnulMarriage();
@@ -112,6 +116,7 @@ namespace LB1_Starovoytov
                         ? "   Вызван метод AnnulMarriage(): брак расторгнут."
                         : "   Вызван метод AnnulMarriage(): подтверждено отсутствие брака.");
                     break;
+                }
                 case Child child:
                     Console.WriteLine("   Четвертый человек — ребенок.");
                     Console.WriteLine("   Вызов метода GetParentSummary():");

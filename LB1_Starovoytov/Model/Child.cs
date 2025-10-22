@@ -11,6 +11,7 @@ namespace Model
     /// </summary>
     public class Child : PersonBase
     {
+
         private static readonly Random Random = new Random();
 
         private static readonly IReadOnlyList<string> MaleFirstNames = new[]
@@ -117,6 +118,7 @@ namespace Model
             return builder.ToString();
         }
 
+        //TODO: XML
         private static IReadOnlyList<Adult> BuildParentList(IEnumerable<Adult> parents)
         {
             if (parents == null)
@@ -134,6 +136,7 @@ namespace Model
                 : parentList;
         }
 
+        //TODO: XML
         private static string NormalizeEducationalInstitution(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -146,6 +149,7 @@ namespace Model
             return value.Trim();
         }
 
+        //TODO: XML
         private string BuildParentInformation()
         {
             if (Parents.Count == 0)
@@ -227,6 +231,7 @@ namespace Model
                 parents, educationalInstitution);
         }
 
+        //TODO: XML
         private static IReadOnlyList<Adult> GenerateRandomParents(string lastName)
         {
             var parents = new List<Adult>();
@@ -249,6 +254,7 @@ namespace Model
             return parents;
         }
 
+        //TODO: XML
         private static T PickRandomValue<T>(IReadOnlyList<T> values)
         {
             return values[Random.Next(values.Count)];

@@ -57,11 +57,14 @@ namespace Model
         /// </summary>
         public string IssuedBy { get; }
 
+        //TODO: XML
         public override string ToString()
         {
             return $"{Series} {Number}, выдан {IssueDate:d} {IssuedBy}";
         }
 
+        //TODO: XML
+        //TODO: rename
         private static string NormalizeSeries(string series)
         {
             if (string.IsNullOrWhiteSpace(series))
@@ -81,6 +84,8 @@ namespace Model
             return normalized;
         }
 
+        //TODO: XML
+        //TODO: rename
         private static string NormalizeNumber(string number)
         {
             if (string.IsNullOrWhiteSpace(number))
@@ -100,6 +105,8 @@ namespace Model
             return normalized;
         }
 
+        //TODO: XML
+        //TODO: rename
         private static string NormalizeIssuedBy(string issuedBy)
         {
             if (string.IsNullOrWhiteSpace(issuedBy))
@@ -112,6 +119,7 @@ namespace Model
             return issuedBy.Trim();
         }
 
+        //TODO: XML
         private static DateTime ValidateIssueDate(DateTime issueDate)
         {
             DateTime today = DateTime.Today;
