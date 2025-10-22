@@ -64,8 +64,8 @@ namespace Model
             var builder = new StringBuilder();
             builder.AppendLine(BuildBaseInformation());
             builder.AppendLine("Язык: " + Language);
-            builder.AppendLine("Образовательное учреждение: " + EducationalInstitution);
-            builder.Append("Родители: " + string.Join(", ", Parents.Select(p => p.FullName)));
+            builder.AppendLine("Образовательное учреждение:" + EducationalInstitution);
+            builder.Append(BuildParentInformation());
             return builder.ToString();
         }
 
@@ -73,7 +73,7 @@ namespace Model
         {
             if (parents == null)
             {
-                throw new ArgumentNullException(nameof(parents));
+                return Array.Empty<Adult>();
             }
 
             var parentList = parents
@@ -81,14 +81,9 @@ namespace Model
                 .Distinct()
                 .ToList();
 
-            if (parentList.Count == 0)
-            {
-                throw new ArgumentException(
-                    "Необходимо указать хотя бы одного родителя.",
-                    nameof(parents));
-            }
-
-            return parentList.AsReadOnly();
+            return parentList.Count == 0
+                ? (IReadOnlyList<Adult>)Array.Empty<Adult>() // Adult[] реализует IReadOnlyList<Adult>
+                : parentList;
         }
 
         private static string NormalizeEducationalInstitution(string value)
@@ -101,6 +96,48 @@ namespace Model
             }
 
             return value.Trim();
+        }
+
+        private string BuildParentInformation()
+        {
+            if (Parents.Count == 0)
+            {
+                return "Родители: информация отсутствует";
+            }
+
+            var fathers = Parents
+                .Where(parent => parent.Sex == Gender.Male)
+                .Select(parent => parent.FullName)
+                .ToList();
+            var mothers = Parents
+                .Where(parent => parent.Sex == Gender.Female)
+                .Select(parent => parent.FullName)
+                .ToList();
+
+            var builder = new StringBuilder("Родители: ");
+            if (fathers.Count > 0)
+            {
+                builder.Append("отец - ");
+                builder.Append(string.Join(", ", fathers));
+            }
+            else
+            {
+                builder.Append("отец не указан");
+            }
+
+            builder.Append("; ");
+
+            if (mothers.Count > 0)
+            {
+                builder.Append("мать - ");
+                builder.Append(string.Join(", ", mothers));
+            }
+            else
+            {
+                builder.Append("мать не указана");
+            }
+
+            return builder.ToString();
         }
     }
 }

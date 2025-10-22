@@ -37,9 +37,8 @@ namespace Model
                     "Возраст совершеннолетнего должен быть не меньше 18 лет.");
             }
 
-            WorkPlace = NormalizeOrganizationField(workPlace,
-                nameof(workPlace));
-            Position = NormalizeOrganizationField(position, nameof(position));
+            WorkPlace = NormalizeOptionalField(workPlace);
+            Position = NormalizeOptionalField(position);
             PhoneNumber = NormalizePhone(phoneNumber);
             Passport = passport ?? throw new ArgumentNullException(nameof(passport));
 
@@ -89,26 +88,16 @@ namespace Model
         {
             var builder = new StringBuilder();
             builder.AppendLine(BuildBaseInformation());
-            builder.AppendLine("Место работы: " + WorkPlace);
-            builder.AppendLine("Должность: " + Position);
             builder.AppendLine("Телефон: " + PhoneNumber);
             builder.AppendLine("Паспорт: " + Passport);
-            builder.Append("Состоит в браке: " + (IsMarried
-                ? $"Да (партнёр: {Spouse.FullName})"
-                : "Нет"));
+            builder.AppendLine(BuildMarriageInformation());
+            builder.Append(BuildEmploymentInformation());
             return builder.ToString();
         }
 
-        private static string NormalizeOrganizationField(string value,
-            string argumentName)
+        private static string NormalizeOptionalField(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentException(
-                    "Значение не должно быть пустым.", argumentName);
-            }
-
-            return value.Trim();
+            return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
         }
 
         private static string NormalizePhone(string phoneNumber)
@@ -129,6 +118,46 @@ namespace Model
 
             return trimmed;
         }
+
+        private string BuildMarriageInformation()
+        {
+            if (!IsMarried)
+            {
+                return "Семейное положение: " + (Sex == Gender.Male
+                    ? "Не женат"
+                    : "Не замужем");
+            }
+
+            string marriedText = Sex == Gender.Male
+                ? "Женат на "
+                : "Замужем за ";
+            return "Семейное положение: " + marriedText + Spouse.FullName;
+        }
+
+        private string BuildEmploymentInformation()
+        {
+            if (string.IsNullOrEmpty(WorkPlace))
+            {
+                return "Место работы: Безработный";
+            }
+
+            var builder = new StringBuilder();
+            builder.Append("Место работы: ");
+            builder.Append(WorkPlace);
+
+            if (!string.IsNullOrEmpty(Position))
+            {
+                builder.Append("; Должность: ");
+                builder.Append(Position);
+            }
+            else
+            {
+                builder.Append("; Должность: не указана");
+            }
+
+            return builder.ToString();
+        }
+
         /// <summary>
         /// Заключает брак с указанным партнёром.
         /// </summary>
