@@ -241,7 +241,7 @@ namespace LB1_Starovoytov
         {
             foreach (var person in personList.People)
             {
-                Console.WriteLine(person.GetInfo());
+                Console.WriteLine(person.GetShortDescription());
             }
         }
     }

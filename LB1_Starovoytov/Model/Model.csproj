@@ -45,6 +45,7 @@
     <Compile Include="Adult.cs" />
     <Compile Include="Child.cs" />
     <Compile Include="Language.cs" />
+    <Compile Include="PassportInfo.cs" />
     <Compile Include="PersonBase.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="PersonList.cs" />

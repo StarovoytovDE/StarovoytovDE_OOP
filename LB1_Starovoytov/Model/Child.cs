@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
@@ -17,12 +16,14 @@ namespace Model
         /// </summary>
         /// <param name="firstName">Имя.</param>
         /// <param name="lastName">Фамилия.</param>
-        /// <param name="gender">Пол.</param>
+        /// <param name="sex">Пол.</param>
         /// <param name="age">Возраст (меньше 18).</param>
         /// <param name="language">Предпочитаемый язык.</param>
-        /// <param name="guardianFullName">ФИО дополнительного родителя.</param>
+        /// <param name="parents">Родители ребёнка.</param>
+        /// <param name="educationalInstitution">Название образовательного учреждения или детского сада.</param>
         public Child(string firstName, string lastName, int age, Gender sex,
-            Language language, string guardianFullName)
+            Language language, IEnumerable<Adult> parents,
+            string educationalInstitution)
             : base(firstName, lastName, BuildBirthDateFromAge(age), sex)
         {
             if (age >= AdultAge)
@@ -32,7 +33,9 @@ namespace Model
             }
 
             Language = language;
-            GuardianFullName = NormalizeGuardian(guardianFullName);
+            EducationalInstitution = NormalizeEducationalInstitution(
+                educationalInstitution);
+            Parents = BuildParentList(parents);
         }
 
         /// <summary>
@@ -41,9 +44,14 @@ namespace Model
         public Language Language { get; }
 
         /// <summary>
-        /// ФИО дополнительного родителя.
+        /// Название образовательного учреждения.
         /// </summary>
-        public string GuardianFullName { get; }
+        public string EducationalInstitution { get; }
+
+        /// <summary>
+        /// Родители ребёнка.
+        /// </summary>
+        public IReadOnlyList<Adult> Parents { get; }
 
         /// <inheritdoc />
         public override string PersonType => Sex == Gender.Male
@@ -56,13 +64,43 @@ namespace Model
             var builder = new StringBuilder();
             builder.AppendLine(BuildBaseInformation());
             builder.AppendLine("Язык: " + Language);
-            builder.Append("Дополнительный родитель: " + GuardianFullName);
+            builder.AppendLine("Образовательное учреждение: " + EducationalInstitution);
+            builder.Append("Родители: " + string.Join(", ", Parents.Select(p => p.FullName)));
             return builder.ToString();
         }
 
-        private static string NormalizeGuardian(string guardianFullName)
+        private static IReadOnlyList<Adult> BuildParentList(IEnumerable<Adult> parents)
         {
-            return NormalizeName(guardianFullName, nameof(guardianFullName));
+            if (parents == null)
+            {
+                throw new ArgumentNullException(nameof(parents));
+            }
+
+            var parentList = parents
+                .Where(parent => parent != null)
+                .Distinct()
+                .ToList();
+
+            if (parentList.Count == 0)
+            {
+                throw new ArgumentException(
+                    "Необходимо указать хотя бы одного родителя.",
+                    nameof(parents));
+            }
+
+            return parentList.AsReadOnly();
+        }
+
+        private static string NormalizeEducationalInstitution(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException(
+                    "Название образовательного учреждения обязательно.",
+                    nameof(value));
+            }
+
+            return value.Trim();
         }
     }
 }
