@@ -2,6 +2,8 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Model
 {
@@ -10,6 +12,49 @@ namespace Model
     /// </summary>
     public class Adult : PersonBase
     {
+        private static readonly Random Random = new Random();
+
+        private static readonly IReadOnlyList<string> MaleFirstNames = new[]
+        {
+            "Алексей", "Иван", "Николай", "Павел", "Сергей", "Максим",
+            "Дмитрий", "Ярослав", "Кирилл", "Георгий"
+        };
+
+        private static readonly IReadOnlyList<string> FemaleFirstNames = new[]
+        {
+            "Анна", "Мария", "Екатерина", "Ольга", "Светлана", "Наталья",
+            "Елизавета", "Полина", "Вероника", "Виктория"
+        };
+
+        private static readonly IReadOnlyList<string> LastNames = new[]
+        {
+            "Иванов", "Петров", "Сидоров", "Орлов", "Кузнецов", "Смирнов",
+            "Попов", "Васильев", "Зайцев", "Тарасов"
+        };
+
+        private static readonly IReadOnlyList<string> WorkPlaces = new[]
+        {
+            "ООО \"Ромашка\"", "АО \"Прогресс\"", "Банк \"Единство\"",
+            "IT-компания \"Кванта\"", "Городская больница №3",
+            "Школа №17", "Почта России", "Страховая группа \"Надежда\""
+        };
+
+        private static readonly IReadOnlyList<string> Positions = new[]
+        {
+            "инженер", "аналитик", "учитель", "менеджер проектов",
+            "программист", "врач", "бухгалтер", "дизайнер"
+        };
+
+        private static readonly IReadOnlyList<string> IssuingAuthorities = new[]
+        {
+            "ГУ МВД России по г. Москве",
+            "ГУ МВД России по г. Санкт-Петербургу",
+            "Отдел УФМС по Московской области",
+            "Отдел УФМС по Новосибирской области",
+            "ГУ МВД России по Краснодарскому краю",
+            "ГУ МВД России по Республике Татарстан"
+        };
+
         private static readonly Regex PhoneRegex = new Regex(
                     @"^\+(?:\d[ \-]?){10,15}$",
                     RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -205,6 +250,114 @@ namespace Model
             {
                 partner.Spouse = null;
             }
+
+                    /// <summary>
+                    /// Создаёт взрослого человека со случайно сгенерированными данными.
+                    /// </summary>
+                    /// <returns>Экземпляр класса <see cref="Adult"/>.</returns>
+        public static Adult CreateRandomAdult()
+        {
+            return CreateRandomAdult(null, null);
         }
+
+        /// <summary>
+        /// Создаёт взрослого со случайными данными с возможностью указать пол
+        /// и фамилию.
+        /// </summary>
+        /// <param name="sex">Предпочитаемый пол. Если не указан,
+        /// выбирается случайный.</param>
+        /// <param name="lastName">Предпочитаемая фамилия. Если не указана,
+        /// будет выбрана случайная.</param>
+        /// <returns>Новый объект <see cref="Adult"/>.</returns>
+        internal static Adult CreateRandomAdult(Gender? sex, string lastName)
+        {
+            Gender actualSex = sex ?? (Random.Next(2) == 0
+                ? Gender.Male
+                : Gender.Female);
+
+            string firstName = actualSex == Gender.Male
+                ? PickRandomValue(MaleFirstNames)
+                : PickRandomValue(FemaleFirstNames);
+
+            string actualLastName = string.IsNullOrWhiteSpace(lastName)
+                ? PickRandomValue(LastNames)
+                : lastName.Trim();
+
+            int age = Random.Next(AdultAge, 76); // 18-75 лет
+            string workPlace = PickRandomOptional(WorkPlaces, 0.3);
+            string position = workPlace != null
+                ? PickRandomOptional(Positions, 0.25)
+                : null;
+
+            string phoneNumber = GeneratePhoneNumber();
+            DateTime birthDate = BuildBirthDateFromAge(age);
+            PassportInfo passport = GeneratePassport(birthDate);
+
+            return new Adult(firstName, actualLastName, age, actualSex,
+                workPlace, position, phoneNumber, passport);
+        }
+
+        private static string PickRandomValue(IReadOnlyList<string> values)
+        {
+            return values[Random.Next(values.Count)];
+        }
+
+        private static string PickRandomOptional(IReadOnlyList<string> values,
+            double nullProbability)
+        {
+            if (values.Count == 0 || Random.NextDouble() < nullProbability)
+            {
+                return null;
+            }
+
+            return PickRandomValue(values);
+        }
+
+        private static string GeneratePhoneNumber()
+        {
+            return string.Format(CultureInfo.InvariantCulture,
+                "+7-{0:D3}-{1:D3}-{2:D2}-{3:D2}",
+                Random.Next(900, 1000),
+                Random.Next(100, 1000),
+                Random.Next(10, 100),
+                Random.Next(10, 100));
+        }
+
+        private static PassportInfo GeneratePassport(DateTime birthDate)
+        {
+            string series = Random.Next(0, 10000).ToString("D4",
+                CultureInfo.InvariantCulture);
+            string number = Random.Next(0, 1_000_000).ToString("D6",
+                CultureInfo.InvariantCulture);
+
+            DateTime minimalIssueDate = birthDate.AddYears(14);
+            DateTime legalMinimalDate = new DateTime(1960, 1, 1);
+            if (minimalIssueDate < legalMinimalDate)
+            {
+                minimalIssueDate = legalMinimalDate;
+            }
+
+            DateTime issueDate = GetRandomDate(minimalIssueDate, DateTime.Today);
+            string issuedBy = PickRandomValue(IssuingAuthorities);
+
+            return new PassportInfo(series, number, issueDate, issuedBy);
+        }
+
+        private static DateTime GetRandomDate(DateTime start, DateTime end)
+        {
+            if (start > end)
+            {
+                start = end;
+            }
+
+            int range = (end - start).Days;
+            if (range <= 0)
+            {
+                return start;
+            }
+
+            return start.AddDays(Random.Next(range + 1));
+        }
+    }
     }
 }
