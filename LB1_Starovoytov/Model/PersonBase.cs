@@ -30,10 +30,21 @@ namespace LB1_Starovoytov
         /// </summary>
         public DateTime DateOfBirth { get; protected set; }
 
-        /// <summary>
-        /// Возраст, рассчитанный на основе даты рождения.
+        private int _age;
+
         /// </summary>
-        public int Age => CalculateAge(DateTime.Today, DateOfBirth);
+        /// Возраст человека.
+        /// </summary>
+        public int Age
+        {
+            get => _age;
+            private set
+            {
+                ValidateAgeRange(value);
+                ValidateAgeForType(value);
+                _age = value;
+            }
+        }
 
         /// <summary>
         /// Пол.
@@ -95,16 +106,8 @@ namespace LB1_Starovoytov
             // остальные строчные)
             FirstName = CapitalizeName(firstName);
             LastName = CapitalizeName(lastName);
-
-            // Проверка правильности возраста (не отрицательный)
-            if ((Age < MinAge) || (Age > MaxAge))
-            {
-                throw new ArgumentException($"Возраст не должен быть " +
-                    $"отрицательным числом и не превышать {MaxAge} лет!");
-            }
-
             DateOfBirth = ValidateBirthDate(dateOfBirth);
-            ValidateAgeRange(Age);
+            Age = CalculateAge(DateTime.Today, DateOfBirth);
             Sex = sex;
         }
 
@@ -208,6 +211,12 @@ namespace LB1_Starovoytov
                     "Возраст должен быть в пределах от 0 до 125 лет.");
             }
         }
+
+        /// <summary>
+        /// Дополнительная проверка возраста для конкретного типа человека.
+        /// </summary>
+        /// <param name="age">Возраст для проверки.</param>
+        protected abstract void ValidateAgeForType(int age);
 
         /// <summary>
         /// Возвращает краткую сводку по человеку.

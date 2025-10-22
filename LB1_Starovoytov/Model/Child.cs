@@ -70,16 +70,20 @@ namespace Model
             string educationalInstitution)
             : base(firstName, lastName, BuildBirthDateFromAge(age), sex)
         {
+            Language = language;
+            EducationalInstitution = NormalizeEducationalInstitution(
+                educationalInstitution);
+            Parents = BuildParentList(parents);
+        }
+
+        /// <inheritdoc />
+        protected override void ValidateAgeForType(int age)
+        {
             if (age >= AdultAge)
             {
                 throw new ArgumentOutOfRangeException(nameof(age),
                     "Возраст ребёнка должен быть меньше 18 лет.");
             }
-
-            Language = language;
-            EducationalInstitution = NormalizeEducationalInstitution(
-                educationalInstitution);
-            Parents = BuildParentList(parents);
         }
 
         /// <summary>

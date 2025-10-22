@@ -76,12 +76,6 @@ namespace Model
             PassportInfo passport, Adult spouse = null)
             : base(firstName, lastName, BuildBirthDateFromAge(age), sex)
         {
-            if (age < AdultAge)
-            {
-                throw new ArgumentOutOfRangeException(nameof(age),
-                    "Возраст совершеннолетнего должен быть не меньше 18 лет.");
-            }
-
             WorkPlace = NormalizeOptionalField(workPlace);
             Position = NormalizeOptionalField(position);
             PhoneNumber = NormalizePhone(phoneNumber);
@@ -90,6 +84,16 @@ namespace Model
             if (spouse != null)
             {
                 Marry(spouse);
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void ValidateAgeForType(int age)
+        {
+            if (age < AdultAge)
+            {
+                throw new ArgumentOutOfRangeException(nameof(age),
+                    "Возраст совершеннолетнего должен быть не меньше 18 лет.");
             }
         }
 
