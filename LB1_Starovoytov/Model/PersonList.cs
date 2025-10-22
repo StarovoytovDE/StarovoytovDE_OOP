@@ -13,27 +13,27 @@ namespace LB1_Starovoytov
         /// <summary>
         /// Приватное поле для хранения списка людей
         /// </summary>
-        private readonly List<Person> _people;
+        private readonly List<PersonBase> _people;
 
         /// <summary>
         /// Конструктор по умолчанию для инициализации нового списка людей.
         /// </summary>
         public PersonList()
         {
-            _people = new List<Person>();
+            _people = new List<PersonBase>();
         }
 
         /// <summary>
         /// Свойство для доступа к списку (только для чтения)
         /// </summary>
-        public IReadOnlyList<Person> People => _people.AsReadOnly();
+        public IReadOnlyList<PersonBase> People => _people.AsReadOnly();
 
         /// <summary>
         ///  Метод для добавления человека в список.
         /// </summary>
         /// <param name="person">Объект типа Person, который нужно добавить
         /// в список.</param>
-        public void AddPerson(Person person)
+        public void AddPerson(PersonBase person)
         {
             _people.Add(person);
         }
@@ -43,7 +43,7 @@ namespace LB1_Starovoytov
         /// </summary>
         /// <param name="person">Объект типа Person, который нужно удалить из
         /// списка.</param>
-        public void RemovePerson(Person person)
+        public void RemovePerson(PersonBase person)
         {
             _people.Remove(person);
         }
@@ -66,7 +66,7 @@ namespace LB1_Starovoytov
         /// <param name="index">Индекс элемента, который нужно вернуть.</param>
         /// <returns>Объект типа Person, если индекс корректен; в противном
         /// случае — null.</returns>
-        public Person GetPersonByIndex(int index)
+        public PersonBase GetPersonByIndex(int index)
         {
             if (index >= 0 && index < People.Count)
             {
@@ -82,7 +82,7 @@ namespace LB1_Starovoytov
         /// найти.</param>
         /// <returns>Индекс объекта в списке, если он найден; в противном
         /// случае — -1.</returns>
-        public int GetIndexOfPerson(Person person)
+        public int GetIndexOfPerson(PersonBase person)
         {
             return _people.IndexOf(person);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LB1_Starovoytov
@@ -7,7 +8,7 @@ namespace LB1_Starovoytov
     /// Класс, представляющий человека (Person).
     /// Содержит информацию о имени, фамилии, возрасте и поле.
     /// </summary>
-    public class Person
+    public abstract class PersonBase
     {
         /// <summary>
         /// Имя.
@@ -20,9 +21,19 @@ namespace LB1_Starovoytov
         public string LastName { get; }
 
         /// <summary>
-        /// Возраст.
+        /// Полное имя.
         /// </summary>
-        public int Age { get; }
+        public string FullName => FirstName + " " + LastName;
+
+        /// <summary>
+        /// Дата рождения.
+        /// </summary>
+        public DateTime DateOfBirth { get; protected set; }
+
+        /// <summary>
+        /// Возраст, рассчитанный на основе даты рождения.
+        /// </summary>
+        public int Age => CalculateAge(DateTime.Today, DateOfBirth);
 
         /// <summary>
         /// Пол.
@@ -40,15 +51,30 @@ namespace LB1_Starovoytov
         public const int MaxAge = 125;
 
         /// <summary>
+        /// Возраст, с которого человек считается совершеннолетним.
+        /// </summary>
+        public const int AdultAge = 18;
+
+        /// <summary>
+        /// Отображаемое название типа человека (Он/Она).
+        /// </summary>
+        public abstract string PersonType { get; }
+
+        /// <summary>
+        /// Возвращает подробную информацию об объекте.
+        /// </summary>
+        public abstract string GetInformation();
+
+        /// <summary>
         /// Конструктор для создания объекта Person.
         /// </summary>
         /// <param name="firstName">Имя человека.</param>
         /// <param name="lastName">Фамилия человека.</param>
-        /// <param name="age">Возраст человека.</param>
+        /// <param name="dateOfBirth">Дата рождения человека.</param>
         /// <param name="sex">Пол человека.</param>
         /// <exception cref="ArgumentException">Выбрасывается, если имя, 
         /// фамилия или возраст не соответствуют требованиям.</exception>
-        public Person(string firstName, string lastName, int age, Gender sex)
+        public PersonBase(string firstName, string lastName, DateTime dateOfBirth, Gender sex)
         {
             if (string.IsNullOrWhiteSpace(firstName)
                 || string.IsNullOrWhiteSpace(lastName))
@@ -71,13 +97,14 @@ namespace LB1_Starovoytov
             LastName = CapitalizeName(lastName);
 
             // Проверка правильности возраста (не отрицательный)
-            if ((age < MinAge) || (age > MaxAge))
+            if ((Age < MinAge) || (Age > MaxAge))
             {
                 throw new ArgumentException($"Возраст не должен быть " +
                     $"отрицательным числом и не превышать {MaxAge} лет!");
             }
 
-            Age = age;
+            DateOfBirth = ValidateBirthDate(dateOfBirth);
+            ValidateAgeRange(Age);
             Sex = sex;
         }
 
@@ -112,37 +139,98 @@ namespace LB1_Starovoytov
         }
 
         /// <summary>
-        /// Создание случайного человека.
+        /// Вычисляет возраст в годах по дате рождения.
         /// </summary>
-        /// <returns>Объект Person со случайными данными.</returns>
-        public static Person GetRandomPerson()
+        /// <param name="today">Текущая дата.</param>
+        /// <param name="birthDate">Дата рождения.</param>
+        /// <returns>Возраст.</returns>
+        protected static int CalculateAge(DateTime today, DateTime birthDate)
         {
-            string[] randomFirstNames = { "Иван", "Мария", "Петр", "Андрей",
-                "Ольга", "Светлана" };
-            string[] randomLastNames = { "Иванов", "Сергеев", "Стрельцов",
-                "Алексеев", "Андреева", "Игорева" };
-            Random random = new Random();
+            int age = today.Year - birthDate.Year;
+            if (birthDate.Date > today.AddYears(-age))
+            {
+                age--;
+            }
 
-            string firstName =
-                randomFirstNames[random.Next(randomFirstNames.Length)];
-            string lastName =
-                randomLastNames[random.Next(randomLastNames.Length)];
-            // Возраст случайно от minAge до maxAge
-            int age = random.Next(MinAge, MaxAge);
-            // Пол случайно Male или Female
-            Gender sex = (Gender)random.Next(0, 2);
-
-            return new Person(firstName, lastName, age, sex);
+            return age;
         }
 
         /// <summary>
-        /// Возвращает строку с информацией о человеке.
+        /// Рассчитывает дату рождения на основе возраста.
         /// </summary>
-        /// <returns>Строка, содержащая имя, фамилию, возраст и пол 
-        /// человека.</returns>
-        public string GetInfo()
+        /// <param name="age">Возраст в годах.</param>
+        /// <returns>Дата рождения.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Возраст выходит за допустимые пределы.
+        /// </exception>
+        protected static DateTime BuildBirthDateFromAge(int age)
         {
-            return $"{FirstName} {LastName}, Возраст: {Age}, Пол: {Sex}";
+            ValidateAgeRange(age);
+            DateTime today = DateTime.Today;
+            DateTime birthDate = today.AddYears(-age);
+            if (birthDate > today)
+            {
+                birthDate = birthDate.AddDays(-1);
+            }
+
+            return birthDate;
+        }
+
+        /// <summary>
+        /// Валидация даты рождения.
+        /// </summary>
+        /// <param name="dateOfBirth">Дата рождения.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException">Проверка реальности
+        /// даты рождения.</exception>
+        private static DateTime ValidateBirthDate(DateTime dateOfBirth)
+        {
+            DateTime today = DateTime.Today;
+            if (dateOfBirth.Date > today)
+            {
+                throw new ArgumentOutOfRangeException(nameof(dateOfBirth),
+                    "Дата рождения не может находиться в будущем.");
+            }
+
+            return dateOfBirth.Date;
+        }
+
+        /// <summary>
+        ///Валидация возраста. 
+        /// </summary>
+        /// <param name="age"></param>
+        /// <exception cref="ArgumentOutOfRangeException">Проверка на реалистичность.</exception>
+        protected static void ValidateAgeRange(int age)
+        {
+            if (age < MinAge || age > MaxAge)
+            {
+                throw new ArgumentOutOfRangeException(nameof(age),
+                    "Возраст должен быть в пределах от 0 до 125 лет.");
+            }
+        }
+
+        /// <summary>
+        /// Возвращает краткую сводку по человеку.
+        /// </summary>
+        /// <returns>Строка с базовой информацией.</returns>
+        public virtual string GetShortDescription()
+        {
+            return PersonType + ": " + FullName + ", возраст: " + Age +
+                ", пол: " + Sex + ".";
+        }
+
+        /// <summary>
+        /// Возвращает строку с основной информацией о человеке.
+        /// </summary>
+        /// <returns>Строка для повторного использования в потомках.</returns>
+        protected string BuildBaseInformation()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine(PersonType + ": " + FullName);
+            builder.AppendLine("Пол: " + Sex);
+            builder.AppendLine("Возраст: " + Age);
+            builder.Append("Дата рождения: " + DateOfBirth.ToString("d"));
+            return builder.ToString();
         }
 
         /// <summary>

@@ -9,6 +9,33 @@ namespace LB1_Starovoytov
     /// </summary>
     internal class Program
     {
+
+        /// <summary>
+        /// Создание случайного человека.
+        /// </summary>
+        /// <returns>Объект Person со случайными данными.</returns>
+        public static PersonBase GetRandomPerson()
+        {
+            string[] randomFirstNames = { "Иван", "Мария", "Петр", "Андрей",
+                "Ольга", "Светлана" };
+            string[] randomLastNames = { "Иванов", "Сергеев", "Стрельцов",
+                "Алексеев", "Андреева", "Игорева" };
+            Random random = new Random();
+
+            string firstName =
+                randomFirstNames[random.Next(randomFirstNames.Length)];
+            string lastName =
+                randomLastNames[random.Next(randomLastNames.Length)];
+            // Возраст случайно от minAge до maxAge
+            int ageNumber = random.Next(MinAge, MaxAge);
+            DateTime age = BuildBirthDateFromAge(ageNumber);
+            // Пол случайно Male или Female
+            Gender sex = (Gender)random.Next(0, 2);
+
+            return new PersonBase(firstName, lastName, age, sex);
+        }
+
+
         /// <summary>
         /// Проверяет имя или фамилию на соответствие требованиям.
         /// </summary>
@@ -23,7 +50,7 @@ namespace LB1_Starovoytov
             {
                 return $"{fieldName} не может быть пустым!";
             }
-            if (!Person.IsValidName(input))
+            if (!PersonBase.IsValidName(input))
             {
                 return $"{fieldName} должна содержать только русские или" +
                     $"английские буквы, пробелы и дефисы!";
@@ -75,7 +102,7 @@ namespace LB1_Starovoytov
         /// Создает объект Person, запрашивая данные у пользователя через консоль.
         /// </summary>
         /// <returns>Объект Person, созданный на основе введенных данных.</returns>
-        public static Person ReadPersonFromConsole()
+        public static PersonBase ReadPersonFromConsole()
         {
             string firstName = ReadWithValidation("Введите имя: ",
                 HaveAttempts, input => ValidateName(input, "Имя"));
@@ -85,7 +112,7 @@ namespace LB1_Starovoytov
 
             string ageInput = ReadWithValidation("Введите возраст: ",
                 HaveAttempts, input =>
-                ValidateAge(input, Person.MinAge, Person.MaxAge));
+                ValidateAge(input, PersonBase.MinAge, PersonBase.MaxAge));
 
             int age = int.Parse(ageInput);
 
@@ -94,7 +121,7 @@ namespace LB1_Starovoytov
 
             Gender sex = (Gender)Enum.Parse(typeof(Gender), genderInput, true);
 
-            return new Person(firstName, lastName, age, sex);
+            return new PersonBase(firstName, lastName, age, sex);
         }
 
         /// <summary>
@@ -140,17 +167,17 @@ namespace LB1_Starovoytov
         {
             // a. Создаем два списка персон
 
-            Person person1 = new Person("Иванов", "Иванов", 30, Gender.Male);
-            Person person2 = new Person("Мария", "Васильева", 25, Gender.Female);
-            Person person3 = new Person("Петр", "Стрельцов", 35, Gender.Male);
-            Person person4 = new Person("Андрей", "Алексеевич", 50, Gender.Male);
-            Person person5 = new Person("Ольга", "Андреевна", 55, Gender.Female);
-            Person person6 = new Person("Светлана", "Игоревна", 60, Gender.Female);
+            PersonBase person1 = new PersonBase("Иванов", "Иванов", 30, Gender.Male);
+            PersonBase person2 = new PersonBase("Мария", "Васильева", 25, Gender.Female);
+            PersonBase person3 = new PersonBase("Петр", "Стрельцов", 35, Gender.Male);
+            PersonBase person4 = new PersonBase("Андрей", "Алексеевич", 50, Gender.Male);
+            PersonBase person5 = new PersonBase("Ольга", "Андреевна", 55, Gender.Female);
+            PersonBase person6 = new PersonBase("Светлана", "Игоревна", 60, Gender.Female);
 
             PersonList firstList = new PersonList();
 
             PersonList secondList = new PersonList();
-
+            
             firstList.AddPerson(person1);
             firstList.AddPerson(person2);
             firstList.AddPerson(person3);
@@ -161,19 +188,19 @@ namespace LB1_Starovoytov
             // b. Выводим содержимое каждого списка
 
             Console.WriteLine("\nПервый список:");
-            Person.PrintPersonList(firstList);
+            PersonBase.PrintPersonList(firstList);
 
             Console.WriteLine("\nВторой список:");
-            Person.PrintPersonList(secondList);
+            PersonBase.PrintPersonList(secondList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
             // c. Добавляем нового человека в первый список
-            firstList.AddPerson(new Person("Анна", "Владимирована", 20,
+            firstList.AddPerson(new PersonBase("Анна", "Владимирована", 20,
                 Gender.Female));
 
             Console.WriteLine("\nПосле добавления Анны в первый список:");
-            Person.PrintPersonList(firstList);
+            PersonBase.PrintPersonList(firstList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
@@ -183,10 +210,10 @@ namespace LB1_Starovoytov
             Console.WriteLine("\nПосле копирования Марии во второй список:");
 
             Console.WriteLine("Первый список:");
-            Person.PrintPersonList(firstList);
+            PersonBase.PrintPersonList(firstList);
 
             Console.WriteLine("\nВторой список:");
-            Person.PrintPersonList(secondList);
+            PersonBase.PrintPersonList(secondList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
@@ -196,10 +223,10 @@ namespace LB1_Starovoytov
             Console.WriteLine("\nПосле удаления Марии из первого списка:");
 
             Console.WriteLine("Первый список:");
-            Person.PrintPersonList(firstList);
+            PersonBase.PrintPersonList(firstList);
 
             Console.WriteLine("\nВторой список:");
-            Person.PrintPersonList(secondList);
+            PersonBase.PrintPersonList(secondList);
 
             Console.ReadKey(); // Ожидание нажатия клавиши
 
@@ -208,7 +235,7 @@ namespace LB1_Starovoytov
             Console.WriteLine("\nПосле очистки второго списка:");
 
             Console.WriteLine("Первый список:");
-            Person.PrintPersonList(firstList);
+            PersonBase.PrintPersonList(firstList);
 
             Console.WriteLine("\nВторой список очищен.");
             Console.ReadKey(); // Ожидание нажатия клавиши
@@ -228,17 +255,17 @@ namespace LB1_Starovoytov
 
             // Вывод содержимого второго списка после добавления пользователя
             Console.WriteLine("\nВторой список после добавления из консоли:");
-            Person.PrintPersonList(secondList);
+            PersonBase.PrintPersonList(secondList);
 
             // Задание 5: Добавление случайного человека
 
             Console.WriteLine("\nДобавляем случайного человека во второй список.");
-            secondList.AddPerson(Person.GetRandomPerson());
+            secondList.AddPerson(PersonBase.GetRandomPerson());
 
             // Вывод содержимого второго списка после добавления случайного человека
             Console.WriteLine("\nВторой список после добавления" +
                 "случайного человека:");
-            Person.PrintPersonList(secondList);
+            PersonBase.PrintPersonList(secondList);
 
             Console.WriteLine("\nДля выхода нажмите любую клавишу...");
             Console.ReadKey();
