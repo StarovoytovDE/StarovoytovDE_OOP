@@ -28,9 +28,6 @@ namespace LB1_Starovoytov
 
             PrintPeopleDescriptions(people);
 
-            Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
-            Console.ReadLine();
-
             DemonstrateFourthPersonType(people);
 
             Console.WriteLine("\nДля выхода нажмите любую клавишу...");
@@ -84,6 +81,9 @@ namespace LB1_Starovoytov
                 Console.WriteLine(person.GetInformation());
                 index++;
             }
+
+            Console.WriteLine("\nДля продолжения нажмите любую клавишу...");
+            Console.ReadLine();
         }
 
         /// <summary>
