@@ -214,8 +214,8 @@ namespace LB1_Starovoytov
             if (age < MinAge || age > MaxAge)
             {
                 throw new ArgumentOutOfRangeException(nameof(age),
-                    //TODO: duplication
-                    "Возраст должен быть в пределах от 0 до 125 лет.");
+                    //TODO: duplication+
+                    $"Возраст должен быть в пределах от {MinAge} до {MaxAge} лет.");
             }
         }
 

@@ -111,7 +111,7 @@ namespace LB1_Starovoytov
 
             switch (fourthPerson)
             {
-                //TODO: RSDN
+                //TODO: RSDN+
                 case Adult adult:
                 {
                     Console.WriteLine("   Четвертый человек — взрослый.");
@@ -123,13 +123,17 @@ namespace LB1_Starovoytov
                     break;
                 }
                 case Child child:
-                    Console.WriteLine("   Четвертый человек — ребенок.");
-                    Console.WriteLine("   Вызов метода GetParentSummary():");
-                    Console.WriteLine("   " + child.GetParentSummary());
-                    break;
+                    {
+                        Console.WriteLine("   Четвертый человек — ребенок.");
+                        Console.WriteLine("   Вызов метода GetParentSummary():");
+                        Console.WriteLine("   " + child.GetParentSummary());
+                        break;
+                    }
                 default:
-                    Console.WriteLine("   Тип четвертого человека определить не удалось.");
-                    break;
+                    {
+                        Console.WriteLine("   Тип четвертого человека определить не удалось.");
+                        break;
+                    }
             }
         }
     }

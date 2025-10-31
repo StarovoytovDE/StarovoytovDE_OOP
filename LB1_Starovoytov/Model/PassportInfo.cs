@@ -36,10 +36,10 @@ namespace Model
         public PassportInfo(string series, string number, DateTime issueDate,
             string issuedBy)
         {
-            Series = NormalizeSeries(series);
-            Number = NormalizeNumber(number);
+            Series = ValidatePassportSeries(series);
+            Number = ValidatePassportNumber(number);
             IssueDate = ValidateIssueDate(issueDate);
-            IssuedBy = NormalizeIssuedBy(issuedBy);
+            IssuedBy = ValidateIssuedBy(issuedBy);
         }
 
         /// <summary>
@@ -68,15 +68,15 @@ namespace Model
             return $"{Series} {Number}, выдан {IssueDate:d} {IssuedBy}";
         }
 
-        //TODO: rename
+        //TODO: rename+
         /// <summary>
-        /// Проверяет и нормализует серию паспорта.
+        /// Проверяет серию паспорта.
         /// </summary>
         /// <param name="series">Серия паспорта.</param>
         /// <returns>Очищенная серия паспорта.</returns>
         /// <exception cref="ArgumentException">Серия отсутствует или имеет
         /// неверный формат.</exception>
-        private static string NormalizeSeries(string series)
+        private static string ValidatePassportSeries(string series)
         {
             if (string.IsNullOrWhiteSpace(series))
             {
@@ -95,15 +95,15 @@ namespace Model
             return normalized;
         }
 
-        //TODO: rename
+        //TODO: rename+
         /// <summary>
-        /// Проверяет и нормализует номер паспорта.
+        /// Проверяет номер паспорта.
         /// </summary>
         /// <param name="number">Номер паспорта.</param>
         /// <returns>Очищенный номер паспорта.</returns>
         /// <exception cref="ArgumentException">Номер отсутствует или имеет
         /// неверный формат.</exception>
-        private static string NormalizeNumber(string number)
+        private static string ValidatePassportNumber(string number)
         {
             if (string.IsNullOrWhiteSpace(number))
             {
@@ -122,14 +122,14 @@ namespace Model
             return normalized;
         }
 
-        //TODO: rename
+        //TODO: rename+
         /// <summary>
-        /// Проверяет и нормализует название органа выдачи паспорта.
+        /// Проверяет название органа выдачи паспорта.
         /// </summary>
         /// <param name="issuedBy">Орган, выдавший документ.</param>
         /// <returns>Очищенное значение.</returns>
         /// <exception cref="ArgumentException">Название органа отсутствует.</exception>
-        private static string NormalizeIssuedBy(string issuedBy)
+        private static string ValidateIssuedBy(string issuedBy)
         {
             if (string.IsNullOrWhiteSpace(issuedBy))
             {
