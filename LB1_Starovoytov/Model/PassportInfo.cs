@@ -68,7 +68,6 @@ namespace Model
             return $"{Series} {Number}, выдан {IssueDate:d} {IssuedBy}";
         }
 
-        //TODO: rename+
         /// <summary>
         /// Проверяет серию паспорта.
         /// </summary>
@@ -95,7 +94,6 @@ namespace Model
             return normalized;
         }
 
-        //TODO: rename+
         /// <summary>
         /// Проверяет номер паспорта.
         /// </summary>
@@ -122,7 +120,6 @@ namespace Model
             return normalized;
         }
 
-        //TODO: rename+
         /// <summary>
         /// Проверяет название органа выдачи паспорта.
         /// </summary>

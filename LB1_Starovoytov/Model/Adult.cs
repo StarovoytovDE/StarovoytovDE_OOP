@@ -166,6 +166,7 @@ namespace Model
             return "Семейное положение: " + marriedText + Spouse.FullName;
         }
 
+        //TODO: XML
         private string BuildEmploymentInformation()
         {
             if (string.IsNullOrEmpty(WorkPlace))
@@ -395,6 +396,7 @@ namespace Model
             return new PassportInfo(series, number, issueDate, issuedBy);
         }
 
+        //TODO: XML
         private static DateTime GetRandomDate(DateTime start, DateTime end)
         {
             if (start > end)

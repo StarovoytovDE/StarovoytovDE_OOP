@@ -26,6 +26,7 @@ namespace LB1_Starovoytov
         /// <param name="args">Аргументы командной строки.</param>
         private static void Main(string[] args)
         {
+            //TODO: где показан полиморфизм?
             var people = new PersonList();
 
             CreateRandomPeople(people);
@@ -111,7 +112,6 @@ namespace LB1_Starovoytov
 
             switch (fourthPerson)
             {
-                //TODO: RSDN+
                 case Adult adult:
                 {
                     Console.WriteLine("   Четвертый человек — взрослый.");
@@ -123,17 +123,17 @@ namespace LB1_Starovoytov
                     break;
                 }
                 case Child child:
-                    {
-                        Console.WriteLine("   Четвертый человек — ребенок.");
-                        Console.WriteLine("   Вызов метода GetParentSummary():");
-                        Console.WriteLine("   " + child.GetParentSummary());
-                        break;
-                    }
+                {
+                    Console.WriteLine("   Четвертый человек — ребенок.");
+                    Console.WriteLine("   Вызов метода GetParentSummary():");
+                    Console.WriteLine("   " + child.GetParentSummary());
+                    break;
+                }
                 default:
-                    {
-                        Console.WriteLine("   Тип четвертого человека определить не удалось.");
-                        break;
-                    }
+                {
+                    Console.WriteLine("   Тип четвертого человека определить не удалось.");
+                    break;
+                }
             }
         }
     }

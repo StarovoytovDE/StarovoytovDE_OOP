@@ -214,7 +214,6 @@ namespace LB1_Starovoytov
             if (age < MinAge || age > MaxAge)
             {
                 throw new ArgumentOutOfRangeException(nameof(age),
-                    //TODO: duplication+
                     $"Возраст должен быть в пределах от {MinAge} до {MaxAge} лет.");
             }
         }
@@ -249,6 +248,7 @@ namespace LB1_Starovoytov
             return builder.ToString();
         }
 
+        //TODO: remove
         /// <summary>
         /// Выводит содержимое списка персон на консоль.
         /// </summary>
