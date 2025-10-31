@@ -10,9 +10,14 @@ namespace LB1_Starovoytov
     /// </summary>
     internal class Program
     {
-        //TODO: XML
+        /// <summary>
+        /// Целевое количество людей, создаваемых в примерах.
+        /// </summary>
         private const int PeopleCount = 7;
-        //TODO: XML
+        
+        /// <summary>
+        /// Целевое количество людей, создаваемых в примерах.
+        /// </summary>
         private static readonly Random Random = new Random();
 
         /// <summary>

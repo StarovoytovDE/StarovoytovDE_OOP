@@ -11,7 +11,9 @@ namespace Model
     /// </summary>
     public class Child : PersonBase
     {
-
+        /// <summary>
+        /// Генератор случайных чисел для построения примеров.
+        /// </summary>
         private static readonly Random Random = new Random();
 
         /// <summary>
@@ -76,7 +78,11 @@ namespace Model
             return builder.ToString();
         }
 
-        //TODO: XML
+        /// <summary>
+        /// Создаёт список родителей с фильтрацией недопустимых значений.
+        /// </summary>
+        /// <param name="parents">Исходная коллекция родителей.</param>
+        /// <returns>Список родителей без повторов.</returns>
         private static IReadOnlyList<Adult> BuildParentList(IEnumerable<Adult> parents)
         {
             if (parents == null)
@@ -94,7 +100,12 @@ namespace Model
                 : parentList;
         }
 
-        //TODO: XML
+        /// <summary>
+        /// Нормализует название образовательного учреждения.
+        /// </summary>
+        /// <param name="value">Входное значение.</param>
+        /// <returns>Очищенное название.</returns>
+        /// <exception cref="ArgumentException">Название отсутствует.</exception>
         private static string NormalizeEducationalInstitution(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -107,7 +118,10 @@ namespace Model
             return value.Trim();
         }
 
-        //TODO: XML
+        /// <summary>
+        /// Формирует строку с информацией о родителях ребёнка.
+        /// </summary>
+        /// <returns>Описание родителей.</returns>
         private string BuildParentInformation()
         {
             if (Parents.Count == 0)
@@ -230,7 +244,11 @@ namespace Model
                 parents, educationalInstitution);
         }
 
-        //TODO: XML
+        /// <summary>
+        /// Создаёт случайный набор родителей для ребёнка.
+        /// </summary>
+        /// <param name="lastName">Базовая фамилия ребёнка.</param>
+        /// <returns>Коллекция родителей.</returns>
         private static IReadOnlyList<Adult> GenerateRandomParents(string lastName)
         {
             var parents = new List<Adult>();
@@ -253,7 +271,12 @@ namespace Model
             return parents;
         }
 
-        //TODO: XML
+        /// <summary>
+        /// Возвращает случайный элемент из набора.
+        /// </summary>
+        /// <typeparam name="T">Тип элементов.</typeparam>
+        /// <param name="values">Набор возможных значений.</param>
+        /// <returns>Случайный элемент списка.</returns>
         private static T PickRandomValue<T>(IReadOnlyList<T> values)
         {
             return values[Random.Next(values.Count)];

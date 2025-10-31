@@ -12,11 +12,16 @@ namespace Model
     /// </summary>
     public class PassportInfo
     {
-
+        /// <summary>
+        /// Регулярное выражение для проверки серии паспорта.
+        /// </summary>
         private static readonly Regex SeriesRegex = new Regex(
             @"^\d{4}$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
+        /// <summary>
+        /// Регулярное выражение для проверки номера паспорта.
+        /// </summary>
         private static readonly Regex NumberRegex = new Regex(
             @"^\d{6}$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -57,14 +62,20 @@ namespace Model
         /// </summary>
         public string IssuedBy { get; }
 
-        //TODO: XML
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"{Series} {Number}, выдан {IssueDate:d} {IssuedBy}";
         }
 
-        //TODO: XML
         //TODO: rename
+        /// <summary>
+        /// Проверяет и нормализует серию паспорта.
+        /// </summary>
+        /// <param name="series">Серия паспорта.</param>
+        /// <returns>Очищенная серия паспорта.</returns>
+        /// <exception cref="ArgumentException">Серия отсутствует или имеет
+        /// неверный формат.</exception>
         private static string NormalizeSeries(string series)
         {
             if (string.IsNullOrWhiteSpace(series))
@@ -84,8 +95,14 @@ namespace Model
             return normalized;
         }
 
-        //TODO: XML
         //TODO: rename
+        /// <summary>
+        /// Проверяет и нормализует номер паспорта.
+        /// </summary>
+        /// <param name="number">Номер паспорта.</param>
+        /// <returns>Очищенный номер паспорта.</returns>
+        /// <exception cref="ArgumentException">Номер отсутствует или имеет
+        /// неверный формат.</exception>
         private static string NormalizeNumber(string number)
         {
             if (string.IsNullOrWhiteSpace(number))
@@ -105,8 +122,13 @@ namespace Model
             return normalized;
         }
 
-        //TODO: XML
         //TODO: rename
+        /// <summary>
+        /// Проверяет и нормализует название органа выдачи паспорта.
+        /// </summary>
+        /// <param name="issuedBy">Орган, выдавший документ.</param>
+        /// <returns>Очищенное значение.</returns>
+        /// <exception cref="ArgumentException">Название органа отсутствует.</exception>
         private static string NormalizeIssuedBy(string issuedBy)
         {
             if (string.IsNullOrWhiteSpace(issuedBy))
@@ -119,7 +141,13 @@ namespace Model
             return issuedBy.Trim();
         }
 
-        //TODO: XML
+        /// <summary>
+        /// Проверяет дату выдачи паспорта.
+        /// </summary>
+        /// <param name="issueDate">Дата выдачи документа.</param>
+        /// <returns>Корректная дата выдачи.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Дата находится в
+        /// будущем или выглядит нереалистично.</exception>
         private static DateTime ValidateIssueDate(DateTime issueDate)
         {
             DateTime today = DateTime.Today;

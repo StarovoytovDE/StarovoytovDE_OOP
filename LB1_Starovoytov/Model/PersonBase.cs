@@ -30,12 +30,16 @@ namespace LB1_Starovoytov
         /// </summary>
         public DateTime DateOfBirth { get; protected set; }
 
-        //TODO: XML
+        /// <summary>
+        /// Поле, содержащее возраст человека.
+        /// </summary>
         private int _age;
 
-        /// </summary>
+        /// <summary>
         /// Возраст человека.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Возраст выходит за
+        /// допустимые пределы или не соответствует типу наследника.</exception>
         public int Age
         {
             get => _age;
@@ -184,9 +188,9 @@ namespace LB1_Starovoytov
         /// Валидация даты рождения.
         /// </summary>
         /// <param name="dateOfBirth">Дата рождения.</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException">Проверка реальности
-        /// даты рождения.</exception>
+        /// <returns>Корректная дата рождения.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Дата рождения
+        /// находится в будущем.</exception>
         private static DateTime ValidateBirthDate(DateTime dateOfBirth)
         {
             DateTime today = DateTime.Today;
@@ -200,10 +204,11 @@ namespace LB1_Starovoytov
         }
 
         /// <summary>
-        ///Валидация возраста. 
+        /// Проверяет возраст на соответствие допустимому диапазону.
         /// </summary>
-        /// <param name="age"></param>
-        /// <exception cref="ArgumentOutOfRangeException">Проверка на реалистичность.</exception>
+        /// <param name="age">Возраст для проверки.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Возраст находится вне
+        /// диапазона <see cref="MinAge"/>-<see cref="MaxAge"/>.</exception>
         protected static void ValidateAgeRange(int age)
         {
             if (age < MinAge || age > MaxAge)

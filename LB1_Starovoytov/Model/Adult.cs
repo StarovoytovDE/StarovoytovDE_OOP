@@ -12,8 +12,14 @@ namespace Model
     /// </summary>
     public class Adult : PersonBase
     {
+        /// <summary>
+        /// Генератор случайных чисел для построения тестовых данных.
+        /// </summary>
         private static readonly Random Random = new Random();
 
+        /// <summary>
+        /// Регулярное выражение для валидации телефонных номеров.
+        /// </summary>
         private static readonly Regex PhoneRegex = new Regex
         (
             @"^\+(?:\d[ \-]?){10,15}$",
@@ -105,11 +111,23 @@ namespace Model
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Приводит необязательное поле к каноничному виду.
+        /// </summary>
+        /// <param name="value">Значение поля.</param>
+        /// <returns>Очищенная строка или <c>null</c>, если поле пустое.</returns>
         private static string NormalizeOptionalField(string value)
         {
             return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
         }
 
+        /// <summary>
+        /// Проверяет и нормализует телефонный номер.
+        /// </summary>
+        /// <param name="phoneNumber">Телефонный номер для проверки.</param>
+        /// <returns>Очищенный телефонный номер.</returns>
+        /// <exception cref="ArgumentException">Номер не соответствует
+        /// требованиям формата.</exception>
         private static string NormalizePhone(string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber))
@@ -129,6 +147,10 @@ namespace Model
             return trimmed;
         }
 
+        /// <summary>
+        /// Формирует строку с информацией о трудоустройстве.
+        /// </summary>
+        /// <returns>Описание места работы и должности.</returns>
         private string BuildMarriageInformation()
         {
             if (!IsMarried)
@@ -304,11 +326,22 @@ namespace Model
                 workPlace, position, phoneNumber, passport);
         }
 
+        /// <summary>
+        /// Возвращает случайный элемент из списка значений.
+        /// </summary>
+        /// <param name="values">Набор возможных значений.</param>
+        /// <returns>Случайный элемент из списка.</returns>
         private static string PickRandomValue(IReadOnlyList<string> values)
         {
             return values[Random.Next(values.Count)];
         }
 
+        /// <summary>
+        /// Возвращает случайное значение или <c>null</c> с указанной вероятностью.
+        /// </summary>
+        /// <param name="values">Набор возможных значений.</param>
+        /// <param name="nullProbability">Вероятность возвращения <c>null</c>.</param>
+        /// <returns>Случайное значение или <c>null</c>.</returns>
         private static string PickRandomOptional(IReadOnlyList<string> values,
             double nullProbability)
         {
@@ -320,6 +353,10 @@ namespace Model
             return PickRandomValue(values);
         }
 
+        /// <summary>
+        /// Генерирует случайный телефонный номер российского формата.
+        /// </summary>
+        /// <returns>Телефонный номер с кодом страны.</returns>
         private static string GeneratePhoneNumber()
         {
             return string.Format(CultureInfo.InvariantCulture,
@@ -330,6 +367,13 @@ namespace Model
                 Random.Next(10, 100));
         }
 
+        /// <summary>
+        /// Возвращает случайную дату из указанного диапазона.
+        /// </summary>
+        /// <param name="start">Начальная дата диапазона.</param>
+        /// <param name="end">Конечная дата диапазона.</param>
+        /// <returns>Случайная дата между <paramref name="start"/> и
+        /// <paramref name="end"/>.</returns>
         private static PassportInfo GeneratePassport(DateTime birthDate,
             IReadOnlyList<string> issuingAuthorities)
         {
