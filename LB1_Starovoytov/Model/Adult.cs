@@ -12,55 +12,13 @@ namespace Model
     /// </summary>
     public class Adult : PersonBase
     {
-        //TODO: XML
-        //TOOD: refactor
         private static readonly Random Random = new Random();
 
-        private static readonly IReadOnlyList<string> MaleFirstNames = new[]
-        {
-            "Алексей", "Иван", "Николай", "Павел", "Сергей", "Максим",
-            "Дмитрий", "Ярослав", "Кирилл", "Георгий"
-        };
-
-        private static readonly IReadOnlyList<string> FemaleFirstNames = new[]
-        {
-            "Анна", "Мария", "Екатерина", "Ольга", "Светлана", "Наталья",
-            "Елизавета", "Полина", "Вероника", "Виктория"
-        };
-
-        private static readonly IReadOnlyList<string> LastNames = new[]
-        {
-            "Иванов", "Петров", "Сидоров", "Орлов", "Кузнецов", "Смирнов",
-            "Попов", "Васильев", "Зайцев", "Тарасов"
-        };
-
-        private static readonly IReadOnlyList<string> WorkPlaces = new[]
-        {
-            "ООО \"Ромашка\"", "АО \"Прогресс\"", "Банк \"Единство\"",
-            "IT-компания \"Кванта\"", "Городская больница №3",
-            "Школа №17", "Почта России", "Страховая группа \"Надежда\""
-        };
-
-        private static readonly IReadOnlyList<string> Positions = new[]
-        {
-            "инженер", "аналитик", "учитель", "менеджер проектов",
-            "программист", "врач", "бухгалтер", "дизайнер"
-        };
-
-        private static readonly IReadOnlyList<string> IssuingAuthorities = new[]
-        {
-            "ГУ МВД России по г. Москве",
-            "ГУ МВД России по г. Санкт-Петербургу",
-            "Отдел УФМС по Московской области",
-            "Отдел УФМС по Новосибирской области",
-            "ГУ МВД России по Краснодарскому краю",
-            "ГУ МВД России по Республике Татарстан"
-        };
-
-        //TODO: XML
-        private static readonly Regex PhoneRegex = new Regex(
-                    @"^\+(?:\d[ \-]?){10,15}$",
-                    RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        private static readonly Regex PhoneRegex = new Regex
+        (
+            @"^\+(?:\d[ \-]?){10,15}$",
+            RegexOptions.Compiled | RegexOptions.CultureInvariant
+        );
 
         /// <summary>
         /// Создаёт взрослого человека.
@@ -259,10 +217,10 @@ namespace Model
             }
         }
 
-                    /// <summary>
-                    /// Создаёт взрослого человека со случайно сгенерированными данными.
-                    /// </summary>
-                    /// <returns>Экземпляр класса <see cref="Adult"/>.</returns>
+        /// <summary>
+        /// Создаёт взрослого человека со случайно сгенерированными данными.
+        /// </summary>
+        /// <returns>Экземпляр класса <see cref="Adult"/>.</returns>
         public static Adult CreateRandomAdult()
         {
             return CreateRandomAdult(null, null);
@@ -279,27 +237,68 @@ namespace Model
         /// <returns>Новый объект <see cref="Adult"/>.</returns>
         internal static Adult CreateRandomAdult(Gender? sex, string lastName)
         {
+            var maleFirstNames = new[]
+            {
+                "Алексей", "Иван", "Николай", "Павел", "Сергей", "Максим",
+                "Дмитрий", "Ярослав", "Кирилл", "Георгий"
+            };
+
+            var femaleFirstNames = new[]
+            {
+                "Анна", "Мария", "Екатерина", "Ольга", "Светлана", "Наталья",
+                "Елизавета", "Полина", "Вероника", "Виктория"
+            };
+
+            var lastNames = new[]
+             {
+                "Иванов", "Петров", "Сидоров", "Орлов", "Кузнецов", "Смирнов",
+                "Попов", "Васильев", "Зайцев", "Тарасов"
+            };
+
+            var workPlaces = new[]
+            {
+                "ООО \"Ромашка\"", "АО \"Прогресс\"", "Банк \"Единство\"",
+                "IT-компания \"Кванта\"", "Городская больница №3",
+                "Школа №17", "Почта России", "Страховая группа \"Надежда\""
+            };
+
+            var positions = new[]
+            {
+                "инженер", "аналитик", "учитель", "менеджер проектов",
+                "программист", "врач", "бухгалтер", "дизайнер"
+            };
+
+            var issuingAuthorities = new[]
+            {
+                "ГУ МВД России по г. Москве",
+                "ГУ МВД России по г. Санкт-Петербургу",
+                "Отдел УФМС по Московской области",
+                "Отдел УФМС по Новосибирской области",
+                "ГУ МВД России по Краснодарскому краю",
+                "ГУ МВД России по Республике Татарстан"
+            };
+
             Gender actualSex = sex ?? (Random.Next(2) == 0
                 ? Gender.Male
                 : Gender.Female);
 
             string firstName = actualSex == Gender.Male
-                ? PickRandomValue(MaleFirstNames)
-                : PickRandomValue(FemaleFirstNames);
+                ? PickRandomValue(maleFirstNames)
+                : PickRandomValue(femaleFirstNames);
 
             string actualLastName = string.IsNullOrWhiteSpace(lastName)
-                ? PickRandomValue(LastNames)
+                ? PickRandomValue(lastNames)
                 : lastName.Trim();
 
             int age = Random.Next(AdultAge, 76); // 18-75 лет
-            string workPlace = PickRandomOptional(WorkPlaces, 0.3);
+            string workPlace = PickRandomOptional(workPlaces, 0.3);
             string position = workPlace != null
-                ? PickRandomOptional(Positions, 0.25)
+                ? PickRandomOptional(positions, 0.25)
                 : null;
 
             string phoneNumber = GeneratePhoneNumber();
             DateTime birthDate = BuildBirthDateFromAge(age);
-            PassportInfo passport = GeneratePassport(birthDate);
+            PassportInfo passport = GeneratePassport(birthDate, issuingAuthorities);
 
             return new Adult(firstName, actualLastName, age, actualSex,
                 workPlace, position, phoneNumber, passport);
@@ -331,7 +330,8 @@ namespace Model
                 Random.Next(10, 100));
         }
 
-        private static PassportInfo GeneratePassport(DateTime birthDate)
+        private static PassportInfo GeneratePassport(DateTime birthDate,
+            IReadOnlyList<string> issuingAuthorities)
         {
             string series = Random.Next(0, 10000).ToString("D4",
                 CultureInfo.InvariantCulture);
@@ -346,7 +346,7 @@ namespace Model
             }
 
             DateTime issueDate = GetRandomDate(minimalIssueDate, DateTime.Today);
-            string issuedBy = PickRandomValue(IssuingAuthorities);
+            string issuedBy = PickRandomValue(issuingAuthorities);
 
             return new PassportInfo(series, number, issueDate, issuedBy);
         }

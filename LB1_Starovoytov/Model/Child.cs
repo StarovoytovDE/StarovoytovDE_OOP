@@ -14,48 +14,6 @@ namespace Model
 
         private static readonly Random Random = new Random();
 
-        private static readonly IReadOnlyList<string> MaleFirstNames = new[]
-        {
-            "Артём", "Матвей", "Алексей", "Ярослав", "Кирилл", "Лев",
-            "Илья", "Богдан", "Тимофей", "Максим"
-        };
-
-        private static readonly IReadOnlyList<string> FemaleFirstNames = new[]
-        {
-            "Алиса", "Ева", "Милана", "Варвара", "София", "Ксения",
-            "Дарья", "Арина", "Маргарита", "Ульяна"
-        };
-
-        private static readonly IReadOnlyList<string> LastNames = new[]
-        {
-            "Иванов", "Поляков", "Романов", "Сергеев", "Лебедев",
-            "Голубев", "Александров", "Жуков", "Комаров", "Соколов"
-        };
-
-        private static readonly IReadOnlyList<string> KindergartenNames = new[]
-        {
-            "Детский сад №12 \"Ромашка\"",
-            "Детский сад №48 \"Звёздочка\"",
-            "Детский сад №3 \"Солнышко\"",
-            "Детский сад №21 \"Аленький цветочек\""
-        };
-
-        private static readonly IReadOnlyList<string> SchoolNames = new[]
-        {
-            "Средняя школа №5",
-            "Гимназия №2",
-            "Лицей №17",
-            "Школа с углублённым изучением английского языка №12",
-            "Частная школа \"Перспектива\""
-        };
-
-        private static readonly IReadOnlyList<Language> Languages = Enum
-            .GetValues(typeof(Language))
-            .Cast<Language>()
-            .Where(language => language != Language.Unknown)
-            .ToArray();
-
-
         /// <summary>
         /// Создаёт ребёнка.
         /// </summary>
@@ -207,15 +165,56 @@ namespace Model
         /// <returns>Экземпляр класса <see cref="Child"/>.</returns>
         public static Child CreateRandomChild()
         {
+            var maleFirstNames = new[]
+            {
+                "Артём", "Матвей", "Алексей", "Ярослав", "Кирилл", "Лев",
+                "Илья", "Богдан", "Тимофей", "Максим"
+            };
+
+            var femaleFirstNames = new[]
+            {
+                "Алиса", "Ева", "Милана", "Варвара", "София", "Ксения",
+                "Дарья", "Арина", "Маргарита", "Ульяна"
+            };
+
+            var lastNames = new[]
+            {
+                "Иванов", "Поляков", "Романов", "Сергеев", "Лебедев",
+                "Голубев", "Александров", "Жуков", "Комаров", "Соколов"
+            };
+
+            var kindergartenNames = new[]
+            {
+                "Детский сад №12 \"Ромашка\"",
+                "Детский сад №48 \"Звёздочка\"",
+                "Детский сад №3 \"Солнышко\"",
+                "Детский сад №21 \"Аленький цветочек\""
+            };
+
+            var schoolNames = new[]
+            {
+                "Средняя школа №5",
+                "Гимназия №2",
+                "Лицей №17",
+                "Школа с углублённым изучением английского языка №12",
+                "Частная школа \"Перспектива\""
+            };
+
+            var languages = Enum
+                .GetValues(typeof(Language))
+                .Cast<Language>()
+                .Where(candidate => candidate != Language.Unknown)
+                .ToArray();
+
             Gender sex = Random.Next(2) == 0 ? Gender.Male : Gender.Female;
             string firstName = sex == Gender.Male
-                ? PickRandomValue(MaleFirstNames)
-                : PickRandomValue(FemaleFirstNames);
+                ? PickRandomValue(maleFirstNames)
+                : PickRandomValue(femaleFirstNames);
 
-            string baseLastName = PickRandomValue(LastNames);
+            string baseLastName = PickRandomValue(lastNames);
 
             int age = Random.Next(MinAge, AdultAge); // 0-17 лет
-            Language language = PickRandomValue(Languages);
+            Language primaryLanguage = PickRandomValue(languages);
 
             var parents = GenerateRandomParents(baseLastName);
             if (parents.Count > 0)
@@ -224,10 +223,10 @@ namespace Model
             }
 
             string educationalInstitution = age < 7
-                ? PickRandomValue(KindergartenNames)
-                : PickRandomValue(SchoolNames);
+                ? PickRandomValue(kindergartenNames)
+                : PickRandomValue(schoolNames);
 
-            return new Child(firstName, baseLastName, age, sex, language,
+            return new Child(firstName, baseLastName, age, sex, primaryLanguage,
                 parents, educationalInstitution);
         }
 
