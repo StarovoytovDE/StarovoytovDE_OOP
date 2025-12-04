@@ -78,6 +78,12 @@ namespace Model
             return builder.ToString();
         }
 
+        /// <inheritdoc />
+        public override string DescribeDailyActivity()
+        {
+            return $"Посещает {EducationalInstitution} и изучает {Language.ToString().ToLower()} язык.";
+        }
+
         /// <summary>
         /// Создаёт список родителей с фильтрацией недопустимых значений.
         /// </summary>

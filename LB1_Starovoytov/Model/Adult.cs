@@ -111,6 +111,21 @@ namespace Model
             return builder.ToString();
         }
 
+        /// <inheritdoc />
+        public override string DescribeDailyActivity()
+        {
+            if (string.IsNullOrEmpty(WorkPlace))
+            {
+                return "Посвящает время поиску работы и развитию навыков.";
+            }
+
+            string positionPart = string.IsNullOrEmpty(Position)
+                ? "занимается рабочими обязанностями"
+                : $"работает {Position.ToLower()}";
+
+            return $"Трудится в {WorkPlace} и {positionPart}.";
+        }
+
         /// <summary>
         /// Приводит необязательное поле к каноничному виду.
         /// </summary>

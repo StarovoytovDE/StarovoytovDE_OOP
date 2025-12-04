@@ -82,6 +82,12 @@ namespace LB1_Starovoytov
         public abstract string GetInformation();
 
         /// <summary>
+        /// Возвращает краткое описание типичного занятия для данного человека.
+        /// Метод переопределяется в производных классах, демонстрируя полиморфизм.
+        /// </summary>
+        public abstract string DescribeDailyActivity();
+
+        /// <summary>
         /// Конструктор для создания объекта Person.
         /// </summary>
         /// <param name="firstName">Имя человека.</param>

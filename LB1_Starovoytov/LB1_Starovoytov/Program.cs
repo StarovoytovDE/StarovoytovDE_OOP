@@ -26,7 +26,7 @@ namespace LB1_Starovoytov
         /// <param name="args">Аргументы командной строки.</param>
         private static void Main(string[] args)
         {
-            //TODO: где показан полиморфизм?
+            //TODO: где показан полиморфизм?+
             var people = new PersonList();
 
             CreateRandomPeople(people);
@@ -37,6 +37,8 @@ namespace LB1_Starovoytov
             PrintPeopleDescriptions(people);
 
             DemonstrateFourthPersonType(people);
+
+            DemonstratePolymorphicActivities(people);
 
             Console.WriteLine("\nДля выхода нажмите любую клавишу...");
             Console.ReadKey();
@@ -135,6 +137,29 @@ namespace LB1_Starovoytov
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Демонстрирует полиморфизм: для списка людей вызывается один и тот
+        /// же метод базового класса, который по-разному реализован у потомков.
+        /// </summary>
+        /// <param name="people">Список людей.</param>
+        private static void DemonstratePolymorphicActivities(PersonList people)
+        {
+            Console.WriteLine("\nd. Демонстрация полиморфизма при вызове DescribeDailyActivity():");
+
+            int index = 1;
+            foreach (PersonBase person in people.People)
+            {
+                Console.WriteLine($"   #{index} ({person.PersonType} " +
+                    $"{person.FullName}) — {person.DescribeDailyActivity()}");
+                index++;
+            }
+
+            Console.WriteLine("\nМетод был вызван через ссылки типа PersonBase," +
+                " но выполнился по правилам конкретного класса.");
+            Console.WriteLine("Полиморфизм продемонстрирован и использован" +
+                " в завершении программы.");
         }
     }
 }
