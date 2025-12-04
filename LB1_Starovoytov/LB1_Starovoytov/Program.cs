@@ -26,7 +26,6 @@ namespace LB1_Starovoytov
         /// <param name="args">Аргументы командной строки.</param>
         private static void Main(string[] args)
         {
-            //TODO: где показан полиморфизм?+
             var people = new PersonList();
 
             CreateRandomPeople(people);

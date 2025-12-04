@@ -25,7 +25,8 @@ namespace Model
         /// <param name="age">Возраст (меньше 18).</param>
         /// <param name="language">Предпочитаемый язык.</param>
         /// <param name="parents">Родители ребёнка.</param>
-        /// <param name="educationalInstitution">Название образовательного учреждения или детского сада.</param>
+        /// <param name="educationalInstitution">
+        /// Название образовательного учреждения или детского сада.</param>
         public Child(string firstName, string lastName, int age, Gender sex,
             Language language, IEnumerable<Adult> parents,
             string educationalInstitution)
@@ -81,6 +82,7 @@ namespace Model
         /// <inheritdoc />
         public override string DescribeDailyActivity()
         {
+            //TODO: RSDN
             return $"Посещает {EducationalInstitution} и изучает {Language.ToString().ToLower()} язык.";
         }
 

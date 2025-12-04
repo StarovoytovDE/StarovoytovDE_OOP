@@ -181,7 +181,6 @@ namespace Model
             return "Семейное положение: " + marriedText + Spouse.FullName;
         }
 
-        //TODO: XML+
         /// <summary>
         /// Формирует строку с информацией о трудоустройстве взрослого.
         /// </summary>
@@ -417,7 +416,6 @@ namespace Model
             return new PassportInfo(series, number, issueDate, issuedBy);
         }
 
-        //TODO: XML+
         /// <summary>
         /// Возвращает случайную дату из указанного диапазона.
         /// </summary>
