@@ -253,18 +253,5 @@ namespace LB1_Starovoytov
             builder.Append("Дата рождения: " + DateOfBirth.ToString("d"));
             return builder.ToString();
         }
-
-        //TODO: remove
-        /// <summary>
-        /// Выводит содержимое списка персон на консоль.
-        /// </summary>
-        /// <param name="personList">Список персон для вывода.</param>
-        public static void PrintPersonList(PersonList personList)
-        {
-            foreach (var person in personList.People)
-            {
-                Console.WriteLine(person.GetShortDescription());
-            }
-        }
     }
 }

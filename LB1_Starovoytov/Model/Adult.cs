@@ -181,7 +181,13 @@ namespace Model
             return "Семейное положение: " + marriedText + Spouse.FullName;
         }
 
-        //TODO: XML
+        //TODO: XML+
+        /// <summary>
+        /// Формирует строку с информацией о трудоустройстве взрослого.
+        /// </summary>
+        /// <returns>
+        /// Строка с названием места работы и должности или указанием безработицы.
+        /// </returns>
         private string BuildEmploymentInformation()
         {
             if (string.IsNullOrEmpty(WorkPlace))
@@ -411,7 +417,13 @@ namespace Model
             return new PassportInfo(series, number, issueDate, issuedBy);
         }
 
-        //TODO: XML
+        //TODO: XML+
+        /// <summary>
+        /// Возвращает случайную дату из указанного диапазона.
+        /// </summary>
+        /// <param name="start">Начальная дата диапазона.</param>
+        /// <param name="end">Конечная дата диапазона.</param>
+        /// <returns>Случайная дата между <paramref name="start"/> и <paramref name="end"/>.</returns>
         private static DateTime GetRandomDate(DateTime start, DateTime end)
         {
             if (start > end)
