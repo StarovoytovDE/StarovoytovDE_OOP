@@ -82,7 +82,6 @@ namespace Model
         /// <inheritdoc />
         public override string DescribeDailyActivity()
         {
-            //TODO: RSDN+
             return $"Посещает {EducationalInstitution} " +
                 $"и изучает {Language.ToString().ToLower()} язык.";
         }
