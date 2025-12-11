@@ -32,7 +32,8 @@ namespace Model_LB3_4.Discounts
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Номинал сертификата должен быть положительным.");
+                    throw new ArgumentOutOfRangeException(nameof(value), 
+                        "Номинал сертификата должен быть положительным.");
                 }
 
                 _certificateValue = value;
@@ -40,7 +41,8 @@ namespace Model_LB3_4.Discounts
         }
 
         /// <inheritdoc />
-        public string Description => $"Скидка по сертификату на сумму {CertificateValue:C}";
+        public string Description => 
+            $"Скидка по сертификату на сумму {CertificateValue:C}";
 
         /// <inheritdoc />
         public decimal CalculateDiscount(decimal purchaseAmount)
@@ -60,7 +62,8 @@ namespace Model_LB3_4.Discounts
         {
             if (purchaseAmount <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(purchaseAmount), "Сумма покупки должна быть положительной.");
+                throw new ArgumentOutOfRangeException(nameof(purchaseAmount), 
+                    "Сумма покупки должна быть положительной.");
             }
         }
     }
