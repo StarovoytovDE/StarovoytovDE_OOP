@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model_LB3_4.Discounts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Model_LB3_4
     /// <summary>
     /// Базовый класс для расчёта скидок на покупку.
     /// </summary>
-    public abstract class DiscountStrategy
+    public abstract class DiscountStrategy : IDiscountStrategy
     {
         /// <summary>
         /// Описание типа скидки.
