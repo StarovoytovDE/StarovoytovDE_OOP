@@ -42,7 +42,7 @@ namespace Model_LB3_4.Discounts
 
         /// <inheritdoc />
         public override string Description =>
-            $"Скидка по сертификату на сумму {CertificateValue:C}";
+            $"Скидка по сертификату на сумму {CertificateValue:N2} руб.";
 
         /// <inheritdoc />
         public override decimal CalculateDiscount(decimal purchaseAmount)
