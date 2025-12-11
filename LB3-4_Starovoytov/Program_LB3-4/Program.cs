@@ -62,12 +62,15 @@ namespace Program_LB3_4
                 var choice = Console.ReadLine();
                 switch (choice)
                 {
-                    //TODO: {}
+                    //TODO: {}+
                     case "1":
+                    {
                         while (true)
                         {
-                            //TODO: duplication
-                            var percentage = ReadDecimal("Введите процент скидки (0-100): ");
+                            //TODO: duplication+
+                            var percentage = ReadDecimal($"Введите процент " +
+                               $"скидки ({PercentageDiscount.MinPercentage}-" +
+                               $"{PercentageDiscount.MaxPercentage}): ");
 
                             try
                             {
@@ -78,11 +81,15 @@ namespace Program_LB3_4
                                 Console.WriteLine($"Ошибка: {ex.Message}");
                             }
                         }
+                    }
                     case "2":
+                    {
                         while (true)
                         {
-                            //TODO: RSDN
-                            var certificateValue = ReadPositiveDecimal("Введите номинал сертификата (в рублях): ");
+                            //TODO: RSDN+
+                            var certificateValue = 
+                                    ReadPositiveDecimal("Введите номинал " +
+                                    "сертификата (в рублях): ");
 
                             try
                             {
@@ -93,9 +100,12 @@ namespace Program_LB3_4
                                 Console.WriteLine($"Ошибка: {ex.Message}");
                             }
                         }
+                    }
                     default:
+                    {
                         Console.WriteLine("Неизвестный вариант. Повторите ввод.");
                         break;
+                    }
                 }
             }
         }
@@ -139,8 +149,9 @@ namespace Program_LB3_4
                 {
                     return value;
                 }
-                //TODO: RSDN
-                Console.WriteLine("Не удалось распознать число. Используйте точку или запятую в качестве разделителя дробной части.");
+                //TODO: RSDN+
+                Console.WriteLine("Не удалось распознать число. Используйте " +
+                    "точку или запятую в качестве разделителя дробной части.");
             }
         }
 
@@ -154,14 +165,19 @@ namespace Program_LB3_4
         /// <returns>true — если распознавание удалось; иначе false.</returns>
         private static bool TryParseDecimal(string input, out decimal value)
         {
-            //TODO: RSDN
-            var styles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands | NumberStyles.AllowLeadingSign;
+            //TODO: RSDN+
+            var styles = NumberStyles.AllowDecimalPoint 
+                            | NumberStyles.AllowThousands 
+                            | NumberStyles.AllowLeadingSign;
 
             var normalizedInput = input ?? string.Empty;
 
-            return decimal.TryParse(normalizedInput, styles, CultureInfo.CurrentCulture, out value) ||
-                   decimal.TryParse(normalizedInput, styles, CultureInfo.GetCultureInfo("ru-RU"), out value) ||
-                   decimal.TryParse(normalizedInput, styles, CultureInfo.InvariantCulture, out value);
+            return decimal.TryParse(normalizedInput, styles, 
+                                        CultureInfo.CurrentCulture, out value) 
+                || decimal.TryParse(normalizedInput, styles, 
+                                        CultureInfo.GetCultureInfo("ru-RU"), out value) 
+                || decimal.TryParse(normalizedInput, styles, 
+                                        CultureInfo.InvariantCulture, out value);
         }
     }
 }

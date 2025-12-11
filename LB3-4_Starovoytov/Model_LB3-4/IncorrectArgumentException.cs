@@ -12,31 +12,6 @@ namespace Model_LB3_4
     /// </summary>
     public class IncorrectArgumentException : ArgumentException
     {
-        //TODO: remove
-
-        /// <summary>
-        /// Инициализирует новый экземпляр исключения 
-        /// <see cref="IncorrectArgumentException"/>.
-        /// </summary>
-        public IncorrectArgumentException()
-        {
-        }
-
-        //TODO: remove
-
-        /// <summary>
-        /// Инициализирует новый экземпляр исключения 
-        /// <see cref="IncorrectArgumentException"/>
-        /// с указанным сообщением об ошибке.
-        /// </summary>
-        /// <param name="message">
-        /// Сообщение, описывающее причину возникновения исключения.
-        /// </param>
-        public IncorrectArgumentException(string message)
-            : base(message)
-        {
-        }
-
         /// <summary>
         /// Инициализирует новый экземпляр исключения 
         /// <see cref="IncorrectArgumentException"/>
@@ -51,24 +26,6 @@ namespace Model_LB3_4
         /// </param>
         public IncorrectArgumentException(string paramName, string message)
             : base(message, paramName)
-        {
-        }
-
-        //TODO: remove
-        /// <summary>
-        /// Инициализирует новый экземпляр исключения 
-        /// <see cref="IncorrectArgumentException"/>
-        /// с указанным сообщением об ошибке и внутренним исключением,
-        /// являющимся причиной текущего исключения.
-        /// </summary>
-        /// <param name="message">
-        /// Сообщение, описывающее причину возникновения исключения.
-        /// </param>
-        /// <param name="innerException">
-        /// Исключение, вызвавшее текущее исключение.
-        /// </param>
-        public IncorrectArgumentException(string message, Exception innerException)
-            : base(message, innerException)
         {
         }
     }

@@ -11,8 +11,21 @@ namespace Model_LB3_4.Discounts
     /// </summary>
     public sealed class PercentageDiscount : DiscountStrategy
     {
-        //TODO: XML
+        //TODO: XML+
+        /// <summary>
+        /// Хранит значение процента скидки.
+        /// </summary>
         private decimal _percentage;
+
+        /// <summary>
+        /// Минимально допустимое значение процента скидки.
+        /// </summary>
+        public static readonly decimal MinPercentage = 0m;
+
+        /// <summary>
+        /// Максимально допустимое значение процента скидки.
+        /// </summary>
+        public static readonly decimal MaxPercentage = 100m;
 
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="PercentageDiscount"/>.
@@ -31,12 +44,13 @@ namespace Model_LB3_4.Discounts
             get => _percentage;
             set
             {
-                //TOOD: refactor
-                if (value < 0 || value > 100)
+                //TOOD: refactor+
+                if (value < MinPercentage || value > MaxPercentage)
                 {
                     throw new IncorrectArgumentException(
                         nameof(value),
-                        "Процент должен быть между 0 и 100.");
+                        $"Процент должен быть между {MinPercentage}% " +
+                                                $"и {MaxPercentage}%.");
                 }
 
                 _percentage = value;
