@@ -9,7 +9,7 @@ namespace Model_LB3_4.Discounts
     /// <summary>
     /// Рассчитывает скидку как процент от суммы покупки.
     /// </summary>
-    public sealed class PercentageDiscount : IDiscountStrategy
+    public sealed class PercentageDiscount : DiscountStrategy
     {
         private decimal _percentage;
 
@@ -30,9 +30,11 @@ namespace Model_LB3_4.Discounts
             get => _percentage;
             set
             {
-                if (value is < 0 or > 100)
+                if (value < 0 || value > 100)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Процент должен быть между 0 и 100.");
+                    throw new IncorrectArgumentException(
+                        nameof(value),
+                        "Процент должен быть между 0 и 100.");
                 }
 
                 _percentage = value;
@@ -40,28 +42,14 @@ namespace Model_LB3_4.Discounts
         }
 
         /// <inheritdoc />
-        public string Description => $"Процентная скидка {Percentage}%";
+        public override string Description => $"Процентная скидка {Percentage}%";
 
         /// <inheritdoc />
-        public decimal CalculateDiscount(decimal purchaseAmount)
+        public override decimal CalculateDiscount(decimal purchaseAmount)
         {
             ValidatePurchaseAmount(purchaseAmount);
-            return decimal.Round(purchaseAmount * Percentage / 100m, 2, MidpointRounding.AwayFromZero);
-        }
-
-        /// <inheritdoc />
-        public decimal CalculatePrice(decimal purchaseAmount)
-        {
-            ValidatePurchaseAmount(purchaseAmount);
-            return decimal.Round(purchaseAmount - CalculateDiscount(purchaseAmount), 2, MidpointRounding.AwayFromZero);
-        }
-
-        private static void ValidatePurchaseAmount(decimal purchaseAmount)
-        {
-            if (purchaseAmount <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(purchaseAmount), "Сумма покупки должна быть положительной.");
-            }
+            return decimal.Round(purchaseAmount * Percentage / 100m, 2, 
+                MidpointRounding.AwayFromZero);
         }
     }
 }

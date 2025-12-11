@@ -9,7 +9,7 @@ namespace Model_LB3_4.Discounts
     /// <summary>
     /// Использует фиксированное значение сертификата для уменьшения цены покупки.
     /// </summary>
-    public sealed class CertificateDiscount : IDiscountStrategy
+    public sealed class CertificateDiscount : DiscountStrategy
     {
         private decimal _certificateValue;
 
@@ -32,7 +32,7 @@ namespace Model_LB3_4.Discounts
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), 
+                    throw new IncorrectArgumentException(nameof(value),
                         "Номинал сертификата должен быть положительным.");
                 }
 
@@ -41,30 +41,14 @@ namespace Model_LB3_4.Discounts
         }
 
         /// <inheritdoc />
-        public string Description => 
+        public override string Description =>
             $"Скидка по сертификату на сумму {CertificateValue:C}";
 
         /// <inheritdoc />
-        public decimal CalculateDiscount(decimal purchaseAmount)
+        public override decimal CalculateDiscount(decimal purchaseAmount)
         {
             ValidatePurchaseAmount(purchaseAmount);
             return Math.Min(purchaseAmount, CertificateValue);
-        }
-
-        /// <inheritdoc />
-        public decimal CalculatePrice(decimal purchaseAmount)
-        {
-            ValidatePurchaseAmount(purchaseAmount);
-            return purchaseAmount - CalculateDiscount(purchaseAmount);
-        }
-
-        private static void ValidatePurchaseAmount(decimal purchaseAmount)
-        {
-            if (purchaseAmount <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(purchaseAmount), 
-                    "Сумма покупки должна быть положительной.");
-            }
         }
     }
 }
