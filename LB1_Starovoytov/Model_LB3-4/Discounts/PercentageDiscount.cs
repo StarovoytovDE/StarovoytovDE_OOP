@@ -11,6 +11,7 @@ namespace Model_LB3_4.Discounts
     /// </summary>
     public sealed class PercentageDiscount : DiscountStrategy
     {
+        //TODO: XML
         private decimal _percentage;
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace Model_LB3_4.Discounts
             get => _percentage;
             set
             {
+                //TOOD: refactor
                 if (value < 0 || value > 100)
                 {
                     throw new IncorrectArgumentException(

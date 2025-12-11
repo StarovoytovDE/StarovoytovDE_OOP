@@ -12,6 +12,8 @@ namespace Model_LB3_4
     /// </summary>
     public class IncorrectArgumentException : ArgumentException
     {
+        //TODO: remove
+
         /// <summary>
         /// Инициализирует новый экземпляр исключения 
         /// <see cref="IncorrectArgumentException"/>.
@@ -19,6 +21,8 @@ namespace Model_LB3_4
         public IncorrectArgumentException()
         {
         }
+
+        //TODO: remove
 
         /// <summary>
         /// Инициализирует новый экземпляр исключения 
@@ -50,6 +54,7 @@ namespace Model_LB3_4
         {
         }
 
+        //TODO: remove
         /// <summary>
         /// Инициализирует новый экземпляр исключения 
         /// <see cref="IncorrectArgumentException"/>

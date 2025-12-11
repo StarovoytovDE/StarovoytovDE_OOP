@@ -11,6 +11,7 @@ namespace Model_LB3_4.Discounts
     /// </summary>
     public sealed class CertificateDiscount : DiscountStrategy
     {
+        //TODO: XML
         private decimal _certificateValue;
 
         /// <summary>
