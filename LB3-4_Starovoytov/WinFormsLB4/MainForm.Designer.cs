@@ -1,4 +1,6 @@
-﻿namespace WinFormsLB4
+﻿using System;
+
+namespace WinFormsLB4
 {
     partial class MainForm
     {
@@ -29,7 +31,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupDiscountColculation = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.AddButton = new System.Windows.Forms.Button();
             this.DeleteButton = new System.Windows.Forms.Button();
@@ -41,20 +43,20 @@
             this.toolStripLoadMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FindButton = new System.Windows.Forms.Button();
             this.FilterResetButton = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.groupDiscountColculation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.toolStrip3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupDiscountColculation
             // 
-            this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 28);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(248, 155);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Вычисление скидки";
+            this.groupDiscountColculation.Controls.Add(this.dataGridView1);
+            this.groupDiscountColculation.Location = new System.Drawing.Point(12, 28);
+            this.groupDiscountColculation.Name = "groupDiscountColculation";
+            this.groupDiscountColculation.Size = new System.Drawing.Size(248, 155);
+            this.groupDiscountColculation.TabIndex = 0;
+            this.groupDiscountColculation.TabStop = false;
+            this.groupDiscountColculation.Text = "Вычисление скидки";
             // 
             // dataGridView1
             // 
@@ -174,10 +176,10 @@
             this.Controls.Add(this.RandomButton);
             this.Controls.Add(this.DeleteButton);
             this.Controls.Add(this.AddButton);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupDiscountColculation);
             this.Name = "MainForm";
             this.Text = "Расчёт скидки";
-            this.groupBox1.ResumeLayout(false);
+            this.groupDiscountColculation.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
@@ -186,9 +188,49 @@
 
         }
 
+        private void FilterResetButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void FindButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void toolStripLoadMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void toolStripSaveMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DeleteAllButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void RandomButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupDiscountColculation;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.Button DeleteButton;
