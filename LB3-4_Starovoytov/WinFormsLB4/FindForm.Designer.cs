@@ -40,21 +40,21 @@
             this.FinalSummToLabel = new System.Windows.Forms.Label();
             this.textBoxFinalSummFrom = new System.Windows.Forms.TextBox();
             this.FinalSummFromLabel = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxDiscountValue = new System.Windows.Forms.GroupBox();
+            this.textBoxPercentageTo = new System.Windows.Forms.TextBox();
+            this.textBoxPercentageFrom = new System.Windows.Forms.TextBox();
+            this.PercentageLabel = new System.Windows.Forms.Label();
             this.CertificateToTextBox1 = new System.Windows.Forms.TextBox();
             this.CertificateToLabel = new System.Windows.Forms.Label();
             this.CertificateFromTextBox = new System.Windows.Forms.TextBox();
-            this.CertificateFromLabel = new System.Windows.Forms.Label();
             this.CertificateLabel = new System.Windows.Forms.Label();
-            this.PercentageLabel = new System.Windows.Forms.Label();
-            this.textBoxPercentageFrom = new System.Windows.Forms.TextBox();
-            this.textBoxPercentageTo = new System.Windows.Forms.TextBox();
+            this.CertificateFromLabel = new System.Windows.Forms.Label();
             this.FindApplyButton = new System.Windows.Forms.Button();
             this.FindRejectButton = new System.Windows.Forms.Button();
             this.groupBoxDiscountStrategy.SuspendLayout();
             this.groupBoxSummRange.SuspendLayout();
             this.groupBoxFinalSumm.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxDiscountValue.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxDiscountStrategy
@@ -136,8 +136,8 @@
             // textBoxFinalSummTo
             // 
             this.textBoxFinalSummTo.Location = new System.Drawing.Point(32, 53);
-            this.textBoxFinalSummTo.MaximumSize = new System.Drawing.Size(60, 0);
-            this.textBoxFinalSummTo.MinimumSize = new System.Drawing.Size(60, 0);
+            this.textBoxFinalSummTo.MaximumSize = new System.Drawing.Size(60, 4);
+            this.textBoxFinalSummTo.MinimumSize = new System.Drawing.Size(60, 4);
             this.textBoxFinalSummTo.Name = "textBoxFinalSummTo";
             this.textBoxFinalSummTo.Size = new System.Drawing.Size(60, 20);
             this.textBoxFinalSummTo.TabIndex = 11;
@@ -154,8 +154,8 @@
             // textBoxFinalSummFrom
             // 
             this.textBoxFinalSummFrom.Location = new System.Drawing.Point(32, 19);
-            this.textBoxFinalSummFrom.MaximumSize = new System.Drawing.Size(60, 0);
-            this.textBoxFinalSummFrom.MinimumSize = new System.Drawing.Size(60, 0);
+            this.textBoxFinalSummFrom.MaximumSize = new System.Drawing.Size(60, 4);
+            this.textBoxFinalSummFrom.MinimumSize = new System.Drawing.Size(60, 4);
             this.textBoxFinalSummFrom.Name = "textBoxFinalSummFrom";
             this.textBoxFinalSummFrom.Size = new System.Drawing.Size(60, 20);
             this.textBoxFinalSummFrom.TabIndex = 9;
@@ -169,22 +169,45 @@
             this.FinalSummFromLabel.TabIndex = 8;
             this.FinalSummFromLabel.Text = "От:";
             // 
-            // groupBox1
+            // groupBoxDiscountValue
             // 
-            this.groupBox1.Controls.Add(this.textBoxPercentageTo);
-            this.groupBox1.Controls.Add(this.textBoxPercentageFrom);
-            this.groupBox1.Controls.Add(this.PercentageLabel);
-            this.groupBox1.Controls.Add(this.CertificateToTextBox1);
-            this.groupBox1.Controls.Add(this.CertificateToLabel);
-            this.groupBox1.Controls.Add(this.CertificateFromTextBox);
-            this.groupBox1.Controls.Add(this.CertificateLabel);
-            this.groupBox1.Controls.Add(this.CertificateFromLabel);
-            this.groupBox1.Location = new System.Drawing.Point(12, 161);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(208, 117);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Сумма покупки";
+            this.groupBoxDiscountValue.Controls.Add(this.textBoxPercentageTo);
+            this.groupBoxDiscountValue.Controls.Add(this.textBoxPercentageFrom);
+            this.groupBoxDiscountValue.Controls.Add(this.PercentageLabel);
+            this.groupBoxDiscountValue.Controls.Add(this.CertificateToTextBox1);
+            this.groupBoxDiscountValue.Controls.Add(this.CertificateToLabel);
+            this.groupBoxDiscountValue.Controls.Add(this.CertificateFromTextBox);
+            this.groupBoxDiscountValue.Controls.Add(this.CertificateLabel);
+            this.groupBoxDiscountValue.Controls.Add(this.CertificateFromLabel);
+            this.groupBoxDiscountValue.Location = new System.Drawing.Point(12, 161);
+            this.groupBoxDiscountValue.Name = "groupBoxDiscountValue";
+            this.groupBoxDiscountValue.Size = new System.Drawing.Size(208, 117);
+            this.groupBoxDiscountValue.TabIndex = 4;
+            this.groupBoxDiscountValue.TabStop = false;
+            this.groupBoxDiscountValue.Text = "Величина скидки";
+            // 
+            // textBoxPercentageTo
+            // 
+            this.textBoxPercentageTo.Location = new System.Drawing.Point(158, 83);
+            this.textBoxPercentageTo.Name = "textBoxPercentageTo";
+            this.textBoxPercentageTo.Size = new System.Drawing.Size(25, 20);
+            this.textBoxPercentageTo.TabIndex = 13;
+            // 
+            // textBoxPercentageFrom
+            // 
+            this.textBoxPercentageFrom.Location = new System.Drawing.Point(158, 49);
+            this.textBoxPercentageFrom.Name = "textBoxPercentageFrom";
+            this.textBoxPercentageFrom.Size = new System.Drawing.Size(25, 20);
+            this.textBoxPercentageFrom.TabIndex = 13;
+            // 
+            // PercentageLabel
+            // 
+            this.PercentageLabel.AutoSize = true;
+            this.PercentageLabel.Location = new System.Drawing.Point(163, 25);
+            this.PercentageLabel.Name = "PercentageLabel";
+            this.PercentageLabel.Size = new System.Drawing.Size(15, 13);
+            this.PercentageLabel.TabIndex = 12;
+            this.PercentageLabel.Text = "%";
             // 
             // CertificateToTextBox1
             // 
@@ -209,15 +232,6 @@
             this.CertificateFromTextBox.Size = new System.Drawing.Size(90, 20);
             this.CertificateFromTextBox.TabIndex = 9;
             // 
-            // CertificateFromLabel
-            // 
-            this.CertificateFromLabel.AutoSize = true;
-            this.CertificateFromLabel.Location = new System.Drawing.Point(3, 56);
-            this.CertificateFromLabel.Name = "CertificateFromLabel";
-            this.CertificateFromLabel.Size = new System.Drawing.Size(23, 13);
-            this.CertificateFromLabel.TabIndex = 8;
-            this.CertificateFromLabel.Text = "От:";
-            // 
             // CertificateLabel
             // 
             this.CertificateLabel.AutoSize = true;
@@ -227,28 +241,14 @@
             this.CertificateLabel.TabIndex = 8;
             this.CertificateLabel.Text = "Номинал сертификата:";
             // 
-            // PercentageLabel
+            // CertificateFromLabel
             // 
-            this.PercentageLabel.AutoSize = true;
-            this.PercentageLabel.Location = new System.Drawing.Point(163, 25);
-            this.PercentageLabel.Name = "PercentageLabel";
-            this.PercentageLabel.Size = new System.Drawing.Size(15, 13);
-            this.PercentageLabel.TabIndex = 12;
-            this.PercentageLabel.Text = "%";
-            // 
-            // textBoxPercentageFrom
-            // 
-            this.textBoxPercentageFrom.Location = new System.Drawing.Point(158, 49);
-            this.textBoxPercentageFrom.Name = "textBoxPercentageFrom";
-            this.textBoxPercentageFrom.Size = new System.Drawing.Size(25, 20);
-            this.textBoxPercentageFrom.TabIndex = 13;
-            // 
-            // textBoxPercentageTo
-            // 
-            this.textBoxPercentageTo.Location = new System.Drawing.Point(158, 83);
-            this.textBoxPercentageTo.Name = "textBoxPercentageTo";
-            this.textBoxPercentageTo.Size = new System.Drawing.Size(25, 20);
-            this.textBoxPercentageTo.TabIndex = 13;
+            this.CertificateFromLabel.AutoSize = true;
+            this.CertificateFromLabel.Location = new System.Drawing.Point(3, 56);
+            this.CertificateFromLabel.Name = "CertificateFromLabel";
+            this.CertificateFromLabel.Size = new System.Drawing.Size(23, 13);
+            this.CertificateFromLabel.TabIndex = 8;
+            this.CertificateFromLabel.Text = "От:";
             // 
             // FindApplyButton
             // 
@@ -277,7 +277,7 @@
             this.ClientSize = new System.Drawing.Size(231, 315);
             this.Controls.Add(this.FindRejectButton);
             this.Controls.Add(this.FindApplyButton);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxDiscountValue);
             this.Controls.Add(this.groupBoxFinalSumm);
             this.Controls.Add(this.groupBoxSummRange);
             this.Controls.Add(this.groupBoxDiscountStrategy);
@@ -288,8 +288,8 @@
             this.groupBoxSummRange.PerformLayout();
             this.groupBoxFinalSumm.ResumeLayout(false);
             this.groupBoxFinalSumm.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxDiscountValue.ResumeLayout(false);
+            this.groupBoxDiscountValue.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -308,7 +308,7 @@
         private System.Windows.Forms.Label FinalSummToLabel;
         private System.Windows.Forms.TextBox textBoxFinalSummFrom;
         private System.Windows.Forms.Label FinalSummFromLabel;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxDiscountValue;
         private System.Windows.Forms.TextBox CertificateToTextBox1;
         private System.Windows.Forms.Label CertificateToLabel;
         private System.Windows.Forms.TextBox CertificateFromTextBox;
