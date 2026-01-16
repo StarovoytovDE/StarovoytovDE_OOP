@@ -59,6 +59,7 @@
             // 
             // groupBoxDiscountStrategy
             // 
+            this.groupBoxDiscountStrategy.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.groupBoxDiscountStrategy.Controls.Add(this.comboBox1);
             this.groupBoxDiscountStrategy.Location = new System.Drawing.Point(44, 12);
             this.groupBoxDiscountStrategy.Name = "groupBoxDiscountStrategy";
@@ -77,6 +78,7 @@
             // 
             // groupBoxSummRange
             // 
+            this.groupBoxSummRange.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.groupBoxSummRange.Controls.Add(this.SummToTextBox);
             this.groupBoxSummRange.Controls.Add(this.SeummToLabel);
             this.groupBoxSummRange.Controls.Add(this.SummForTextbox);
@@ -90,6 +92,7 @@
             // 
             // SummToTextBox
             // 
+            this.SummToTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.SummToTextBox.Location = new System.Drawing.Point(32, 53);
             this.SummToTextBox.Name = "SummToTextBox";
             this.SummToTextBox.Size = new System.Drawing.Size(60, 20);
@@ -106,6 +109,7 @@
             // 
             // SummForTextbox
             // 
+            this.SummForTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.SummForTextbox.Location = new System.Drawing.Point(32, 19);
             this.SummForTextbox.Name = "SummForTextbox";
             this.SummForTextbox.Size = new System.Drawing.Size(60, 20);
@@ -122,6 +126,7 @@
             // 
             // groupBoxFinalSumm
             // 
+            this.groupBoxFinalSumm.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.groupBoxFinalSumm.Controls.Add(this.textBoxFinalSummTo);
             this.groupBoxFinalSumm.Controls.Add(this.FinalSummToLabel);
             this.groupBoxFinalSumm.Controls.Add(this.textBoxFinalSummFrom);
@@ -136,7 +141,7 @@
             // textBoxFinalSummTo
             // 
             this.textBoxFinalSummTo.Location = new System.Drawing.Point(32, 53);
-            this.textBoxFinalSummTo.MaximumSize = new System.Drawing.Size(60, 4);
+            this.textBoxFinalSummTo.MaximumSize = new System.Drawing.Size(60, 20);
             this.textBoxFinalSummTo.MinimumSize = new System.Drawing.Size(60, 4);
             this.textBoxFinalSummTo.Name = "textBoxFinalSummTo";
             this.textBoxFinalSummTo.Size = new System.Drawing.Size(60, 20);
@@ -154,7 +159,7 @@
             // textBoxFinalSummFrom
             // 
             this.textBoxFinalSummFrom.Location = new System.Drawing.Point(32, 19);
-            this.textBoxFinalSummFrom.MaximumSize = new System.Drawing.Size(60, 4);
+            this.textBoxFinalSummFrom.MaximumSize = new System.Drawing.Size(60, 20);
             this.textBoxFinalSummFrom.MinimumSize = new System.Drawing.Size(60, 4);
             this.textBoxFinalSummFrom.Name = "textBoxFinalSummFrom";
             this.textBoxFinalSummFrom.Size = new System.Drawing.Size(60, 20);
@@ -171,6 +176,8 @@
             // 
             // groupBoxDiscountValue
             // 
+            this.groupBoxDiscountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.groupBoxDiscountValue.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBoxDiscountValue.Controls.Add(this.textBoxPercentageTo);
             this.groupBoxDiscountValue.Controls.Add(this.textBoxPercentageFrom);
             this.groupBoxDiscountValue.Controls.Add(this.PercentageLabel);
@@ -195,6 +202,7 @@
             // 
             // textBoxPercentageFrom
             // 
+            this.textBoxPercentageFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxPercentageFrom.Location = new System.Drawing.Point(158, 49);
             this.textBoxPercentageFrom.Name = "textBoxPercentageFrom";
             this.textBoxPercentageFrom.Size = new System.Drawing.Size(25, 20);
@@ -211,6 +219,7 @@
             // 
             // CertificateToTextBox1
             // 
+            this.CertificateToTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.CertificateToTextBox1.Location = new System.Drawing.Point(32, 83);
             this.CertificateToTextBox1.Name = "CertificateToTextBox1";
             this.CertificateToTextBox1.Size = new System.Drawing.Size(90, 20);
@@ -227,6 +236,7 @@
             // 
             // CertificateFromTextBox
             // 
+            this.CertificateFromTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.CertificateFromTextBox.Location = new System.Drawing.Point(32, 49);
             this.CertificateFromTextBox.Name = "CertificateFromTextBox";
             this.CertificateFromTextBox.Size = new System.Drawing.Size(90, 20);
@@ -252,6 +262,7 @@
             // 
             // FindApplyButton
             // 
+            this.FindApplyButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.FindApplyButton.Location = new System.Drawing.Point(12, 284);
             this.FindApplyButton.Name = "FindApplyButton";
             this.FindApplyButton.Size = new System.Drawing.Size(100, 23);
@@ -262,6 +273,7 @@
             // 
             // FindRejectButton
             // 
+            this.FindRejectButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.FindRejectButton.Location = new System.Drawing.Point(120, 284);
             this.FindRejectButton.Name = "FindRejectButton";
             this.FindRejectButton.Size = new System.Drawing.Size(100, 23);

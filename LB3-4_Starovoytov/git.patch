@@ -1,0 +1,943 @@
+diff --git a/LB3-4_Starovoytov/WinFormsLB4/AddForm.cs b/LB3-4_Starovoytov/WinFormsLB4/AddForm.cs
+index 2d229f064db1b6f31d027f7cb55e4f0a51c62b75..bd2a30cf2c825c4d4f9bbe196e70f0e1481ad163 100644
+--- a/LB3-4_Starovoytov/WinFormsLB4/AddForm.cs
++++ b/LB3-4_Starovoytov/WinFormsLB4/AddForm.cs
+@@ -1,30 +1,116 @@
+ ﻿using System;
+ using System.Collections.Generic;
+ using System.ComponentModel;
+ using System.Data;
+ using System.Drawing;
+ using System.Linq;
+ using System.Text;
+ using System.Threading.Tasks;
+ using System.Windows.Forms;
++using Model_LB3_4;
++using Model_LB3_4.Discounts;
+ 
+ namespace WinFormsLB4
+ {
++    /// <summary>
++    /// Форма добавления нового расчёта скидки.
++    /// </summary>
+     public partial class AddForm : Form
+     {
++        /// <summary>
++        /// Создаёт форму добавления.
++        /// </summary>
+         public AddForm()
+         {
+             InitializeComponent();
++            comboBox1.Items.AddRange(new object[]
++            {
++                "Процентная",
++                "Сертификат"
++            });
++            comboBox1.SelectedIndex = 0;
+         }
+ 
++        /// <summary>
++        /// Созданный расчёт скидки после подтверждения.
++        /// </summary>
++        public DiscountCalculation Calculation { get; private set; }
++
++        /// <summary>
++        /// Обработчик подтверждения добавления расчёта.
++        /// </summary>
+         private void AddApproveFigureButton_Click(object sender, EventArgs e)
+         {
++            if (!TryParseDecimal(SummTextbox.Text, out var purchaseAmount) || purchaseAmount <= 0)
++            {
++                ShowError("Сумма покупки должна быть положительным числом.");
++                return;
++            }
++
++            if (!TryParseDecimal(DiscountValueTextBox.Text, out var discountValue) || discountValue <= 0)
++            {
++                ShowError("Величина скидки должна быть положительным числом.");
++                return;
++            }
++
++            var strategyKind = comboBox1.SelectedIndex == 0
++                ? DiscountStrategyKind.Percent
++                : DiscountStrategyKind.Certificate;
++
++            if (strategyKind == DiscountStrategyKind.Percent && discountValue > 100m)
++            {
++                ShowError("Процент скидки должен быть не больше 100.");
++                return;
++            }
++
++            if (strategyKind == DiscountStrategyKind.Certificate && discountValue > purchaseAmount)
++            {
++                ShowError("Номинал сертификата не может превышать сумму покупки.");
++                return;
++            }
++
++            try
++            {
++                DiscountStrategy strategy = strategyKind == DiscountStrategyKind.Percent
++                    ? (DiscountStrategy)new PercentageDiscount(discountValue)
++                    : new CertificateDiscount(discountValue);
+ 
++                var discount = strategy.CalculateDiscount(purchaseAmount);
++                var finalPrice = strategy.CalculatePrice(purchaseAmount);
++
++                Calculation = new DiscountCalculation(purchaseAmount, strategyKind, discountValue, discount, finalPrice);
++                DialogResult = DialogResult.OK;
++                Close();
++            }
++            catch (IncorrectArgumentException ex)
++            {
++                ShowError(ex.Message);
++            }
+         }
+ 
++        /// <summary>
++        /// Обработчик отмены добавления.
++        /// </summary>
+         private void AddCancelButton_Click(object sender, EventArgs e)
+         {
++            DialogResult = DialogResult.Cancel;
++            Close();
++        }
++
++        /// <summary>
++        /// Пытается распарсить decimal-значение.
++        /// </summary>
++        private static bool TryParseDecimal(string input, out decimal value)
++        {
++            return decimal.TryParse(input, out value);
++        }
+ 
++        /// <summary>
++        /// Показывает пользователю сообщение об ошибке.
++        /// </summary>
++        private void ShowError(string message)
++        {
++            MessageBox.Show(this, message, "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+         }
+     }
+ }
+diff --git a/LB3-4_Starovoytov/WinFormsLB4/DiscountCalculation.cs b/LB3-4_Starovoytov/WinFormsLB4/DiscountCalculation.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..006b46687b4223b5b23e654c60e2e2a249f32920
+--- /dev/null
++++ b/LB3-4_Starovoytov/WinFormsLB4/DiscountCalculation.cs
+@@ -0,0 +1,68 @@
++using System;
++
++namespace WinFormsLB4
++{
++    /// <summary>
++    /// Виды стратегий скидки для расчётов.
++    /// </summary>
++    public enum DiscountStrategyKind
++    {
++        Percent = 0,
++        Certificate = 1
++    }
++
++    /// <summary>
++    /// Результат вычисления скидки для одной покупки.
++    /// </summary>
++    [Serializable]
++    public sealed class DiscountCalculation
++    {
++        /// <summary>
++        /// Сумма покупки.
++        /// </summary>
++        public decimal PurchaseAmount { get; }
++
++        /// <summary>
++        /// Тип стратегии скидки.
++        /// </summary>
++        public DiscountStrategyKind StrategyKind { get; }
++
++        /// <summary>
++        /// Величина скидки (процент или номинал).
++        /// </summary>
++        public decimal DiscountValue { get; }
++
++        /// <summary>
++        /// Сумма скидки.
++        /// </summary>
++        public decimal Discount { get; }
++
++        /// <summary>
++        /// Итоговая цена после скидки.
++        /// </summary>
++        public decimal FinalPrice { get; }
++
++        /// <summary>
++        /// Создаёт результат расчёта скидки.
++        /// </summary>
++        /// <param name="purchaseAmount">Сумма покупки.</param>
++        /// <param name="strategyKind">Тип стратегии скидки.</param>
++        /// <param name="discountValue">Величина скидки.</param>
++        /// <param name="discount">Сумма скидки.</param>
++        /// <param name="finalPrice">Итоговая стоимость.</param>
++        public DiscountCalculation(decimal purchaseAmount, DiscountStrategyKind strategyKind, decimal discountValue, decimal discount, decimal finalPrice)
++        {
++            PurchaseAmount = purchaseAmount;
++            StrategyKind = strategyKind;
++            DiscountValue = discountValue;
++            Discount = discount;
++            FinalPrice = finalPrice;
++        }
++
++        /// <summary>
++        /// Текстовое отображение стратегии.
++        /// </summary>
++        public string StrategyDisplay =>
++            StrategyKind == DiscountStrategyKind.Percent ? "Процентная" : "Сертификат";
++    }
++}
+diff --git a/LB3-4_Starovoytov/WinFormsLB4/FindForm.cs b/LB3-4_Starovoytov/WinFormsLB4/FindForm.cs
+index e8d23368d6d7b602f82a2aadf74d81123359d94a..d942d49e1d39c8a0ee6e7687682b2b910fb51252 100644
+--- a/LB3-4_Starovoytov/WinFormsLB4/FindForm.cs
++++ b/LB3-4_Starovoytov/WinFormsLB4/FindForm.cs
+@@ -1,30 +1,184 @@
+ ﻿using System;
+ using System.Collections.Generic;
+ using System.ComponentModel;
+ using System.Data;
+ using System.Drawing;
+ using System.Linq;
+ using System.Text;
+ using System.Threading.Tasks;
+ using System.Windows.Forms;
+ 
+ namespace WinFormsLB4
+ {
++    /// <summary>
++    /// Форма задания критериев поиска расчётов.
++    /// </summary>
+     public partial class FindForm : Form
+     {
++        /// <summary>
++        /// Создаёт форму поиска.
++        /// </summary>
+         public FindForm()
+         {
+             InitializeComponent();
++            comboBox1.Items.AddRange(new object[]
++            {
++                "Все стратегии",
++                "Процентная",
++                "Сертификат"
++            });
++            comboBox1.SelectedIndex = 0;
+         }
+ 
++        /// <summary>
++        /// Критерии поиска, заполненные пользователем.
++        /// </summary>
++        public SearchCriteria Criteria { get; private set; }
++
++        /// <summary>
++        /// Обработчик применения критериев поиска.
++        /// </summary>
+         private void FindApplyButton_Click(object sender, EventArgs e)
+         {
++            if (!TryGetOptionalDecimal(SummForTextbox.Text, out var purchaseFrom))
++            {
++                ShowError("Некорректное значение \"Сумма покупки: От\".");
++                return;
++            }
++
++            if (!TryGetOptionalDecimal(SummToTextBox.Text, out var purchaseTo))
++            {
++                ShowError("Некорректное значение \"Сумма покупки: До\".");
++                return;
++            }
++
++            if (!TryGetOptionalDecimal(textBoxFinalSummFrom.Text, out var finalFrom))
++            {
++                ShowError("Некорректное значение \"Сумма к оплате: От\".");
++                return;
++            }
++
++            if (!TryGetOptionalDecimal(textBoxFinalSummTo.Text, out var finalTo))
++            {
++                ShowError("Некорректное значение \"Сумма к оплате: До\".");
++                return;
++            }
++
++            if (!TryGetOptionalDecimal(CertificateFromTextBox.Text, out var certificateFrom))
++            {
++                ShowError("Некорректное значение \"Номинал сертификата: От\".");
++                return;
++            }
++
++            if (!TryGetOptionalDecimal(CertificateToTextBox1.Text, out var certificateTo))
++            {
++                ShowError("Некорректное значение \"Номинал сертификата: До\".");
++                return;
++            }
+ 
++            if (!TryGetOptionalDecimal(textBoxPercentageFrom.Text, out var percentageFrom))
++            {
++                ShowError("Некорректное значение \"%: От\".");
++                return;
++            }
++
++            if (!TryGetOptionalDecimal(textBoxPercentageTo.Text, out var percentageTo))
++            {
++                ShowError("Некорректное значение \"%: До\".");
++                return;
++            }
++
++            if (!ValidateRange(purchaseFrom, purchaseTo, "Сумма покупки") ||
++                !ValidateRange(finalFrom, finalTo, "Сумма к оплате") ||
++                !ValidateRange(certificateFrom, certificateTo, "Номинал сертификата") ||
++                !ValidateRange(percentageFrom, percentageTo, "Процент скидки"))
++            {
++                return;
++            }
++
++            Criteria = new SearchCriteria
++            {
++                StrategyFilter = GetStrategyFilter(),
++                PurchaseAmountFrom = purchaseFrom,
++                PurchaseAmountTo = purchaseTo,
++                FinalPriceFrom = finalFrom,
++                FinalPriceTo = finalTo,
++                CertificateValueFrom = certificateFrom,
++                CertificateValueTo = certificateTo,
++                PercentageFrom = percentageFrom,
++                PercentageTo = percentageTo
++            };
++
++            DialogResult = DialogResult.OK;
++            Close();
+         }
+ 
++        /// <summary>
++        /// Обработчик отмены поиска.
++        /// </summary>
+         private void FindRejectButton_Click(object sender, EventArgs e)
+         {
++            DialogResult = DialogResult.Cancel;
++            Close();
++        }
++
++        /// <summary>
++        /// Получает выбранный режим фильтра стратегии.
++        /// </summary>
++        private StrategyFilterKind GetStrategyFilter()
++        {
++            switch (comboBox1.SelectedIndex)
++            {
++                case 1:
++                    return StrategyFilterKind.Percent;
++                case 2:
++                    return StrategyFilterKind.Certificate;
++                default:
++                    return StrategyFilterKind.All;
++            }
++        }
++
++        /// <summary>
++        /// Пытается получить значение decimal, допускает пустое поле.
++        /// </summary>
++        private static bool TryGetOptionalDecimal(string text, out decimal? value)
++        {
++            if (string.IsNullOrWhiteSpace(text))
++            {
++                value = null;
++                return true;
++            }
++
++            if (decimal.TryParse(text, out var parsed))
++            {
++                value = parsed;
++                return true;
++            }
++
++            value = null;
++            return false;
++        }
++
++        /// <summary>
++        /// Проверяет корректность диапазона значений.
++        /// </summary>
++        private bool ValidateRange(decimal? from, decimal? to, string label)
++        {
++            if (from.HasValue && to.HasValue && from.Value > to.Value)
++            {
++                ShowError($"Диапазон \"{label}\" указан некорректно.");
++                return false;
++            }
+ 
++            return true;
++        }
++
++        /// <summary>
++        /// Показывает пользователю сообщение об ошибке.
++        /// </summary>
++        private void ShowError(string message)
++        {
++            MessageBox.Show(this, message, "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+         }
+     }
+ }
+diff --git a/LB3-4_Starovoytov/WinFormsLB4/MainForm.cs b/LB3-4_Starovoytov/WinFormsLB4/MainForm.cs
+index 5f54d06637c7bbabe7d2d9c1ca3914257c5c0084..f61f74935ec1f644d52effb124bdca8ff21e0a27 100644
+--- a/LB3-4_Starovoytov/WinFormsLB4/MainForm.cs
++++ b/LB3-4_Starovoytov/WinFormsLB4/MainForm.cs
+@@ -1,20 +1,403 @@
+ ﻿using System;
+ using System.Collections.Generic;
+-using System.ComponentModel;
+ using System.Data;
+ using System.Drawing;
+ using System.Linq;
+ using System.Text;
+ using System.Threading.Tasks;
+ using System.Windows.Forms;
++using System.ComponentModel;
++using System.IO;
++using System.Runtime.Serialization.Formatters.Binary;
++using Model_LB3_4;
++using Model_LB3_4.Discounts;
+ 
+ namespace WinFormsLB4
+ {
++    /// <summary>
++    /// Главная форма приложения расчёта скидок.
++    /// </summary>
+     public partial class MainForm : Form
+     {
++        /// <summary>
++        /// Уникальное расширение файлов расчётов.
++        /// </summary>
++        private const string FileExtension = "discounts";
++        private readonly List<DiscountCalculation> _allCalculations = new List<DiscountCalculation>();
++        private readonly BindingList<DiscountCalculation> _displayedCalculations = new BindingList<DiscountCalculation>();
++        private readonly Random _random = new Random();
++        private SearchCriteria _currentCriteria;
++        private bool _isFiltered;
++
++        /// <summary>
++        /// Создаёт главную форму.
++        /// </summary>
+         public MainForm()
+         {
+             InitializeComponent();
++            ConfigureGrid();
++            WireHandlers();
++            dataGridView1.DataSource = _displayedCalculations;
++        }
++
++        /// <summary>
++        /// Переподписывает обработчики событий кнопок и меню.
++        /// </summary>
++        private void WireHandlers()
++        {
++            AddButton.Click -= AddButton_Click;
++            AddButton.Click += AddButton_Clicked;
++            DeleteButton.Click -= DeleteButton_Click;
++            DeleteButton.Click += DeleteButton_Clicked;
++            RandomButton.Click -= RandomButton_Click;
++            RandomButton.Click += RandomButton_Clicked;
++            DeleteAllButton.Click -= DeleteAllButton_Click;
++            DeleteAllButton.Click += DeleteAllButton_Clicked;
++            FindButton.Click -= FindButton_Click;
++            FindButton.Click += FindButton_Clicked;
++            FilterResetButton.Click -= FilterResetButton_Click;
++            FilterResetButton.Click += FilterResetButton_Clicked;
++            toolStripSaveMenuItem.Click -= toolStripSaveMenuItem_Click;
++            toolStripSaveMenuItem.Click += ToolStripSaveMenuItem_Clicked;
++            toolStripLoadMenuItem.Click -= toolStripLoadMenuItem_Click;
++            toolStripLoadMenuItem.Click += ToolStripLoadMenuItem_Clicked;
++        }
++
++        /// <summary>
++        /// Настраивает колонки таблицы с форматированием.
++        /// </summary>
++        private void ConfigureGrid()
++        {
++            dataGridView1.AutoGenerateColumns = false;
++            dataGridView1.Columns.Clear();
++
++            dataGridView1.Columns.Add(CreateTextColumn("PurchaseAmount", "Сумма покупки", "N2"));
++            dataGridView1.Columns.Add(CreateTextColumn("StrategyDisplay", "Стратегия", null));
++            dataGridView1.Columns.Add(CreateTextColumn("DiscountValue", "Величина скидки", "N2"));
++            dataGridView1.Columns.Add(CreateTextColumn("Discount", "Сумма скидки", "N2"));
++            dataGridView1.Columns.Add(CreateTextColumn("FinalPrice", "К оплате", "N2"));
++        }
++
++        /// <summary>
++        /// Создаёт текстовую колонку таблицы.
++        /// </summary>
++        private static DataGridViewTextBoxColumn CreateTextColumn(string dataPropertyName, string headerText, string format)
++        {
++            var column = new DataGridViewTextBoxColumn
++            {
++                DataPropertyName = dataPropertyName,
++                HeaderText = headerText,
++                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
++            };
++
++            if (!string.IsNullOrWhiteSpace(format))
++            {
++                column.DefaultCellStyle.Format = format;
++            }
++
++            return column;
++        }
++
++        /// <summary>
++        /// Обработчик добавления нового расчёта.
++        /// </summary>
++        private void AddButton_Clicked(object sender, EventArgs e)
++        {
++            using (var form = new AddForm())
++            {
++                if (form.ShowDialog(this) == DialogResult.OK && form.Calculation != null)
++                {
++                    _allCalculations.Add(form.Calculation);
++                    RefreshAfterChange();
++                }
++            }
++        }
++
++        /// <summary>
++        /// Обработчик удаления выбранного расчёта.
++        /// </summary>
++        private void DeleteButton_Clicked(object sender, EventArgs e)
++        {
++            if (dataGridView1.SelectedRows.Count == 0)
++            {
++                MessageBox.Show(this, "Выберите строку для удаления.", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Warning);
++                return;
++            }
++
++            var item = dataGridView1.SelectedRows[0].DataBoundItem as DiscountCalculation;
++            if (item == null)
++            {
++                return;
++            }
++
++            _allCalculations.Remove(item);
++            RefreshAfterChange();
++        }
++
++        /// <summary>
++        /// Обработчик добавления случайного расчёта.
++        /// </summary>
++        private void RandomButton_Clicked(object sender, EventArgs e)
++        {
++            var purchaseAmount = _random.Next(1, 1_000_001);
++            var strategyKind = _random.Next(0, 2) == 0
++                ? DiscountStrategyKind.Percent
++                : DiscountStrategyKind.Certificate;
++
++            decimal discountValue;
++            if (strategyKind == DiscountStrategyKind.Percent)
++            {
++                discountValue = _random.Next(1, 81);
++            }
++            else
++            {
++                discountValue = _random.Next(1, purchaseAmount + 1);
++            }
++
++            try
++            {
++                var calculation = CreateCalculation(purchaseAmount, strategyKind, discountValue);
++                _allCalculations.Add(calculation);
++                RefreshAfterChange();
++            }
++            catch (IncorrectArgumentException ex)
++            {
++                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
++            }
++        }
++
++        /// <summary>
++        /// Обработчик очистки всех расчётов.
++        /// </summary>
++        private void DeleteAllButton_Clicked(object sender, EventArgs e)
++        {
++            if (_allCalculations.Count == 0)
++            {
++                return;
++            }
++
++            var result = MessageBox.Show(this, "Очистить список расчётов?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
++            if (result != DialogResult.Yes)
++            {
++                return;
++            }
++
++            _allCalculations.Clear();
++            _isFiltered = false;
++            _currentCriteria = null;
++            RefreshDisplay(_allCalculations);
++        }
++
++        /// <summary>
++        /// Обработчик открытия формы поиска.
++        /// </summary>
++        private void FindButton_Clicked(object sender, EventArgs e)
++        {
++            using (var form = new FindForm())
++            {
++                if (form.ShowDialog(this) == DialogResult.OK && form.Criteria != null)
++                {
++                    _currentCriteria = form.Criteria;
++                    _isFiltered = true;
++                    ApplyFilter();
++                }
++            }
++        }
++
++        /// <summary>
++        /// Обработчик сброса фильтра.
++        /// </summary>
++        private void FilterResetButton_Clicked(object sender, EventArgs e)
++        {
++            _isFiltered = false;
++            _currentCriteria = null;
++            RefreshDisplay(_allCalculations);
++        }
++
++        /// <summary>
++        /// Обработчик сохранения списка расчётов.
++        /// </summary>
++        private void ToolStripSaveMenuItem_Clicked(object sender, EventArgs e)
++        {
++            using (var dialog = new SaveFileDialog())
++            {
++                dialog.Filter = $"Discount files (*.{FileExtension})|*.{FileExtension}|All files (*.*)|*.*";
++                dialog.DefaultExt = FileExtension;
++                dialog.AddExtension = true;
++
++                if (dialog.ShowDialog(this) != DialogResult.OK)
++                {
++                    return;
++                }
++
++                try
++                {
++                    using (var stream = File.Create(dialog.FileName))
++                    {
++                        var formatter = new BinaryFormatter();
++                        formatter.Serialize(stream, _allCalculations);
++                    }
++                }
++                catch (Exception ex)
++                {
++                    MessageBox.Show(this, $"Ошибка сохранения: {ex.Message}", "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Error);
++                }
++            }
++        }
++
++        /// <summary>
++        /// Обработчик загрузки списка расчётов.
++        /// </summary>
++        private void ToolStripLoadMenuItem_Clicked(object sender, EventArgs e)
++        {
++            using (var dialog = new OpenFileDialog())
++            {
++                dialog.Filter = $"Discount files (*.{FileExtension})|*.{FileExtension}|All files (*.*)|*.*";
++
++                if (dialog.ShowDialog(this) != DialogResult.OK)
++                {
++                    return;
++                }
++
++                try
++                {
++                    using (var stream = File.OpenRead(dialog.FileName))
++                    {
++                        var formatter = new BinaryFormatter();
++                        var loaded = (List<DiscountCalculation>)formatter.Deserialize(stream);
++                        _allCalculations.Clear();
++                        _allCalculations.AddRange(loaded);
++                    }
++
++                    _isFiltered = false;
++                    _currentCriteria = null;
++                    RefreshDisplay(_allCalculations);
++                }
++                catch (Exception ex)
++                {
++                    MessageBox.Show(this, $"Ошибка загрузки: {ex.Message}", "Загрузка", MessageBoxButtons.OK, MessageBoxIcon.Error);
++                }
++            }
++        }
++
++        /// <summary>
++        /// Обновляет отображение после изменений.
++        /// </summary>
++        private void RefreshAfterChange()
++        {
++            if (_isFiltered && _currentCriteria != null)
++            {
++                ApplyFilter();
++            }
++            else
++            {
++                RefreshDisplay(_allCalculations);
++            }
++        }
++
++        /// <summary>
++        /// Применяет фильтр к списку расчётов.
++        /// </summary>
++        private void ApplyFilter()
++        {
++            if (_currentCriteria == null)
++            {
++                RefreshDisplay(_allCalculations);
++                return;
++            }
++
++            var filtered = _allCalculations
++                .Where(item => MatchesCriteria(item, _currentCriteria))
++                .ToList();
++            RefreshDisplay(filtered);
++        }
++
++        /// <summary>
++        /// Проверяет соответствие расчёта критериям фильтра.
++        /// </summary>
++        private static bool MatchesCriteria(DiscountCalculation item, SearchCriteria criteria)
++        {
++            if (criteria.StrategyFilter == StrategyFilterKind.Percent && item.StrategyKind != DiscountStrategyKind.Percent)
++            {
++                return false;
++            }
++
++            if (criteria.StrategyFilter == StrategyFilterKind.Certificate && item.StrategyKind != DiscountStrategyKind.Certificate)
++            {
++                return false;
++            }
++
++            if (!IsWithinRange(item.PurchaseAmount, criteria.PurchaseAmountFrom, criteria.PurchaseAmountTo))
++            {
++                return false;
++            }
++
++            if (!IsWithinRange(item.FinalPrice, criteria.FinalPriceFrom, criteria.FinalPriceTo))
++            {
++                return false;
++            }
++
++            if (item.StrategyKind == DiscountStrategyKind.Percent)
++            {
++                if (!IsWithinRange(item.DiscountValue, criteria.PercentageFrom, criteria.PercentageTo))
++                {
++                    return false;
++                }
++            }
++
++            if (item.StrategyKind == DiscountStrategyKind.Certificate)
++            {
++                if (!IsWithinRange(item.DiscountValue, criteria.CertificateValueFrom, criteria.CertificateValueTo))
++                {
++                    return false;
++                }
++            }
++
++            return true;
++        }
++
++        /// <summary>
++        /// Проверяет, что значение входит в диапазон.
++        /// </summary>
++        private static bool IsWithinRange(decimal value, decimal? from, decimal? to)
++        {
++            if (from.HasValue && value < from.Value)
++            {
++                return false;
++            }
++
++            if (to.HasValue && value > to.Value)
++            {
++                return false;
++            }
++
++            return true;
++        }
++
++        /// <summary>
++        /// Обновляет отображаемый список расчётов.
++        /// </summary>
++        private void RefreshDisplay(IEnumerable<DiscountCalculation> calculations)
++        {
++            _displayedCalculations.Clear();
++            foreach (var item in calculations)
++            {
++                _displayedCalculations.Add(item);
++            }
++        }
++
++        /// <summary>
++        /// Создаёт расчёт скидки по выбранной стратегии.
++        /// </summary>
++        private DiscountCalculation CreateCalculation(decimal purchaseAmount, DiscountStrategyKind strategyKind, decimal discountValue)
++        {
++            DiscountStrategy strategy = strategyKind == DiscountStrategyKind.Percent
++                ? (DiscountStrategy)new PercentageDiscount(discountValue)
++                : new CertificateDiscount(discountValue);
++
++            var discount = strategy.CalculateDiscount(purchaseAmount);
++            var finalPrice = strategy.CalculatePrice(purchaseAmount);
++            return new DiscountCalculation(purchaseAmount, strategyKind, discountValue, discount, finalPrice);
+         }
+     }
+ }
+diff --git a/LB3-4_Starovoytov/WinFormsLB4/SearchCriteria.cs b/LB3-4_Starovoytov/WinFormsLB4/SearchCriteria.cs
+new file mode 100644
+index 0000000000000000000000000000000000000000..0ee9e75095e5592724d963ae91a0e3e35bde9fbc
+--- /dev/null
++++ b/LB3-4_Starovoytov/WinFormsLB4/SearchCriteria.cs
+@@ -0,0 +1,63 @@
++namespace WinFormsLB4
++{
++    /// <summary>
++    /// Режимы фильтрации по стратегии скидки.
++    /// </summary>
++    public enum StrategyFilterKind
++    {
++        All = 0,
++        Percent = 1,
++        Certificate = 2
++    }
++
++    /// <summary>
++    /// Набор критериев поиска расчётов скидок.
++    /// </summary>
++    public sealed class SearchCriteria
++    {
++        /// <summary>
++        /// Фильтр по типу стратегии.
++        /// </summary>
++        public StrategyFilterKind StrategyFilter { get; set; }
++
++        /// <summary>
++        /// Нижняя граница суммы покупки.
++        /// </summary>
++        public decimal? PurchaseAmountFrom { get; set; }
++
++        /// <summary>
++        /// Верхняя граница суммы покупки.
++        /// </summary>
++        public decimal? PurchaseAmountTo { get; set; }
++
++        /// <summary>
++        /// Нижняя граница суммы к оплате.
++        /// </summary>
++        public decimal? FinalPriceFrom { get; set; }
++
++        /// <summary>
++        /// Верхняя граница суммы к оплате.
++        /// </summary>
++        public decimal? FinalPriceTo { get; set; }
++
++        /// <summary>
++        /// Нижняя граница номинала сертификата.
++        /// </summary>
++        public decimal? CertificateValueFrom { get; set; }
++
++        /// <summary>
++        /// Верхняя граница номинала сертификата.
++        /// </summary>
++        public decimal? CertificateValueTo { get; set; }
++
++        /// <summary>
++        /// Нижняя граница процента скидки.
++        /// </summary>
++        public decimal? PercentageFrom { get; set; }
++
++        /// <summary>
++        /// Верхняя граница процента скидки.
++        /// </summary>
++        public decimal? PercentageTo { get; set; }
++    }
++}
+diff --git a/LB3-4_Starovoytov/WinFormsLB4/View_LB3-4.csproj b/LB3-4_Starovoytov/WinFormsLB4/View_LB3-4.csproj
+index db4157531b38edfd4e0d183887bd1367e00e4f1c..60c9d0ae2a4f8ed155c32be08679efec0266e62a 100644
+--- a/LB3-4_Starovoytov/WinFormsLB4/View_LB3-4.csproj
++++ b/LB3-4_Starovoytov/WinFormsLB4/View_LB3-4.csproj
+@@ -30,72 +30,74 @@
+     <OutputPath>bin\Release\</OutputPath>
+     <DefineConstants>TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="System" />
+     <Reference Include="System.Core" />
+     <Reference Include="System.Xml.Linq" />
+     <Reference Include="System.Data.DataSetExtensions" />
+     <Reference Include="Microsoft.CSharp" />
+     <Reference Include="System.Data" />
+     <Reference Include="System.Deployment" />
+     <Reference Include="System.Drawing" />
+     <Reference Include="System.Net.Http" />
+     <Reference Include="System.Windows.Forms" />
+     <Reference Include="System.Xml" />
+   </ItemGroup>
+   <ItemGroup>
+     <Compile Include="AddForm.cs">
+       <SubType>Form</SubType>
+     </Compile>
+     <Compile Include="AddForm.Designer.cs">
+       <DependentUpon>AddForm.cs</DependentUpon>
+     </Compile>
++    <Compile Include="DiscountCalculation.cs" />
+     <Compile Include="FindForm.cs">
+       <SubType>Form</SubType>
+     </Compile>
+     <Compile Include="FindForm.Designer.cs">
+       <DependentUpon>FindForm.cs</DependentUpon>
+     </Compile>
+     <Compile Include="MainForm.cs">
+       <SubType>Form</SubType>
+     </Compile>
+     <Compile Include="MainForm.Designer.cs">
+       <DependentUpon>MainForm.cs</DependentUpon>
+     </Compile>
+     <Compile Include="Program.cs" />
+     <Compile Include="Properties\AssemblyInfo.cs" />
++    <Compile Include="SearchCriteria.cs" />
+     <EmbeddedResource Include="AddForm.resx">
+       <DependentUpon>AddForm.cs</DependentUpon>
+     </EmbeddedResource>
+     <EmbeddedResource Include="FindForm.resx">
+       <DependentUpon>FindForm.cs</DependentUpon>
+     </EmbeddedResource>
+     <EmbeddedResource Include="MainForm.resx">
+       <DependentUpon>MainForm.cs</DependentUpon>
+     </EmbeddedResource>
+     <EmbeddedResource Include="Properties\Resources.resx">
+       <Generator>ResXFileCodeGenerator</Generator>
+       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+       <SubType>Designer</SubType>
+     </EmbeddedResource>
+     <Compile Include="Properties\Resources.Designer.cs">
+       <AutoGen>True</AutoGen>
+       <DependentUpon>Resources.resx</DependentUpon>
+     </Compile>
+     <None Include="Properties\Settings.settings">
+       <Generator>SettingsSingleFileGenerator</Generator>
+       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+     </None>
+     <Compile Include="Properties\Settings.Designer.cs">
+       <AutoGen>True</AutoGen>
+       <DependentUpon>Settings.settings</DependentUpon>
+       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+     </Compile>
+   </ItemGroup>
+   <ItemGroup>
+     <None Include="App.config" />
+   </ItemGroup>
+   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+-</Project>
+\ No newline at end of file
++</Project>

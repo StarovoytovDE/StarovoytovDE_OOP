@@ -52,6 +52,7 @@
     <Compile Include="AddForm.Designer.cs">
       <DependentUpon>AddForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DiscountCalculation.cs" />
     <Compile Include="FindForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +67,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchCriteria.cs" />
     <EmbeddedResource Include="AddForm.resx">
       <DependentUpon>AddForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -96,6 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model_LB3-4\Model_LB3-4.csproj">
+      <Project>{2dfd788e-c063-4b08-8b2b-398198f26bb6}</Project>
+      <Name>Model_LB3-4</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

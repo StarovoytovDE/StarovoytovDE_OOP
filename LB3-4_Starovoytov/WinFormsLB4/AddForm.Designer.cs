@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.groupBoxDiscountStrategy = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.AddStategyBox = new System.Windows.Forms.ComboBox();
             this.groupBoxParameters = new System.Windows.Forms.GroupBox();
-            this.SummTextbox = new System.Windows.Forms.TextBox();
-            this.SummLabel = new System.Windows.Forms.Label();
             this.DiscountValueTextBox = new System.Windows.Forms.TextBox();
             this.DiscounValueLabel = new System.Windows.Forms.Label();
+            this.SummTextbox = new System.Windows.Forms.TextBox();
+            this.SummLabel = new System.Windows.Forms.Label();
             this.AddCancelButton = new System.Windows.Forms.Button();
             this.AddApproveFigureButton = new System.Windows.Forms.Button();
             this.groupBoxDiscountStrategy.SuspendLayout();
@@ -43,7 +43,8 @@
             // 
             // groupBoxDiscountStrategy
             // 
-            this.groupBoxDiscountStrategy.Controls.Add(this.comboBox1);
+            this.groupBoxDiscountStrategy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxDiscountStrategy.Controls.Add(this.AddStategyBox);
             this.groupBoxDiscountStrategy.Location = new System.Drawing.Point(12, 12);
             this.groupBoxDiscountStrategy.Name = "groupBoxDiscountStrategy";
             this.groupBoxDiscountStrategy.Size = new System.Drawing.Size(204, 52);
@@ -51,16 +52,18 @@
             this.groupBoxDiscountStrategy.TabStop = false;
             this.groupBoxDiscountStrategy.Text = "Скидочаня стратегия";
             // 
-            // comboBox1
+            // AddStategyBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(6, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(192, 21);
-            this.comboBox1.TabIndex = 0;
+            this.AddStategyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddStategyBox.FormattingEnabled = true;
+            this.AddStategyBox.Location = new System.Drawing.Point(6, 19);
+            this.AddStategyBox.Name = "AddStategyBox";
+            this.AddStategyBox.Size = new System.Drawing.Size(192, 21);
+            this.AddStategyBox.TabIndex = 0;
             // 
             // groupBoxParameters
             // 
+            this.groupBoxParameters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxParameters.Controls.Add(this.DiscountValueTextBox);
             this.groupBoxParameters.Controls.Add(this.DiscounValueLabel);
             this.groupBoxParameters.Controls.Add(this.SummTextbox);
@@ -72,24 +75,9 @@
             this.groupBoxParameters.TabStop = false;
             this.groupBoxParameters.Text = "Параметры";
             // 
-            // SummTextbox
-            // 
-            this.SummTextbox.Location = new System.Drawing.Point(97, 19);
-            this.SummTextbox.Name = "SummTextbox";
-            this.SummTextbox.Size = new System.Drawing.Size(101, 20);
-            this.SummTextbox.TabIndex = 9;
-            // 
-            // SummLabel
-            // 
-            this.SummLabel.AutoSize = true;
-            this.SummLabel.Location = new System.Drawing.Point(3, 26);
-            this.SummLabel.Name = "SummLabel";
-            this.SummLabel.Size = new System.Drawing.Size(88, 13);
-            this.SummLabel.TabIndex = 8;
-            this.SummLabel.Text = "Сумма покупки:";
-            // 
             // DiscountValueTextBox
             // 
+            this.DiscountValueTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.DiscountValueTextBox.Location = new System.Drawing.Point(112, 53);
             this.DiscountValueTextBox.Name = "DiscountValueTextBox";
             this.DiscountValueTextBox.Size = new System.Drawing.Size(86, 20);
@@ -104,8 +92,26 @@
             this.DiscounValueLabel.TabIndex = 10;
             this.DiscounValueLabel.Text = "% / сумма скидки:";
             // 
+            // SummTextbox
+            // 
+            this.SummTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.SummTextbox.Location = new System.Drawing.Point(97, 19);
+            this.SummTextbox.Name = "SummTextbox";
+            this.SummTextbox.Size = new System.Drawing.Size(101, 20);
+            this.SummTextbox.TabIndex = 9;
+            // 
+            // SummLabel
+            // 
+            this.SummLabel.AutoSize = true;
+            this.SummLabel.Location = new System.Drawing.Point(3, 26);
+            this.SummLabel.Name = "SummLabel";
+            this.SummLabel.Size = new System.Drawing.Size(88, 13);
+            this.SummLabel.TabIndex = 8;
+            this.SummLabel.Text = "Сумма покупки:";
+            // 
             // AddCancelButton
             // 
+            this.AddCancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.AddCancelButton.Location = new System.Drawing.Point(116, 164);
             this.AddCancelButton.Name = "AddCancelButton";
             this.AddCancelButton.Size = new System.Drawing.Size(100, 23);
@@ -116,6 +122,7 @@
             // 
             // AddApproveFigureButton
             // 
+            this.AddApproveFigureButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.AddApproveFigureButton.Location = new System.Drawing.Point(12, 164);
             this.AddApproveFigureButton.Name = "AddApproveFigureButton";
             this.AddApproveFigureButton.Size = new System.Drawing.Size(100, 23);
@@ -145,7 +152,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBoxDiscountStrategy;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox AddStategyBox;
         private System.Windows.Forms.GroupBox groupBoxParameters;
         private System.Windows.Forms.TextBox DiscountValueTextBox;
         private System.Windows.Forms.Label DiscounValueLabel;
