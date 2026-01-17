@@ -12,7 +12,7 @@ namespace WinFormsLB4
     }
 
     /// <summary>
-    /// Результат вычисления скидки для одной покупки.
+    /// Результат вычисления скидки для одной покупки (DTO для UI и сериализации).
     /// </summary>
     [Serializable]
     public sealed class DiscountCalculation
@@ -50,11 +50,12 @@ namespace WinFormsLB4
         /// <param name="discountValue">Величина скидки.</param>
         /// <param name="discount">Сумма скидки.</param>
         /// <param name="finalPrice">Итоговая стоимость.</param>
-        public DiscountCalculation(decimal purchaseAmount, 
-                                   DiscountStrategyKind strategyKind, 
-                                   decimal discountValue, 
-                                   decimal discount, 
-                                   decimal finalPrice)
+        public DiscountCalculation(
+            decimal purchaseAmount,
+            DiscountStrategyKind strategyKind,
+            decimal discountValue,
+            decimal discount,
+            decimal finalPrice)
         {
             PurchaseAmount = purchaseAmount;
             StrategyKind = strategyKind;
@@ -66,9 +67,14 @@ namespace WinFormsLB4
         /// <summary>
         /// Текстовое отображение стратегии.
         /// </summary>
-        public string StrategyDisplay =>
-            StrategyKind == DiscountStrategyKind.Percent 
-            ? "Процентная" 
-            : "Сертификат";
+        public string StrategyDisplay
+        {
+            get
+            {
+                return StrategyKind == DiscountStrategyKind.Percent
+                    ? UiText.StrategyPercentDisplay
+                    : UiText.StrategyCertificateDisplay;
+            }
+        }
     }
 }

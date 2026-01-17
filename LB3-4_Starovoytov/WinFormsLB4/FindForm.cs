@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsLB4
@@ -16,97 +9,77 @@ namespace WinFormsLB4
     public partial class FindForm : Form
     {
         /// <summary>
-        /// Создаёт форму поиска.
-        /// </summary>
-        public FindForm()
-        {
-            InitializeComponent();
-            comboBox1.Items.AddRange(new object[]
-            {
-                "Все стратегии",
-                "Процентная",
-                "Сертификат"
-            });
-            comboBox1.SelectedIndex = 0;
-        }
-
-        /// <summary>
         /// Критерии поиска, заполненные пользователем.
         /// </summary>
         public SearchCriteria Criteria { get; private set; }
 
         /// <summary>
-        /// Обработчик применения критериев поиска.
+        /// Создаёт форму поиска.
         /// </summary>
-        private void FindApplyButton_Click(object sender, EventArgs e)
+        public FindForm()
         {
-            if (!TryGetOptionalDecimal(SummForTextbox.Text, out var purchaseFrom))
+            InitializeComponent();
+
+            checkBoxPercent.Checked = true;
+            checkBoxCertificate.Checked = true;
+            Text = UiText.FindFormTitle;
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки "Найти".
+        /// </summary>
+        private void ButtonOk_Click(object sender, EventArgs e)
+        {
+            var flags = GetStrategyFlags();
+            if (flags == StrategyFilterFlags.None)
             {
-                ShowError("Некорректное значение \"Сумма покупки: От\".");
+                ShowError(UiText.NoStrategySelected);
                 return;
             }
 
-            if (!TryGetOptionalDecimal(SummToTextBox.Text, out var purchaseTo))
+            if (!TryGetOptionalDecimal(textBoxPurchaseFrom.Text, out var purchaseFrom))
             {
-                ShowError("Некорректное значение \"Сумма покупки: До\".");
+                ShowError($"Некорректное значение \"{UiText.FieldPurchaseAmount}: От\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(textBoxFinalSummFrom.Text, out var finalFrom))
+            if (!TryGetOptionalDecimal(textBoxPurchaseTo.Text, out var purchaseTo))
             {
-                ShowError("Некорректное значение \"Сумма к оплате: От\".");
+                ShowError($"Некорректное значение \"{UiText.FieldPurchaseAmount}: До\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(textBoxFinalSummTo.Text, out var finalTo))
+            if (!TryGetOptionalDecimal(textBoxDiscountFrom.Text, out var discountFrom))
             {
-                ShowError("Некорректное значение \"Сумма к оплате: До\".");
+                ShowError($"Некорректное значение \"{UiText.FieldDiscountValue}: От\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(CertificateFromTextBox.Text, out var certificateFrom))
+            if (!TryGetOptionalDecimal(textBoxDiscountTo.Text, out var discountTo))
             {
-                ShowError("Некорректное значение \"Номинал сертификата: От\".");
+                ShowError($"Некорректное значение \"{UiText.FieldDiscountValue}: До\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(CertificateToTextBox1.Text, out var certificateTo))
+            if (!ValidateNonNegative(purchaseFrom, purchaseTo, UiText.FieldPurchaseAmount) ||
+                !ValidateNonNegative(discountFrom, discountTo, UiText.FieldDiscountValue))
             {
-                ShowError("Некорректное значение \"Номинал сертификата: До\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(textBoxPercentageFrom.Text, out var percentageFrom))
-            {
-                ShowError("Некорректное значение \"%: От\".");
-                return;
-            }
-
-            if (!TryGetOptionalDecimal(textBoxPercentageTo.Text, out var percentageTo))
-            {
-                ShowError("Некорректное значение \"%: До\".");
-                return;
-            }
-
-            if (!ValidateRange(purchaseFrom, purchaseTo, "Сумма покупки") ||
-                !ValidateRange(finalFrom, finalTo, "Сумма к оплате") ||
-                !ValidateRange(certificateFrom, certificateTo, "Номинал сертификата") ||
-                !ValidateRange(percentageFrom, percentageTo, "Процент скидки"))
+            if (!ValidateRange(purchaseFrom, purchaseTo, UiText.FieldPurchaseAmount) ||
+                !ValidateRange(discountFrom, discountTo, UiText.FieldDiscountValue))
             {
                 return;
             }
 
             Criteria = new SearchCriteria
             {
-                StrategyFilter = GetStrategyFilter(),
+                StrategyFlags = flags,
                 PurchaseAmountFrom = purchaseFrom,
                 PurchaseAmountTo = purchaseTo,
-                FinalPriceFrom = finalFrom,
-                FinalPriceTo = finalTo,
-                CertificateValueFrom = certificateFrom,
-                CertificateValueTo = certificateTo,
-                PercentageFrom = percentageFrom,
-                PercentageTo = percentageTo
+                DiscountValueFrom = discountFrom,
+                DiscountValueTo = discountTo
             };
 
             DialogResult = DialogResult.OK;
@@ -114,28 +87,56 @@ namespace WinFormsLB4
         }
 
         /// <summary>
-        /// Обработчик отмены поиска.
+        /// Обработчик нажатия кнопки "Отмена".
         /// </summary>
-        private void FindRejectButton_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
         /// <summary>
-        /// Получает выбранный режим фильтра стратегии.
+        /// Ограничивает ввод в числовые поля.
+        /// Разрешает цифры, запятую, точку и Backspace.
         /// </summary>
-        private StrategyFilterKind GetStrategyFilter()
+        private void NumericTextboxKeyPress(object sender, KeyPressEventArgs e)
         {
-            switch (comboBox1.SelectedIndex)
+            if (char.IsControl(e.KeyChar))
             {
-                case 1:
-                    return StrategyFilterKind.Percent;
-                case 2:
-                    return StrategyFilterKind.Certificate;
-                default:
-                    return StrategyFilterKind.All;
+                return;
             }
+
+            if (char.IsDigit(e.KeyChar))
+            {
+                return;
+            }
+
+            if (e.KeyChar == ',' || e.KeyChar == '.')
+            {
+                return;
+            }
+
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Получает выбранные стратегии скидки в виде флагов.
+        /// </summary>
+        private StrategyFilterFlags GetStrategyFlags()
+        {
+            var flags = StrategyFilterFlags.None;
+
+            if (checkBoxPercent.Checked)
+            {
+                flags |= StrategyFilterFlags.Percent;
+            }
+
+            if (checkBoxCertificate.Checked)
+            {
+                flags |= StrategyFilterFlags.Certificate;
+            }
+
+            return flags;
         }
 
         /// <summary>
@@ -149,7 +150,9 @@ namespace WinFormsLB4
                 return true;
             }
 
-            if (decimal.TryParse(text, out var parsed))
+            var normalized = text.Trim().Replace('.', ',');
+
+            if (decimal.TryParse(normalized, out var parsed))
             {
                 value = parsed;
                 return true;
@@ -160,7 +163,27 @@ namespace WinFormsLB4
         }
 
         /// <summary>
-        /// Проверяет корректность диапазона значений.
+        /// Проверяет, что значения диапазона неотрицательны (если заданы).
+        /// </summary>
+        private bool ValidateNonNegative(decimal? from, decimal? to, string fieldName)
+        {
+            if (from.HasValue && from.Value < 0m)
+            {
+                ShowError($"Поле \"{fieldName}: От\" не может быть отрицательным.");
+                return false;
+            }
+
+            if (to.HasValue && to.Value < 0m)
+            {
+                ShowError($"Поле \"{fieldName}: До\" не может быть отрицательным.");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Проверяет корректность диапазона значений (from <= to).
         /// </summary>
         private bool ValidateRange(decimal? from, decimal? to, string label)
         {
@@ -178,7 +201,11 @@ namespace WinFormsLB4
         /// </summary>
         private void ShowError(string message)
         {
-            MessageBox.Show(this, message, "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(this, 
+                            message, 
+                            UiText.InputErrorTitle, 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Warning);
         }
     }
 }

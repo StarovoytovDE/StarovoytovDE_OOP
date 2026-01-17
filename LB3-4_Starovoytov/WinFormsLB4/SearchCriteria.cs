@@ -1,24 +1,14 @@
 namespace WinFormsLB4
 {
     /// <summary>
-    /// Режимы фильтрации по стратегии скидки.
-    /// </summary>
-    public enum StrategyFilterKind
-    {
-        All = 0,
-        Percent = 1,
-        Certificate = 2
-    }
-
-    /// <summary>
     /// Набор критериев поиска расчётов скидок.
     /// </summary>
     public sealed class SearchCriteria
     {
         /// <summary>
-        /// Фильтр по типу стратегии.
+        /// Выбранные стратегии для фильтрации.
         /// </summary>
-        public StrategyFilterKind StrategyFilter { get; set; }
+        public StrategyFilterFlags StrategyFlags { get; set; }
 
         /// <summary>
         /// Нижняя граница суммы покупки.
@@ -31,33 +21,13 @@ namespace WinFormsLB4
         public decimal? PurchaseAmountTo { get; set; }
 
         /// <summary>
-        /// Нижняя граница суммы к оплате.
+        /// Нижняя граница величины скидки (процент или сумма сертификата).
         /// </summary>
-        public decimal? FinalPriceFrom { get; set; }
+        public decimal? DiscountValueFrom { get; set; }
 
         /// <summary>
-        /// Верхняя граница суммы к оплате.
+        /// Верхняя граница величины скидки (процент или сумма сертификата).
         /// </summary>
-        public decimal? FinalPriceTo { get; set; }
-
-        /// <summary>
-        /// Нижняя граница номинала сертификата.
-        /// </summary>
-        public decimal? CertificateValueFrom { get; set; }
-
-        /// <summary>
-        /// Верхняя граница номинала сертификата.
-        /// </summary>
-        public decimal? CertificateValueTo { get; set; }
-
-        /// <summary>
-        /// Нижняя граница процента скидки.
-        /// </summary>
-        public decimal? PercentageFrom { get; set; }
-
-        /// <summary>
-        /// Верхняя граница процента скидки.
-        /// </summary>
-        public decimal? PercentageTo { get; set; }
+        public decimal? DiscountValueTo { get; set; }
     }
 }

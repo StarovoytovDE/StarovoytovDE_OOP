@@ -1,84 +1,154 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Model_LB3_4;
-using Model_LB3_4.Discounts;
 
 namespace WinFormsLB4
 {
     /// <summary>
     /// Форма добавления нового расчёта скидки.
+    /// Позволяет выбрать стратегию и ввести сумму покупки и параметр стратегии.
     /// </summary>
     public partial class AddForm : Form
     {
-        /// <summary>
-        /// Создаёт форму добавления.
-        /// </summary>
-        public AddForm()
-        {
-            InitializeComponent();
-            AddStategyBox.Items.AddRange(new object[]
-            {
-                "Процентная",
-                "Сертификат"
-            });
-            AddStategyBox.SelectedIndex = 0;
-        }
+        private const int StrategyIndexPercent = 0;
+        private const int StrategyIndexCertificate = 1;
+
+        private readonly Random _random = new Random();
 
         /// <summary>
-        /// Созданный расчёт скидки после подтверждения.
+        /// Созданный пользователем расчёт скидки.
         /// </summary>
         public DiscountCalculation Calculation { get; private set; }
 
         /// <summary>
-        /// Обработчик подтверждения добавления расчёта.
+        /// Создаёт форму добавления расчёта.
         /// </summary>
-        private void AddApproveFigureButton_Click(object sender, EventArgs e)
+        public AddForm()
         {
-            if (!TryParseDecimal(SummTextbox.Text, out var purchaseAmount) || purchaseAmount <= 0)
+            InitializeComponent();
+
+            InitializeStrategyComboBox();
+            ApplyStrategyUi();
+            ApplyBuildConfigurationUi();
+        }
+
+        /// <summary>
+        /// Скрывает кнопку случайной генерации в Release.
+        /// </summary>
+        private void ApplyBuildConfigurationUi()
+        {
+#if DEBUG
+            buttonRandom.Visible = true;
+#else
+            buttonRandom.Visible = false;
+#endif
+        }
+
+        /// <summary>
+        /// Заполняет список стратегий и устанавливает выбранную стратегию по умолчанию.
+        /// </summary>
+        private void InitializeStrategyComboBox()
+        {
+            comboBoxStrategy.Items.Clear();
+            comboBoxStrategy.Items.Add(UiText.StrategyPercentUi);
+            comboBoxStrategy.Items.Add(UiText.StrategyCertificateUi);
+            comboBoxStrategy.SelectedIndex = StrategyIndexPercent;
+        }
+
+        /// <summary>
+        /// Обработчик изменения выбранной стратегии.
+        /// Переключает подпись поля параметра стратегии и очищает ввод.
+        /// </summary>
+        private void ComboBoxStrategy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyStrategyUi();
+            ClearInputFields();
+        }
+
+        /// <summary>
+        /// Настраивает подписи полей ввода под выбранную стратегию.
+        /// </summary>
+        private void ApplyStrategyUi()
+        {
+            if (comboBoxStrategy.SelectedIndex == StrategyIndexPercent)
             {
-                ShowError("Сумма покупки должна быть положительным числом.");
+                labelValue.Text = UiText.LabelPercentValue;
+            }
+            else
+            {
+                labelValue.Text = UiText.LabelCertificateValue;
+            }
+        }
+
+        /// <summary>
+        /// Очищает поля ввода.
+        /// </summary>
+        private void ClearInputFields()
+        {
+            textBoxPurchaseAmount.Clear();
+            textBoxValue.Clear();
+        }
+
+        /// <summary>
+        /// Заполняет поля случайными данными (только Debug).
+        /// </summary>
+        private void ButtonRandom_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            var purchaseAmount = _random.Next(UiConstants.RandomPurchaseAmountMin, 
+                                              UiConstants.RandomPurchaseAmountMax + 1);
+            var strategyKind = GetSelectedStrategyKind();
+
+            decimal value;
+
+            if (strategyKind == DiscountStrategyKind.Percent)
+            {
+                value = _random.Next(UiConstants.RandomPercentMin, 
+                                     UiConstants.RandomPercentMax + 1);
+            }
+            else
+            {
+                // Для сертификата логично ограничить номинал суммой покупки.
+                value = _random.Next(1, purchaseAmount + 1);
+            }
+
+            textBoxPurchaseAmount.Text = purchaseAmount.ToString();
+            textBoxValue.Text = value.ToString();
+#endif
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки ОК.
+        /// Выполняет валидацию, создаёт расчёт скидки и закрывает форму.
+        /// </summary>
+        private void ButtonOk_Click(object sender, EventArgs e)
+        {
+            if (!TryGetRequiredDecimal(textBoxPurchaseAmount.Text, 
+                                        out var purchaseAmount, 
+                                        UiText.FieldPurchaseAmount))
+            {
                 return;
             }
 
-            if (!TryParseDecimal(DiscountValueTextBox.Text, out var discountValue) || discountValue <= 0)
+            if (!TryGetRequiredDecimal(textBoxValue.Text, 
+                                        out var value, 
+                                        UiText.FieldDiscountValue))
             {
-                ShowError("Величина скидки должна быть положительным числом.");
                 return;
             }
 
-            var strategyKind = AddStategyBox.SelectedIndex == 0
-                ? DiscountStrategyKind.Percent
-                : DiscountStrategyKind.Certificate;
+            var strategyKind = GetSelectedStrategyKind();
 
-            if (strategyKind == DiscountStrategyKind.Percent && discountValue > 100m)
+            if (!ValidateStrategyValue(strategyKind, purchaseAmount, value))
             {
-                ShowError("Процент скидки должен быть не больше 100.");
-                return;
-            }
-
-            if (strategyKind == DiscountStrategyKind.Certificate && discountValue > purchaseAmount)
-            {
-                ShowError("Номинал сертификата не может превышать сумму покупки.");
                 return;
             }
 
             try
             {
-                DiscountStrategy strategy = strategyKind == DiscountStrategyKind.Percent
-                    ? (DiscountStrategy)new PercentageDiscount(discountValue)
-                    : new CertificateDiscount(discountValue);
-
-                var discount = strategy.CalculateDiscount(purchaseAmount);
-                var finalPrice = strategy.CalculatePrice(purchaseAmount);
-
-                Calculation = new DiscountCalculation(purchaseAmount, strategyKind, discountValue, discount, finalPrice);
+                Calculation = DiscountCalculationFactory.Create(purchaseAmount, 
+                                                                strategyKind, 
+                                                                value);
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -86,32 +156,148 @@ namespace WinFormsLB4
             {
                 ShowError(ex.Message);
             }
+            catch (Exception ex)
+            {
+                ShowError("Ошибка создания расчёта: " + ex.Message);
+            }
         }
 
         /// <summary>
-        /// Обработчик отмены добавления.
+        /// Обработчик нажатия кнопки Отмена.
+        /// Закрывает форму без создания расчёта.
         /// </summary>
-        private void AddCancelButton_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
         /// <summary>
-        /// Парсит decimal-значение.
+        /// Определяет выбранный тип стратегии скидки.
         /// </summary>
-        private static bool TryParseDecimal(string input, out decimal value)
+        private DiscountStrategyKind GetSelectedStrategyKind()
         {
-            return decimal.TryParse(input, out value);
+            return comboBoxStrategy.SelectedIndex == StrategyIndexPercent
+                ? DiscountStrategyKind.Percent
+                : DiscountStrategyKind.Certificate;
         }
 
         /// <summary>
-        /// Показывает пользователю сообщение об ошибке.
+        /// Проверяет корректность параметров расчёта в зависимости от выбранной стратегии.
+        /// </summary>
+        private bool ValidateStrategyValue(DiscountStrategyKind strategyKind, 
+                                           decimal purchaseAmount, 
+                                           decimal value)
+        {
+            if (purchaseAmount < 0m)
+            {
+                ShowError("Сумма покупки не может быть отрицательной.");
+                return false;
+            }
+
+            if (strategyKind == DiscountStrategyKind.Percent)
+            {
+                if (value < UiConstants.PercentageMin 
+                    || value > UiConstants.PercentageMax)
+                {
+                    ShowError($"Процент скидки должен быть в диапазоне " +
+                                            $"от {UiConstants.PercentageMin} " +
+                                            $"до {UiConstants.PercentageMax}.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (strategyKind == DiscountStrategyKind.Certificate)
+            {
+                if (value < 0m)
+                {
+                    ShowError("Сумма сертификата не может быть отрицательной.");
+                    return false;
+                }
+
+                if (value < UiConstants.CertificateAmountMin 
+                    || value > UiConstants.CertificateAmountMax)
+                {
+                    ShowError($"Сумма сертификата должна быть в диапазоне " +
+                                        $"от {UiConstants.CertificateAmountMin} " +
+                                        $"до {UiConstants.CertificateAmountMax}.");
+                    return false;
+                }
+
+                if (value > purchaseAmount)
+                {
+                    ShowError("Сумма сертификата не может превышать сумму покупки.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            ShowError("Выбрана неизвестная стратегия скидки.");
+            return false;
+        }
+
+        /// <summary>
+        /// Ограничивает ввод в числовые поля.
+        /// Разрешает цифры, запятую, точку и Backspace.
+        /// </summary>
+        private void NumericTextboxKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar))
+            {
+                return;
+            }
+
+            if (char.IsDigit(e.KeyChar))
+            {
+                return;
+            }
+
+            if (e.KeyChar == ',' || e.KeyChar == '.')
+            {
+                return;
+            }
+
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Пытается получить обязательное значение decimal из строки.
+        /// </summary>
+        private bool TryGetRequiredDecimal(string text, out decimal value, string fieldName)
+        {
+            value = 0m;
+
+            var normalized = (text ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(normalized))
+            {
+                ShowError($"Поле \"{fieldName}\" должно быть заполнено.");
+                return false;
+            }
+
+            normalized = normalized.Replace('.', ',');
+
+            if (!decimal.TryParse(normalized, out value))
+            {
+                ShowError($"Поле \"{fieldName}\" заполнено некорректно.");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Показывает пользователю сообщение об ошибке ввода.
         /// </summary>
         private void ShowError(string message)
         {
-            MessageBox.Show(this, message, "Ошибка ввода", MessageBoxButtons.OK, 
-                                                        MessageBoxIcon.Warning);
+            MessageBox.Show(this, 
+                            message, 
+                            UiText.InputErrorTitle, 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Warning);
         }
     }
 }

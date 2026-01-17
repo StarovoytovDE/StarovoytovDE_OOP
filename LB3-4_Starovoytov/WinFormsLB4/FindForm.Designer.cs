@@ -3,303 +3,222 @@
     partial class FindForm
     {
         /// <summary>
-        /// Required designer variable.
+        /// Требуемая переменная конструктора.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// Clean up any resources being used.
+        /// Освобождает все используемые ресурсы.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">True, если управляемые ресурсы должны быть удалены;
+        /// иначе False.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// Требуемый метод для поддержки конструктора — не изменяйте
+        /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBoxDiscountStrategy = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.groupBoxSummRange = new System.Windows.Forms.GroupBox();
-            this.SummToTextBox = new System.Windows.Forms.TextBox();
-            this.SeummToLabel = new System.Windows.Forms.Label();
-            this.SummForTextbox = new System.Windows.Forms.TextBox();
-            this.SummFromLabel = new System.Windows.Forms.Label();
-            this.groupBoxFinalSumm = new System.Windows.Forms.GroupBox();
-            this.textBoxFinalSummTo = new System.Windows.Forms.TextBox();
-            this.FinalSummToLabel = new System.Windows.Forms.Label();
-            this.textBoxFinalSummFrom = new System.Windows.Forms.TextBox();
-            this.FinalSummFromLabel = new System.Windows.Forms.Label();
+            this.groupBoxStrategy = new System.Windows.Forms.GroupBox();
+            this.checkBoxCertificate = new System.Windows.Forms.CheckBox();
+            this.checkBoxPercent = new System.Windows.Forms.CheckBox();
+            this.groupBoxPurchase = new System.Windows.Forms.GroupBox();
+            this.textBoxPurchaseTo = new System.Windows.Forms.TextBox();
+            this.labelPurchaseTo = new System.Windows.Forms.Label();
+            this.textBoxPurchaseFrom = new System.Windows.Forms.TextBox();
+            this.labelPurchaseFrom = new System.Windows.Forms.Label();
             this.groupBoxDiscountValue = new System.Windows.Forms.GroupBox();
-            this.textBoxPercentageTo = new System.Windows.Forms.TextBox();
-            this.textBoxPercentageFrom = new System.Windows.Forms.TextBox();
-            this.PercentageLabel = new System.Windows.Forms.Label();
-            this.CertificateToTextBox1 = new System.Windows.Forms.TextBox();
-            this.CertificateToLabel = new System.Windows.Forms.Label();
-            this.CertificateFromTextBox = new System.Windows.Forms.TextBox();
-            this.CertificateLabel = new System.Windows.Forms.Label();
-            this.CertificateFromLabel = new System.Windows.Forms.Label();
-            this.FindApplyButton = new System.Windows.Forms.Button();
-            this.FindRejectButton = new System.Windows.Forms.Button();
-            this.groupBoxDiscountStrategy.SuspendLayout();
-            this.groupBoxSummRange.SuspendLayout();
-            this.groupBoxFinalSumm.SuspendLayout();
+            this.textBoxDiscountTo = new System.Windows.Forms.TextBox();
+            this.labelDiscountTo = new System.Windows.Forms.Label();
+            this.textBoxDiscountFrom = new System.Windows.Forms.TextBox();
+            this.labelDiscountFrom = new System.Windows.Forms.Label();
+            this.buttonOk = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.groupBoxStrategy.SuspendLayout();
+            this.groupBoxPurchase.SuspendLayout();
             this.groupBoxDiscountValue.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBoxDiscountStrategy
+            // groupBoxStrategy
             // 
-            this.groupBoxDiscountStrategy.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.groupBoxDiscountStrategy.Controls.Add(this.comboBox1);
-            this.groupBoxDiscountStrategy.Location = new System.Drawing.Point(44, 12);
-            this.groupBoxDiscountStrategy.Name = "groupBoxDiscountStrategy";
-            this.groupBoxDiscountStrategy.Size = new System.Drawing.Size(140, 52);
-            this.groupBoxDiscountStrategy.TabIndex = 1;
-            this.groupBoxDiscountStrategy.TabStop = false;
-            this.groupBoxDiscountStrategy.Text = "Скидочаня стратегия";
+            this.groupBoxStrategy.Controls.Add(this.checkBoxCertificate);
+            this.groupBoxStrategy.Controls.Add(this.checkBoxPercent);
+            this.groupBoxStrategy.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxStrategy.Name = "groupBoxStrategy";
+            this.groupBoxStrategy.Size = new System.Drawing.Size(260, 63);
+            this.groupBoxStrategy.TabIndex = 0;
+            this.groupBoxStrategy.TabStop = false;
+            this.groupBoxStrategy.Text = "Стратегии скидки";
             // 
-            // comboBox1
+            // checkBoxCertificate
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(6, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(125, 21);
-            this.comboBox1.TabIndex = 0;
+            this.checkBoxCertificate.AutoSize = true;
+            this.checkBoxCertificate.Location = new System.Drawing.Point(9, 39);
+            this.checkBoxCertificate.Name = "checkBoxCertificate";
+            this.checkBoxCertificate.Size = new System.Drawing.Size(82, 17);
+            this.checkBoxCertificate.TabIndex = 1;
+            this.checkBoxCertificate.Text = "Сертификат";
+            this.checkBoxCertificate.UseVisualStyleBackColor = true;
             // 
-            // groupBoxSummRange
+            // checkBoxPercent
             // 
-            this.groupBoxSummRange.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.groupBoxSummRange.Controls.Add(this.SummToTextBox);
-            this.groupBoxSummRange.Controls.Add(this.SeummToLabel);
-            this.groupBoxSummRange.Controls.Add(this.SummForTextbox);
-            this.groupBoxSummRange.Controls.Add(this.SummFromLabel);
-            this.groupBoxSummRange.Location = new System.Drawing.Point(12, 70);
-            this.groupBoxSummRange.Name = "groupBoxSummRange";
-            this.groupBoxSummRange.Size = new System.Drawing.Size(100, 85);
-            this.groupBoxSummRange.TabIndex = 2;
-            this.groupBoxSummRange.TabStop = false;
-            this.groupBoxSummRange.Text = "Сумма покупки";
+            this.checkBoxPercent.AutoSize = true;
+            this.checkBoxPercent.Location = new System.Drawing.Point(9, 19);
+            this.checkBoxPercent.Name = "checkBoxPercent";
+            this.checkBoxPercent.Size = new System.Drawing.Size(87, 17);
+            this.checkBoxPercent.TabIndex = 0;
+            this.checkBoxPercent.Text = "Процентная";
+            this.checkBoxPercent.UseVisualStyleBackColor = true;
             // 
-            // SummToTextBox
+            // groupBoxPurchase
             // 
-            this.SummToTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.SummToTextBox.Location = new System.Drawing.Point(32, 53);
-            this.SummToTextBox.Name = "SummToTextBox";
-            this.SummToTextBox.Size = new System.Drawing.Size(60, 20);
-            this.SummToTextBox.TabIndex = 11;
+            this.groupBoxPurchase.Controls.Add(this.textBoxPurchaseTo);
+            this.groupBoxPurchase.Controls.Add(this.labelPurchaseTo);
+            this.groupBoxPurchase.Controls.Add(this.textBoxPurchaseFrom);
+            this.groupBoxPurchase.Controls.Add(this.labelPurchaseFrom);
+            this.groupBoxPurchase.Location = new System.Drawing.Point(12, 81);
+            this.groupBoxPurchase.Name = "groupBoxPurchase";
+            this.groupBoxPurchase.Size = new System.Drawing.Size(260, 70);
+            this.groupBoxPurchase.TabIndex = 1;
+            this.groupBoxPurchase.TabStop = false;
+            this.groupBoxPurchase.Text = "Сумма покупки";
             // 
-            // SeummToLabel
+            // textBoxPurchaseTo
             // 
-            this.SeummToLabel.AutoSize = true;
-            this.SeummToLabel.Location = new System.Drawing.Point(3, 60);
-            this.SeummToLabel.Name = "SeummToLabel";
-            this.SeummToLabel.Size = new System.Drawing.Size(25, 13);
-            this.SeummToLabel.TabIndex = 10;
-            this.SeummToLabel.Text = "До:";
+            this.textBoxPurchaseTo.Location = new System.Drawing.Point(142, 42);
+            this.textBoxPurchaseTo.Name = "textBoxPurchaseTo";
+            this.textBoxPurchaseTo.Size = new System.Drawing.Size(112, 20);
+            this.textBoxPurchaseTo.TabIndex = 3;
+            this.textBoxPurchaseTo.KeyPress += 
+                new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
             // 
-            // SummForTextbox
+            // labelPurchaseTo
             // 
-            this.SummForTextbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.SummForTextbox.Location = new System.Drawing.Point(32, 19);
-            this.SummForTextbox.Name = "SummForTextbox";
-            this.SummForTextbox.Size = new System.Drawing.Size(60, 20);
-            this.SummForTextbox.TabIndex = 9;
+            this.labelPurchaseTo.AutoSize = true;
+            this.labelPurchaseTo.Location = new System.Drawing.Point(6, 45);
+            this.labelPurchaseTo.Name = "labelPurchaseTo";
+            this.labelPurchaseTo.Size = new System.Drawing.Size(25, 13);
+            this.labelPurchaseTo.TabIndex = 2;
+            this.labelPurchaseTo.Text = "До:";
             // 
-            // SummFromLabel
+            // textBoxPurchaseFrom
             // 
-            this.SummFromLabel.AutoSize = true;
-            this.SummFromLabel.Location = new System.Drawing.Point(3, 26);
-            this.SummFromLabel.Name = "SummFromLabel";
-            this.SummFromLabel.Size = new System.Drawing.Size(23, 13);
-            this.SummFromLabel.TabIndex = 8;
-            this.SummFromLabel.Text = "От:";
+            this.textBoxPurchaseFrom.Location = new System.Drawing.Point(142, 16);
+            this.textBoxPurchaseFrom.Name = "textBoxPurchaseFrom";
+            this.textBoxPurchaseFrom.Size = new System.Drawing.Size(112, 20);
+            this.textBoxPurchaseFrom.TabIndex = 1;
+            this.textBoxPurchaseFrom.KeyPress += 
+                new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
             // 
-            // groupBoxFinalSumm
+            // labelPurchaseFrom
             // 
-            this.groupBoxFinalSumm.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.groupBoxFinalSumm.Controls.Add(this.textBoxFinalSummTo);
-            this.groupBoxFinalSumm.Controls.Add(this.FinalSummToLabel);
-            this.groupBoxFinalSumm.Controls.Add(this.textBoxFinalSummFrom);
-            this.groupBoxFinalSumm.Controls.Add(this.FinalSummFromLabel);
-            this.groupBoxFinalSumm.Location = new System.Drawing.Point(118, 70);
-            this.groupBoxFinalSumm.Name = "groupBoxFinalSumm";
-            this.groupBoxFinalSumm.Size = new System.Drawing.Size(102, 85);
-            this.groupBoxFinalSumm.TabIndex = 3;
-            this.groupBoxFinalSumm.TabStop = false;
-            this.groupBoxFinalSumm.Text = "Сумма к оплате";
-            // 
-            // textBoxFinalSummTo
-            // 
-            this.textBoxFinalSummTo.Location = new System.Drawing.Point(32, 53);
-            this.textBoxFinalSummTo.MaximumSize = new System.Drawing.Size(60, 20);
-            this.textBoxFinalSummTo.MinimumSize = new System.Drawing.Size(60, 4);
-            this.textBoxFinalSummTo.Name = "textBoxFinalSummTo";
-            this.textBoxFinalSummTo.Size = new System.Drawing.Size(60, 20);
-            this.textBoxFinalSummTo.TabIndex = 11;
-            // 
-            // FinalSummToLabel
-            // 
-            this.FinalSummToLabel.AutoSize = true;
-            this.FinalSummToLabel.Location = new System.Drawing.Point(3, 60);
-            this.FinalSummToLabel.Name = "FinalSummToLabel";
-            this.FinalSummToLabel.Size = new System.Drawing.Size(25, 13);
-            this.FinalSummToLabel.TabIndex = 10;
-            this.FinalSummToLabel.Text = "До:";
-            // 
-            // textBoxFinalSummFrom
-            // 
-            this.textBoxFinalSummFrom.Location = new System.Drawing.Point(32, 19);
-            this.textBoxFinalSummFrom.MaximumSize = new System.Drawing.Size(60, 20);
-            this.textBoxFinalSummFrom.MinimumSize = new System.Drawing.Size(60, 4);
-            this.textBoxFinalSummFrom.Name = "textBoxFinalSummFrom";
-            this.textBoxFinalSummFrom.Size = new System.Drawing.Size(60, 20);
-            this.textBoxFinalSummFrom.TabIndex = 9;
-            // 
-            // FinalSummFromLabel
-            // 
-            this.FinalSummFromLabel.AutoSize = true;
-            this.FinalSummFromLabel.Location = new System.Drawing.Point(3, 26);
-            this.FinalSummFromLabel.Name = "FinalSummFromLabel";
-            this.FinalSummFromLabel.Size = new System.Drawing.Size(23, 13);
-            this.FinalSummFromLabel.TabIndex = 8;
-            this.FinalSummFromLabel.Text = "От:";
+            this.labelPurchaseFrom.AutoSize = true;
+            this.labelPurchaseFrom.Location = new System.Drawing.Point(6, 19);
+            this.labelPurchaseFrom.Name = "labelPurchaseFrom";
+            this.labelPurchaseFrom.Size = new System.Drawing.Size(23, 13);
+            this.labelPurchaseFrom.TabIndex = 0;
+            this.labelPurchaseFrom.Text = "От:";
             // 
             // groupBoxDiscountValue
             // 
-            this.groupBoxDiscountValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.groupBoxDiscountValue.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBoxDiscountValue.Controls.Add(this.textBoxPercentageTo);
-            this.groupBoxDiscountValue.Controls.Add(this.textBoxPercentageFrom);
-            this.groupBoxDiscountValue.Controls.Add(this.PercentageLabel);
-            this.groupBoxDiscountValue.Controls.Add(this.CertificateToTextBox1);
-            this.groupBoxDiscountValue.Controls.Add(this.CertificateToLabel);
-            this.groupBoxDiscountValue.Controls.Add(this.CertificateFromTextBox);
-            this.groupBoxDiscountValue.Controls.Add(this.CertificateLabel);
-            this.groupBoxDiscountValue.Controls.Add(this.CertificateFromLabel);
-            this.groupBoxDiscountValue.Location = new System.Drawing.Point(12, 161);
+            this.groupBoxDiscountValue.Controls.Add(this.textBoxDiscountTo);
+            this.groupBoxDiscountValue.Controls.Add(this.labelDiscountTo);
+            this.groupBoxDiscountValue.Controls.Add(this.textBoxDiscountFrom);
+            this.groupBoxDiscountValue.Controls.Add(this.labelDiscountFrom);
+            this.groupBoxDiscountValue.Location = new System.Drawing.Point(12, 157);
             this.groupBoxDiscountValue.Name = "groupBoxDiscountValue";
-            this.groupBoxDiscountValue.Size = new System.Drawing.Size(208, 117);
-            this.groupBoxDiscountValue.TabIndex = 4;
+            this.groupBoxDiscountValue.Size = new System.Drawing.Size(260, 70);
+            this.groupBoxDiscountValue.TabIndex = 2;
             this.groupBoxDiscountValue.TabStop = false;
             this.groupBoxDiscountValue.Text = "Величина скидки";
             // 
-            // textBoxPercentageTo
+            // textBoxDiscountTo
             // 
-            this.textBoxPercentageTo.Location = new System.Drawing.Point(158, 83);
-            this.textBoxPercentageTo.Name = "textBoxPercentageTo";
-            this.textBoxPercentageTo.Size = new System.Drawing.Size(25, 20);
-            this.textBoxPercentageTo.TabIndex = 13;
+            this.textBoxDiscountTo.Location = new System.Drawing.Point(142, 42);
+            this.textBoxDiscountTo.Name = "textBoxDiscountTo";
+            this.textBoxDiscountTo.Size = new System.Drawing.Size(112, 20);
+            this.textBoxDiscountTo.TabIndex = 3;
+            this.textBoxDiscountTo.KeyPress += 
+                new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
             // 
-            // textBoxPercentageFrom
+            // labelDiscountTo
             // 
-            this.textBoxPercentageFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPercentageFrom.Location = new System.Drawing.Point(158, 49);
-            this.textBoxPercentageFrom.Name = "textBoxPercentageFrom";
-            this.textBoxPercentageFrom.Size = new System.Drawing.Size(25, 20);
-            this.textBoxPercentageFrom.TabIndex = 13;
+            this.labelDiscountTo.AutoSize = true;
+            this.labelDiscountTo.Location = new System.Drawing.Point(6, 45);
+            this.labelDiscountTo.Name = "labelDiscountTo";
+            this.labelDiscountTo.Size = new System.Drawing.Size(25, 13);
+            this.labelDiscountTo.TabIndex = 2;
+            this.labelDiscountTo.Text = "До:";
             // 
-            // PercentageLabel
+            // textBoxDiscountFrom
             // 
-            this.PercentageLabel.AutoSize = true;
-            this.PercentageLabel.Location = new System.Drawing.Point(163, 25);
-            this.PercentageLabel.Name = "PercentageLabel";
-            this.PercentageLabel.Size = new System.Drawing.Size(15, 13);
-            this.PercentageLabel.TabIndex = 12;
-            this.PercentageLabel.Text = "%";
+            this.textBoxDiscountFrom.Location = new System.Drawing.Point(142, 16);
+            this.textBoxDiscountFrom.Name = "textBoxDiscountFrom";
+            this.textBoxDiscountFrom.Size = new System.Drawing.Size(112, 20);
+            this.textBoxDiscountFrom.TabIndex = 1;
+            this.textBoxDiscountFrom.KeyPress += 
+                new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
             // 
-            // CertificateToTextBox1
+            // labelDiscountFrom
             // 
-            this.CertificateToTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.CertificateToTextBox1.Location = new System.Drawing.Point(32, 83);
-            this.CertificateToTextBox1.Name = "CertificateToTextBox1";
-            this.CertificateToTextBox1.Size = new System.Drawing.Size(90, 20);
-            this.CertificateToTextBox1.TabIndex = 11;
+            this.labelDiscountFrom.AutoSize = true;
+            this.labelDiscountFrom.Location = new System.Drawing.Point(6, 19);
+            this.labelDiscountFrom.Name = "labelDiscountFrom";
+            this.labelDiscountFrom.Size = new System.Drawing.Size(23, 13);
+            this.labelDiscountFrom.TabIndex = 0;
+            this.labelDiscountFrom.Text = "От:";
             // 
-            // CertificateToLabel
+            // buttonOk
             // 
-            this.CertificateToLabel.AutoSize = true;
-            this.CertificateToLabel.Location = new System.Drawing.Point(3, 90);
-            this.CertificateToLabel.Name = "CertificateToLabel";
-            this.CertificateToLabel.Size = new System.Drawing.Size(25, 13);
-            this.CertificateToLabel.TabIndex = 10;
-            this.CertificateToLabel.Text = "До:";
+            this.buttonOk.Location = new System.Drawing.Point(12, 238);
+            this.buttonOk.Name = "buttonOk";
+            this.buttonOk.Size = new System.Drawing.Size(126, 23);
+            this.buttonOk.TabIndex = 3;
+            this.buttonOk.Text = "Найти";
+            this.buttonOk.UseVisualStyleBackColor = true;
+            this.buttonOk.Click += new System.EventHandler(this.ButtonOk_Click);
             // 
-            // CertificateFromTextBox
+            // buttonCancel
             // 
-            this.CertificateFromTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.CertificateFromTextBox.Location = new System.Drawing.Point(32, 49);
-            this.CertificateFromTextBox.Name = "CertificateFromTextBox";
-            this.CertificateFromTextBox.Size = new System.Drawing.Size(90, 20);
-            this.CertificateFromTextBox.TabIndex = 9;
-            // 
-            // CertificateLabel
-            // 
-            this.CertificateLabel.AutoSize = true;
-            this.CertificateLabel.Location = new System.Drawing.Point(3, 25);
-            this.CertificateLabel.Name = "CertificateLabel";
-            this.CertificateLabel.Size = new System.Drawing.Size(125, 13);
-            this.CertificateLabel.TabIndex = 8;
-            this.CertificateLabel.Text = "Номинал сертификата:";
-            // 
-            // CertificateFromLabel
-            // 
-            this.CertificateFromLabel.AutoSize = true;
-            this.CertificateFromLabel.Location = new System.Drawing.Point(3, 56);
-            this.CertificateFromLabel.Name = "CertificateFromLabel";
-            this.CertificateFromLabel.Size = new System.Drawing.Size(23, 13);
-            this.CertificateFromLabel.TabIndex = 8;
-            this.CertificateFromLabel.Text = "От:";
-            // 
-            // FindApplyButton
-            // 
-            this.FindApplyButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.FindApplyButton.Location = new System.Drawing.Point(12, 284);
-            this.FindApplyButton.Name = "FindApplyButton";
-            this.FindApplyButton.Size = new System.Drawing.Size(100, 23);
-            this.FindApplyButton.TabIndex = 5;
-            this.FindApplyButton.Text = "Найти";
-            this.FindApplyButton.UseVisualStyleBackColor = true;
-            this.FindApplyButton.Click += new System.EventHandler(this.FindApplyButton_Click);
-            // 
-            // FindRejectButton
-            // 
-            this.FindRejectButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.FindRejectButton.Location = new System.Drawing.Point(120, 284);
-            this.FindRejectButton.Name = "FindRejectButton";
-            this.FindRejectButton.Size = new System.Drawing.Size(100, 23);
-            this.FindRejectButton.TabIndex = 6;
-            this.FindRejectButton.Text = "Отмена";
-            this.FindRejectButton.UseVisualStyleBackColor = true;
-            this.FindRejectButton.Click += new System.EventHandler(this.FindRejectButton_Click);
+            this.buttonCancel.Location = new System.Drawing.Point(146, 238);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(126, 23);
+            this.buttonCancel.TabIndex = 4;
+            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // FindForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(231, 315);
-            this.Controls.Add(this.FindRejectButton);
-            this.Controls.Add(this.FindApplyButton);
+            this.ClientSize = new System.Drawing.Size(284, 273);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.groupBoxDiscountValue);
-            this.Controls.Add(this.groupBoxFinalSumm);
-            this.Controls.Add(this.groupBoxSummRange);
-            this.Controls.Add(this.groupBoxDiscountStrategy);
+            this.Controls.Add(this.groupBoxPurchase);
+            this.Controls.Add(this.groupBoxStrategy);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FindForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Поиск";
-            this.groupBoxDiscountStrategy.ResumeLayout(false);
-            this.groupBoxSummRange.ResumeLayout(false);
-            this.groupBoxSummRange.PerformLayout();
-            this.groupBoxFinalSumm.ResumeLayout(false);
-            this.groupBoxFinalSumm.PerformLayout();
+            this.groupBoxStrategy.ResumeLayout(false);
+            this.groupBoxStrategy.PerformLayout();
+            this.groupBoxPurchase.ResumeLayout(false);
+            this.groupBoxPurchase.PerformLayout();
             this.groupBoxDiscountValue.ResumeLayout(false);
             this.groupBoxDiscountValue.PerformLayout();
             this.ResumeLayout(false);
@@ -308,28 +227,20 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBoxDiscountStrategy;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.GroupBox groupBoxSummRange;
-        private System.Windows.Forms.TextBox SummToTextBox;
-        private System.Windows.Forms.Label SeummToLabel;
-        private System.Windows.Forms.TextBox SummForTextbox;
-        private System.Windows.Forms.Label SummFromLabel;
-        private System.Windows.Forms.GroupBox groupBoxFinalSumm;
-        private System.Windows.Forms.TextBox textBoxFinalSummTo;
-        private System.Windows.Forms.Label FinalSummToLabel;
-        private System.Windows.Forms.TextBox textBoxFinalSummFrom;
-        private System.Windows.Forms.Label FinalSummFromLabel;
+        private System.Windows.Forms.GroupBox groupBoxStrategy;
+        private System.Windows.Forms.CheckBox checkBoxCertificate;
+        private System.Windows.Forms.CheckBox checkBoxPercent;
+        private System.Windows.Forms.GroupBox groupBoxPurchase;
+        private System.Windows.Forms.TextBox textBoxPurchaseTo;
+        private System.Windows.Forms.Label labelPurchaseTo;
+        private System.Windows.Forms.TextBox textBoxPurchaseFrom;
+        private System.Windows.Forms.Label labelPurchaseFrom;
         private System.Windows.Forms.GroupBox groupBoxDiscountValue;
-        private System.Windows.Forms.TextBox CertificateToTextBox1;
-        private System.Windows.Forms.Label CertificateToLabel;
-        private System.Windows.Forms.TextBox CertificateFromTextBox;
-        private System.Windows.Forms.Label CertificateLabel;
-        private System.Windows.Forms.Label CertificateFromLabel;
-        private System.Windows.Forms.Label PercentageLabel;
-        private System.Windows.Forms.TextBox textBoxPercentageTo;
-        private System.Windows.Forms.TextBox textBoxPercentageFrom;
-        private System.Windows.Forms.Button FindApplyButton;
-        private System.Windows.Forms.Button FindRejectButton;
+        private System.Windows.Forms.TextBox textBoxDiscountTo;
+        private System.Windows.Forms.Label labelDiscountTo;
+        private System.Windows.Forms.TextBox textBoxDiscountFrom;
+        private System.Windows.Forms.Label labelDiscountFrom;
+        private System.Windows.Forms.Button buttonOk;
+        private System.Windows.Forms.Button buttonCancel;
     }
 }

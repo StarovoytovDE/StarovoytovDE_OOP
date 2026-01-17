@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Forms;
 using Model_LB3_4;
-using Model_LB3_4.Discounts;
 
 namespace WinFormsLB4
 {
@@ -19,23 +14,14 @@ namespace WinFormsLB4
     /// </summary>
     public partial class MainForm : Form
     {
-        /// <summary>
-        /// Минимально допустимое значение процента скидки.
-        /// </summary>
-        public static readonly decimal MinPercentage = 0m;
-
-        /// <summary>
-        /// Максимально допустимое значение процента скидки.
-        /// </summary>
-        public static readonly decimal MaxPercentage = 100m;
-
-        /// <summary>
-        /// Уникальное расширение файлов расчётов.
-        /// </summary>
         private const string FileExtension = "discounts";
-        private readonly List<DiscountCalculation> _allCalculations = new List<DiscountCalculation>();
-        private readonly BindingList<DiscountCalculation> _displayedCalculations = new BindingList<DiscountCalculation>();
+
+        private readonly List<DiscountCalculation> _allCalculations = 
+                                            new List<DiscountCalculation>();
+        private readonly BindingList<DiscountCalculation> _displayedCalculations = 
+                                            new BindingList<DiscountCalculation>();
         private readonly Random _random = new Random();
+
         private SearchCriteria _currentCriteria;
         private bool _isFiltered;
 
@@ -45,28 +31,24 @@ namespace WinFormsLB4
         public MainForm()
         {
             InitializeComponent();
+            Text = UiText.MainFormTitle;
+
             ConfigureGrid();
-            WireHandlers();
             dataGridView1.DataSource = _displayedCalculations;
+
+            ApplyBuildConfigurationUi();
         }
 
         /// <summary>
-        /// Переподписывает обработчики событий кнопок и меню.
+        /// Скрывает кнопку генерации случайного расчёта в Release.
         /// </summary>
-        private void WireHandlers()
+        private void ApplyBuildConfigurationUi()
         {
-            AddButton.Click -= AddButton_Click;
-            AddButton.Click += AddButton_Clicked;
-            DeleteButton.Click -= DeleteButton_Click;
-            DeleteButton.Click += DeleteButton_Clicked;
-            RandomButton.Click -= RandomButton_Click;
-            RandomButton.Click += RandomButton_Clicked;
-            DeleteAllButton.Click -= DeleteAllButton_Click;
-            DeleteAllButton.Click += DeleteAllButton_Clicked;
-            FindButton.Click -= FindButton_Click;
-            FindButton.Click += FindButton_Clicked;
-            FilterResetButton.Click -= FilterResetButton_Click;
-            FilterResetButton.Click += FilterResetButton_Clicked;
+#if DEBUG
+            RandomButton.Visible = true;
+#else
+            RandomButton.Visible = false;
+#endif
         }
 
         /// <summary>
@@ -82,18 +64,30 @@ namespace WinFormsLB4
             dataGridView1.Columns.Add(CreateTextColumn("DiscountValue", "Величина скидки", "N2"));
             dataGridView1.Columns.Add(CreateTextColumn("Discount", "Сумма скидки", "N2"));
             dataGridView1.Columns.Add(CreateTextColumn("FinalPrice", "К оплате", "N2"));
+
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            // ВАЖНО: теперь можно выделять несколько строк.
+            dataGridView1.MultiSelect = true;
+
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AllowUserToResizeRows = false;
         }
 
         /// <summary>
         /// Создаёт текстовую колонку таблицы.
         /// </summary>
-        private static DataGridViewTextBoxColumn CreateTextColumn(string dataPropertyName, string headerText, string format)
+        private static DataGridViewTextBoxColumn CreateTextColumn(string dataPropertyName, 
+                                                                  string headerText, 
+                                                                  string format)
         {
             var column = new DataGridViewTextBoxColumn
             {
                 DataPropertyName = dataPropertyName,
                 HeaderText = headerText,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                ReadOnly = true
             };
 
             if (!string.IsNullOrWhiteSpace(format))
@@ -118,43 +112,65 @@ namespace WinFormsLB4
                 }
             }
         }
-        
+
         /// <summary>
-        /// Обработчик удаления выбранного расчёта.
+        /// Обработчик удаления выбранных расчётов (поддерживает множественное выделение).
         /// </summary>
         private void DeleteButton_Clicked(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count == 0)
             {
-                MessageBox.Show(this, "Выберите строку для удаления.", 
-                    "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, 
+                                UiText.SelectRowToDelete, 
+                                UiText.DeleteTitle, 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Warning);
                 return;
             }
 
-            var item = dataGridView1.SelectedRows[0].DataBoundItem as DiscountCalculation;
-            if (item == null)
+            var toRemove = new List<DiscountCalculation>();
+
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            {
+                var item = row.DataBoundItem as DiscountCalculation;
+                if (item != null)
+                {
+                    toRemove.Add(item);
+                }
+            }
+
+            if (toRemove.Count == 0)
             {
                 return;
             }
 
-            _allCalculations.Remove(item);
+            // Удаляем выбранные элементы из общего списка.
+            foreach (var item in toRemove)
+            {
+                _allCalculations.Remove(item);
+            }
+
             RefreshAfterChange();
         }
-        
+
         /// <summary>
-        /// Обработчик добавления случайного расчёта.
+        /// Обработчик добавления случайного расчёта (только Debug, в Release кнопка скрыта).
         /// </summary>
         private void RandomButton_Clicked(object sender, EventArgs e)
         {
-            var purchaseAmount = _random.Next(1, 1_000_001);
+            var purchaseAmount = _random.Next(UiConstants.RandomPurchaseAmountMin, 
+                                              UiConstants.RandomPurchaseAmountMax + 1);
+
             var strategyKind = _random.Next(0, 2) == 0
                 ? DiscountStrategyKind.Percent
                 : DiscountStrategyKind.Certificate;
 
             decimal discountValue;
+
             if (strategyKind == DiscountStrategyKind.Percent)
             {
-                discountValue = _random.Next(1, 100);
+                discountValue = _random.Next(UiConstants.RandomPercentMin, 
+                                             UiConstants.RandomPercentMax + 1);
             }
             else
             {
@@ -163,28 +179,75 @@ namespace WinFormsLB4
 
             try
             {
-                var calculation = CreateCalculation(purchaseAmount, strategyKind, discountValue);
+                var calculation = DiscountCalculationFactory.Create(purchaseAmount, 
+                                                                    strategyKind, 
+                                                                    discountValue);
                 _allCalculations.Add(calculation);
                 RefreshAfterChange();
             }
             catch (IncorrectArgumentException ex)
             {
-                MessageBox.Show(this, ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this,
+                                ex.Message,
+                                UiText.AppErrorTitle,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
             }
         }
 
         /// <summary>
-        /// Обработчик очистки всех расчётов.
+        /// Обработчик очистки расчётов.
+        /// Если фильтр активен — очищает только отфильтрованные элементы.
+        /// Если фильтр не активен — очищает весь список.
         /// </summary>
         private void DeleteAllButton_Clicked(object sender, EventArgs e)
         {
+            if (_isFiltered && _currentCriteria != null)
+            {
+                // Если фильтр активен — удаляем только то, что сейчас отображается.
+                if (_displayedCalculations.Count == 0)
+                {
+                    return;
+                }
+
+                var resultFiltered = MessageBox.Show(
+                    this,
+                    UiText.ConfirmClearFilteredList,
+                    UiText.ConfirmTitle,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (resultFiltered != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                var toRemove = _displayedCalculations.ToList();
+
+                foreach (var item in toRemove)
+                {
+                    _allCalculations.Remove(item);
+                }
+
+                // Фильтр оставляем включённым, просто обновляем отображение.
+                ApplyFilter();
+                return;
+            }
+
+            // Иначе — очищаем весь список.
             if (_allCalculations.Count == 0)
             {
                 return;
             }
 
-            var result = MessageBox.Show(this, "Очистить список расчётов?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result != DialogResult.Yes)
+            var resultAll = MessageBox.Show(
+                this,
+                UiText.ConfirmClearList,
+                UiText.ConfirmTitle,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultAll != DialogResult.Yes)
             {
                 return;
             }
@@ -202,7 +265,8 @@ namespace WinFormsLB4
         {
             using (var form = new FindForm())
             {
-                if (form.ShowDialog(this) == DialogResult.OK && form.Criteria != null)
+                if (form.ShowDialog(this) == DialogResult.OK && 
+                                                        form.Criteria != null)
                 {
                     _currentCriteria = form.Criteria;
                     _isFiltered = true;
@@ -224,11 +288,12 @@ namespace WinFormsLB4
         /// <summary>
         /// Обработчик сохранения списка расчётов.
         /// </summary>
-        private void ToolStripSaveMenuItem_Click_1(object sender, EventArgs e)
+        private void ToolStripSaveMenuItem_Clicked(object sender, EventArgs e)
         {
             using (var dialog = new SaveFileDialog())
             {
-                dialog.Filter = $"Discount files (*.{FileExtension})|*.{FileExtension}|All files (*.*)|*.*";
+                dialog.Filter = "Discount files (*." + FileExtension + ")|*." +
+                                        FileExtension + "|All files (*.*)|*.*";
                 dialog.DefaultExt = FileExtension;
                 dialog.AddExtension = true;
 
@@ -247,7 +312,11 @@ namespace WinFormsLB4
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, $"Ошибка сохранения: {ex.Message}", "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this,
+                                    "Ошибка сохранения: " +
+                                    ex.Message, UiText.SaveTitle,
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
             }
         }
@@ -255,11 +324,12 @@ namespace WinFormsLB4
         /// <summary>
         /// Обработчик загрузки списка расчётов.
         /// </summary>
-        private void ToolStripLoadMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripLoadMenuItem_Clicked(object sender, EventArgs e)
         {
             using (var dialog = new OpenFileDialog())
             {
-                dialog.Filter = $"Discount files (*.{FileExtension})|*.{FileExtension}|All files (*.*)|*.*";
+                dialog.Filter = "Discount files (*." + FileExtension + ")|*." + 
+                                        FileExtension + "|All files (*.*)|*.*";
 
                 if (dialog.ShowDialog(this) != DialogResult.OK)
                 {
@@ -271,7 +341,9 @@ namespace WinFormsLB4
                     using (var stream = File.OpenRead(dialog.FileName))
                     {
                         var formatter = new BinaryFormatter();
-                        var loaded = (List<DiscountCalculation>)formatter.Deserialize(stream);
+                        var loaded = 
+                            (List<DiscountCalculation>)formatter.Deserialize(stream);
+
                         _allCalculations.Clear();
                         _allCalculations.AddRange(loaded);
                     }
@@ -282,7 +354,12 @@ namespace WinFormsLB4
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, $"Ошибка загрузки: {ex.Message}", "Загрузка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this,
+                                    "Ошибка загрузки: " +
+                                    ex.Message,
+                                    UiText.LoadTitle,
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
             }
         }
@@ -316,51 +393,58 @@ namespace WinFormsLB4
             var filtered = _allCalculations
                 .Where(item => MatchesCriteria(item, _currentCriteria))
                 .ToList();
+
             RefreshDisplay(filtered);
         }
 
         /// <summary>
         /// Проверяет соответствие расчёта критериям фильтра.
         /// </summary>
-        private static bool MatchesCriteria(DiscountCalculation item, SearchCriteria criteria)
+        private static bool MatchesCriteria(DiscountCalculation item, 
+                                            SearchCriteria criteria)
         {
-            if (criteria.StrategyFilter == StrategyFilterKind.Percent && item.StrategyKind != DiscountStrategyKind.Percent)
+            if (criteria == null)
+            {
+                return true;
+            }
+
+            if (!IsStrategyAllowed(item, criteria))
             {
                 return false;
             }
 
-            if (criteria.StrategyFilter == StrategyFilterKind.Certificate && item.StrategyKind != DiscountStrategyKind.Certificate)
+            if (!IsWithinRange(item.DiscountValue, 
+                               criteria.DiscountValueFrom, 
+                               criteria.DiscountValueTo))
             {
                 return false;
             }
 
-            if (!IsWithinRange(item.PurchaseAmount, criteria.PurchaseAmountFrom, criteria.PurchaseAmountTo))
-            {
-                return false;
-            }
+            return true;
+        }
 
-            if (!IsWithinRange(item.FinalPrice, criteria.FinalPriceFrom, criteria.FinalPriceTo))
+        /// <summary>
+        /// Проверяет, разрешена ли стратегия расчёта согласно выбранным стратегиям в критериях.
+        /// </summary>
+        private static bool IsStrategyAllowed(DiscountCalculation item, 
+                                              SearchCriteria criteria)
+        {
+            if (criteria.StrategyFlags == StrategyFilterFlags.None)
             {
                 return false;
             }
 
             if (item.StrategyKind == DiscountStrategyKind.Percent)
             {
-                if (!IsWithinRange(item.DiscountValue, criteria.PercentageFrom, criteria.PercentageTo))
-                {
-                    return false;
-                }
+                return criteria.StrategyFlags.HasFlag(StrategyFilterFlags.Percent);
             }
 
             if (item.StrategyKind == DiscountStrategyKind.Certificate)
             {
-                if (!IsWithinRange(item.DiscountValue, criteria.CertificateValueFrom, criteria.CertificateValueTo))
-                {
-                    return false;
-                }
+                return criteria.StrategyFlags.HasFlag(StrategyFilterFlags.Certificate);
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -387,24 +471,11 @@ namespace WinFormsLB4
         private void RefreshDisplay(IEnumerable<DiscountCalculation> calculations)
         {
             _displayedCalculations.Clear();
+
             foreach (var item in calculations)
             {
                 _displayedCalculations.Add(item);
             }
-        }
-
-        /// <summary>
-        /// Создаёт расчёт скидки по выбранной стратегии.
-        /// </summary>
-        private DiscountCalculation CreateCalculation(decimal purchaseAmount, DiscountStrategyKind strategyKind, decimal discountValue)
-        {
-            DiscountStrategy strategy = strategyKind == DiscountStrategyKind.Percent
-                ? (DiscountStrategy)new PercentageDiscount(discountValue)
-                : new CertificateDiscount(discountValue);
-
-            var discount = strategy.CalculateDiscount(purchaseAmount);
-            var finalPrice = strategy.CalculatePrice(purchaseAmount);
-            return new DiscountCalculation(purchaseAmount, strategyKind, discountValue, discount, finalPrice);
         }
     }
 }
