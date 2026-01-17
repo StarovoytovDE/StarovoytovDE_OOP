@@ -5,6 +5,7 @@
     /// </summary>
     internal static class UiText
     {
+        //TODO: XML
         public const string InputErrorTitle = "Ошибка ввода";
         public const string AppErrorTitle = "Ошибка";
         public const string ConfirmTitle = "Подтверждение";

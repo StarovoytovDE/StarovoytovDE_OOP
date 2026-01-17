@@ -60,13 +60,14 @@ namespace WinFormsLB4
                 ShowError($"Некорректное значение \"{UiText.FieldDiscountValue}: До\".");
                 return;
             }
-
+            //TODO: RSDN
             if (!ValidateNonNegative(purchaseFrom, purchaseTo, UiText.FieldPurchaseAmount) ||
                 !ValidateNonNegative(discountFrom, discountTo, UiText.FieldDiscountValue))
             {
                 return;
             }
 
+            //TODO: RSDN
             if (!ValidateRange(purchaseFrom, purchaseTo, UiText.FieldPurchaseAmount) ||
                 !ValidateRange(discountFrom, discountTo, UiText.FieldDiscountValue))
             {

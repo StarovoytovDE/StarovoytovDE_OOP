@@ -14,12 +14,14 @@ namespace WinFormsLB4
     /// </summary>
     public partial class MainForm : Form
     {
+        //TODO: XML
         private const string FileExtension = "discounts";
 
         private readonly List<DiscountCalculation> _allCalculations = 
                                             new List<DiscountCalculation>();
         private readonly BindingList<DiscountCalculation> _displayedCalculations = 
                                             new BindingList<DiscountCalculation>();
+        //TODO: remove?
         private readonly Random _random = new Random();
 
         private SearchCriteria _currentCriteria;
@@ -34,6 +36,7 @@ namespace WinFormsLB4
             Text = UiText.MainFormTitle;
 
             ConfigureGrid();
+            //TODO: RSDN
             dataGridView1.DataSource = _displayedCalculations;
 
             ApplyBuildConfigurationUi();
@@ -59,6 +62,7 @@ namespace WinFormsLB4
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.Columns.Clear();
 
+            //TODO: RSDN
             dataGridView1.Columns.Add(CreateTextColumn("PurchaseAmount", "Сумма покупки", "N2"));
             dataGridView1.Columns.Add(CreateTextColumn("StrategyDisplay", "Стратегия", null));
             dataGridView1.Columns.Add(CreateTextColumn("DiscountValue", "Величина скидки", "N2"));
@@ -78,6 +82,7 @@ namespace WinFormsLB4
         /// <summary>
         /// Создаёт текстовую колонку таблицы.
         /// </summary>
+        /// //TODO: RSDN
         private static DataGridViewTextBoxColumn CreateTextColumn(string dataPropertyName, 
                                                                   string headerText, 
                                                                   string format)
@@ -105,7 +110,8 @@ namespace WinFormsLB4
         {
             using (var form = new AddForm())
             {
-                if (form.ShowDialog(this) == DialogResult.OK && form.Calculation != null)
+                if (form.ShowDialog(this) == DialogResult.OK 
+                    && form.Calculation != null)
                 {
                     _allCalculations.Add(form.Calculation);
                     RefreshAfterChange();
@@ -266,6 +272,7 @@ namespace WinFormsLB4
             using (var form = new FindForm())
             {
                 if (form.ShowDialog(this) == DialogResult.OK && 
+                    //TODO: RSDN
                                                         form.Criteria != null)
                 {
                     _currentCriteria = form.Criteria;
@@ -328,6 +335,7 @@ namespace WinFormsLB4
         {
             using (var dialog = new OpenFileDialog())
             {
+                //TOOD: refactor
                 dialog.Filter = "Discount files (*." + FileExtension + ")|*." + 
                                         FileExtension + "|All files (*.*)|*.*";
 
@@ -429,11 +437,13 @@ namespace WinFormsLB4
         private static bool IsStrategyAllowed(DiscountCalculation item, 
                                               SearchCriteria criteria)
         {
+            
             if (criteria.StrategyFlags == StrategyFilterFlags.None)
             {
                 return false;
             }
 
+            //TODO: switch-case
             if (item.StrategyKind == DiscountStrategyKind.Percent)
             {
                 return criteria.StrategyFlags.HasFlag(StrategyFilterFlags.Percent);

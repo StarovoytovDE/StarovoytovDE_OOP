@@ -26,6 +26,7 @@ namespace WinFormsLB4
 
             switch (strategyKind)
             {
+                //TODO: {}
                 case DiscountStrategyKind.Percent:
                     strategy = new PercentageDiscount(discountValue);
                     break;

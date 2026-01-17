@@ -10,9 +10,11 @@ namespace WinFormsLB4
     /// </summary>
     public partial class AddForm : Form
     {
+        //TODO: XML
         private const int StrategyIndexPercent = 0;
         private const int StrategyIndexCertificate = 1;
 
+        //TODO: remove?
         private readonly Random _random = new Random();
 
         /// <summary>
@@ -70,14 +72,10 @@ namespace WinFormsLB4
         /// </summary>
         private void ApplyStrategyUi()
         {
-            if (comboBoxStrategy.SelectedIndex == StrategyIndexPercent)
-            {
-                labelValue.Text = UiText.LabelPercentValue;
-            }
-            else
-            {
-                labelValue.Text = UiText.LabelCertificateValue;
-            }
+            labelValue.Text = 
+                comboBoxStrategy.SelectedIndex == StrategyIndexPercent 
+                ? UiText.LabelPercentValue 
+                : UiText.LabelCertificateValue;
         }
 
         /// <summary>
@@ -194,7 +192,7 @@ namespace WinFormsLB4
                 ShowError("Сумма покупки не может быть отрицательной.");
                 return false;
             }
-
+            //TODO: switch-case
             if (strategyKind == DiscountStrategyKind.Percent)
             {
                 if (value < UiConstants.PercentageMin 

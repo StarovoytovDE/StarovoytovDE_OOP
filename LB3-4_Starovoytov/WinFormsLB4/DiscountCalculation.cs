@@ -2,11 +2,13 @@ using System;
 
 namespace WinFormsLB4
 {
+    //TODO: remove
     /// <summary>
     /// Виды стратегий скидки для расчётов.
     /// </summary>
     public enum DiscountStrategyKind
     {
+        //TODO: XML
         Percent = 0,
         Certificate = 1
     }
