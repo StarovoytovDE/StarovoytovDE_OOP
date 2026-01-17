@@ -11,7 +11,6 @@ namespace Model_LB3_4.Discounts
     /// </summary>
     public sealed class PercentageDiscount : DiscountStrategy
     {
-        //TODO: XML+
         /// <summary>
         /// Хранит значение процента скидки.
         /// </summary>

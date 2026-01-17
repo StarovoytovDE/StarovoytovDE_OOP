@@ -11,7 +11,6 @@ namespace Model_LB3_4.Discounts
     /// </summary>
     public sealed class CertificateDiscount : DiscountStrategy
     {
-        //TODO: XML+
         /// <summary>
         /// Хранит значение скидки по сертефикату.
         /// </summary>
