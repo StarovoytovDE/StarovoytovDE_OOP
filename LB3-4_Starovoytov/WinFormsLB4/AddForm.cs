@@ -10,12 +10,16 @@ namespace WinFormsLB4
     /// </summary>
     public partial class AddForm : Form
     {
-        //TODO: XML
+        //TODO: XML+
+        /// <summary>
+        /// Индекс стратегии расчёта скидки «Процент» в списке стратегий пользовательского интерфейса.
+        /// </summary>
         private const int StrategyIndexPercent = 0;
-        private const int StrategyIndexCertificate = 1;
 
-        //TODO: remove?
-        private readonly Random _random = new Random();
+        /// <summary>
+        /// Индекс стратегии расчёта скидки «Сертификат» в списке стратегий пользовательского интерфейса.
+        /// </summary>
+        private const int StrategyIndexCertificate = 1;
 
         /// <summary>
         /// Созданный пользователем расчёт скидки.
@@ -31,19 +35,6 @@ namespace WinFormsLB4
 
             InitializeStrategyComboBox();
             ApplyStrategyUi();
-            ApplyBuildConfigurationUi();
-        }
-
-        /// <summary>
-        /// Скрывает кнопку случайной генерации в Release.
-        /// </summary>
-        private void ApplyBuildConfigurationUi()
-        {
-#if DEBUG
-            buttonRandom.Visible = true;
-#else
-            buttonRandom.Visible = false;
-#endif
         }
 
         /// <summary>
@@ -85,34 +76,6 @@ namespace WinFormsLB4
         {
             textBoxPurchaseAmount.Clear();
             textBoxValue.Clear();
-        }
-
-        /// <summary>
-        /// Заполняет поля случайными данными (только Debug).
-        /// </summary>
-        private void ButtonRandom_Click(object sender, EventArgs e)
-        {
-#if DEBUG
-            var purchaseAmount = _random.Next(UiConstants.RandomPurchaseAmountMin, 
-                                              UiConstants.RandomPurchaseAmountMax + 1);
-            var strategyKind = GetSelectedStrategyKind();
-
-            decimal value;
-
-            if (strategyKind == DiscountStrategyKind.Percent)
-            {
-                value = _random.Next(UiConstants.RandomPercentMin, 
-                                     UiConstants.RandomPercentMax + 1);
-            }
-            else
-            {
-                // Для сертификата логично ограничить номинал суммой покупки.
-                value = _random.Next(1, purchaseAmount + 1);
-            }
-
-            textBoxPurchaseAmount.Text = purchaseAmount.ToString();
-            textBoxValue.Text = value.ToString();
-#endif
         }
 
         /// <summary>
@@ -183,58 +146,66 @@ namespace WinFormsLB4
         /// <summary>
         /// Проверяет корректность параметров расчёта в зависимости от выбранной стратегии.
         /// </summary>
-        private bool ValidateStrategyValue(DiscountStrategyKind strategyKind, 
-                                           decimal purchaseAmount, 
-                                           decimal value)
+        private bool ValidateStrategyValue(
+            DiscountStrategyKind strategyKind, 
+            decimal purchaseAmount, 
+            decimal value)
         {
             if (purchaseAmount < 0m)
             {
                 ShowError("Сумма покупки не может быть отрицательной.");
                 return false;
             }
-            //TODO: switch-case
-            if (strategyKind == DiscountStrategyKind.Percent)
+            //TODO: switch-case+
+            switch (strategyKind)
             {
-                if (value < UiConstants.PercentageMin 
-                    || value > UiConstants.PercentageMax)
+                case DiscountStrategyKind.Percent:
                 {
-                    ShowError($"Процент скидки должен быть в диапазоне " +
-                                            $"от {UiConstants.PercentageMin} " +
-                                            $"до {UiConstants.PercentageMax}.");
-                    return false;
+                    if (value < UiConstants.PercentageMin
+                        || value > UiConstants.PercentageMax)
+                    {
+                        ShowError(
+                            $"Процент скидки должен быть в диапазоне " +
+                            $"от {UiConstants.PercentageMin} " +
+                            $"до {UiConstants.PercentageMax}.");
+                        return false;
+                    }
+
+                    return true;
                 }
 
-                return true;
+                case DiscountStrategyKind.Certificate:
+                {
+                    if (value < 0m)
+                    {
+                        ShowError("Сумма сертификата не может быть отрицательной.");
+                        return false;
+                    }
+
+                    if (value < UiConstants.CertificateAmountMin
+                        || value > UiConstants.CertificateAmountMax)
+                    {
+                        ShowError($"Сумма сертификата должна быть в диапазоне " +
+                                            $"от {UiConstants.CertificateAmountMin} " +
+                                            $"до {UiConstants.CertificateAmountMax}.");
+                        return false;
+                    }
+
+                    if (value > purchaseAmount)
+                    {
+                        ShowError("Сумма сертификата не может превышать сумму покупки.");
+                        return false;
+                    }
+
+                    return true;
+                }
+
+            default:
+                {
+                    ShowError("Выбрана неизвестная стратегия скидки.");
+                        return false;
+                }
             }
-
-            if (strategyKind == DiscountStrategyKind.Certificate)
-            {
-                if (value < 0m)
-                {
-                    ShowError("Сумма сертификата не может быть отрицательной.");
-                    return false;
-                }
-
-                if (value < UiConstants.CertificateAmountMin 
-                    || value > UiConstants.CertificateAmountMax)
-                {
-                    ShowError($"Сумма сертификата должна быть в диапазоне " +
-                                        $"от {UiConstants.CertificateAmountMin} " +
-                                        $"до {UiConstants.CertificateAmountMax}.");
-                    return false;
-                }
-
-                if (value > purchaseAmount)
-                {
-                    ShowError("Сумма сертификата не может превышать сумму покупки.");
-                    return false;
-                }
-
-                return true;
-            }
-
-            ShowError("Выбрана неизвестная стратегия скидки.");
-            return false;
         }
 
         /// <summary>

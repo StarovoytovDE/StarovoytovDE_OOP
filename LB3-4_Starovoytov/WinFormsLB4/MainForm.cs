@@ -14,18 +14,40 @@ namespace WinFormsLB4
     /// </summary>
     public partial class MainForm : Form
     {
-        //TODO: XML
+        //TODO: XML+
+        /// <summary>
+        /// Расширение файла для сохранения и загрузки данных о расчётах скидок.
+        /// </summary>
         private const string FileExtension = "discounts";
 
-        private readonly List<DiscountCalculation> _allCalculations = 
-                                            new List<DiscountCalculation>();
-        private readonly BindingList<DiscountCalculation> _displayedCalculations = 
-                                            new BindingList<DiscountCalculation>();
-        //TODO: remove?
-        private readonly Random _random = new Random();
+        /// <summary>
+        /// Полный список всех выполненных расчётов скидок.
+        /// </summary>
+        private readonly List<DiscountCalculation> _allCalculations =
+            new List<DiscountCalculation>();
 
+        /// <summary>
+        /// Список расчётов скидок, отображаемых в пользовательском интерфейсе
+        /// с учётом текущей фильтрации.
+        /// </summary>
+        private readonly BindingList<DiscountCalculation> _displayedCalculations =
+            new BindingList<DiscountCalculation>();
+#if DEBUG
+        /// <summary>
+        /// Генератор случайных значений, используемый для создания тестовых данных.
+        /// </summary>
+        private readonly Random _random = new Random();
+#endif
+        /// <summary>
+        /// Текущие критерии поиска и фильтрации расчётов скидок.
+        /// </summary>
         private SearchCriteria _currentCriteria;
+
+        /// <summary>
+        /// Флаг, указывающий, применена ли в данный момент фильтрация списка расчётов.
+        /// </summary>
         private bool _isFiltered;
+
 
         /// <summary>
         /// Создаёт главную форму.
@@ -36,10 +58,11 @@ namespace WinFormsLB4
             Text = UiText.MainFormTitle;
 
             ConfigureGrid();
-            //TODO: RSDN
-            dataGridView1.DataSource = _displayedCalculations;
-
-            ApplyBuildConfigurationUi();
+            //TODO: RSDN+
+            dataGridViewMainForm.DataSource = _displayedCalculations;
+#if DEBUG
+                        ApplyBuildConfigurationUi();
+#endif
         }
 
         /// <summary>
@@ -59,33 +82,48 @@ namespace WinFormsLB4
         /// </summary>
         private void ConfigureGrid()
         {
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.Columns.Clear();
+            dataGridViewMainForm.AutoGenerateColumns = false;
+            dataGridViewMainForm.Columns.Clear();
 
-            //TODO: RSDN
-            dataGridView1.Columns.Add(CreateTextColumn("PurchaseAmount", "Сумма покупки", "N2"));
-            dataGridView1.Columns.Add(CreateTextColumn("StrategyDisplay", "Стратегия", null));
-            dataGridView1.Columns.Add(CreateTextColumn("DiscountValue", "Величина скидки", "N2"));
-            dataGridView1.Columns.Add(CreateTextColumn("Discount", "Сумма скидки", "N2"));
-            dataGridView1.Columns.Add(CreateTextColumn("FinalPrice", "К оплате", "N2"));
+            //TODO: RSDN+
+            dataGridViewMainForm.Columns.Add(CreateTextColumn(
+                "PurchaseAmount", 
+                "Сумма покупки", 
+                "N2"));
+            dataGridViewMainForm.Columns.Add(CreateTextColumn(
+                "StrategyDisplay", 
+                "Стратегия", 
+                null));
+            dataGridViewMainForm.Columns.Add(CreateTextColumn(
+                "DiscountValue", 
+                "Величина скидки", 
+                "N2"));
+            dataGridViewMainForm.Columns.Add(CreateTextColumn(
+                "Discount", 
+                "Сумма скидки", 
+                "N2"));
+            dataGridViewMainForm.Columns.Add(CreateTextColumn(
+                "FinalPrice", 
+                "К оплате", 
+                "N2"));
 
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            // ВАЖНО: теперь можно выделять несколько строк.
-            dataGridView1.MultiSelect = true;
+            dataGridViewMainForm.MultiSelect = true;
 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.AllowUserToResizeRows = false;
+            dataGridViewMainForm.AllowUserToAddRows = false;
+            dataGridViewMainForm.AllowUserToDeleteRows = false;
+            dataGridViewMainForm.AllowUserToResizeRows = false;
         }
 
         /// <summary>
         /// Создаёт текстовую колонку таблицы.
         /// </summary>
-        /// //TODO: RSDN
-        private static DataGridViewTextBoxColumn CreateTextColumn(string dataPropertyName, 
-                                                                  string headerText, 
-                                                                  string format)
+        /// //TODO: RSDN+
+        private static DataGridViewTextBoxColumn CreateTextColumn(
+            string dataPropertyName, 
+            string headerText, 
+            string format)
         {
             var column = new DataGridViewTextBoxColumn
             {
@@ -124,7 +162,7 @@ namespace WinFormsLB4
         /// </summary>
         private void DeleteButton_Clicked(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count == 0)
+            if (dataGridViewMainForm.SelectedRows.Count == 0)
             {
                 MessageBox.Show(this, 
                                 UiText.SelectRowToDelete, 
@@ -136,7 +174,7 @@ namespace WinFormsLB4
 
             var toRemove = new List<DiscountCalculation>();
 
-            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            foreach (DataGridViewRow row in dataGridViewMainForm.SelectedRows)
             {
                 var item = row.DataBoundItem as DiscountCalculation;
                 if (item != null)
@@ -158,7 +196,7 @@ namespace WinFormsLB4
 
             RefreshAfterChange();
         }
-
+#if DEBUG
         /// <summary>
         /// Обработчик добавления случайного расчёта (только Debug, в Release кнопка скрыта).
         /// </summary>
@@ -185,9 +223,10 @@ namespace WinFormsLB4
 
             try
             {
-                var calculation = DiscountCalculationFactory.Create(purchaseAmount, 
-                                                                    strategyKind, 
-                                                                    discountValue);
+                var calculation = DiscountCalculationFactory.Create(
+                    purchaseAmount, 
+                    strategyKind, 
+                    discountValue);
                 _allCalculations.Add(calculation);
                 RefreshAfterChange();
             }
@@ -200,7 +239,7 @@ namespace WinFormsLB4
                                 MessageBoxIcon.Warning);
             }
         }
-
+#endif
         /// <summary>
         /// Обработчик очистки расчётов.
         /// Если фильтр активен — очищает только отфильтрованные элементы.
@@ -235,8 +274,8 @@ namespace WinFormsLB4
                     _allCalculations.Remove(item);
                 }
 
-                // Фильтр оставляем включённым, просто обновляем отображение.
-                ApplyFilter();
+                // Выключаем фильтр
+                RefreshDisplay(_allCalculations);
                 return;
             }
 
@@ -271,9 +310,9 @@ namespace WinFormsLB4
         {
             using (var form = new FindForm())
             {
-                if (form.ShowDialog(this) == DialogResult.OK && 
-                    //TODO: RSDN
-                                                        form.Criteria != null)
+                if (form.ShowDialog(this) == DialogResult.OK
+                   //TODO: RSDN+
+                   && form.Criteria != null)
                 {
                     _currentCriteria = form.Criteria;
                     _isFiltered = true;
@@ -349,8 +388,9 @@ namespace WinFormsLB4
                     using (var stream = File.OpenRead(dialog.FileName))
                     {
                         var formatter = new BinaryFormatter();
-                        var loaded = 
-                            (List<DiscountCalculation>)formatter.Deserialize(stream);
+                        var loaded = (
+                            List<DiscountCalculation>)formatter.Deserialize(
+                                                                    stream);
 
                         _allCalculations.Clear();
                         _allCalculations.AddRange(loaded);
@@ -432,10 +472,12 @@ namespace WinFormsLB4
         }
 
         /// <summary>
-        /// Проверяет, разрешена ли стратегия расчёта согласно выбранным стратегиям в критериях.
+        /// Проверяет, разрешена ли стратегия расчёта 
+        /// согласно выбранным стратегиям в критериях.
         /// </summary>
-        private static bool IsStrategyAllowed(DiscountCalculation item, 
-                                              SearchCriteria criteria)
+        private static bool IsStrategyAllowed(
+            DiscountCalculation item, 
+            SearchCriteria criteria)
         {
             
             if (criteria.StrategyFlags == StrategyFilterFlags.None)
@@ -443,24 +485,29 @@ namespace WinFormsLB4
                 return false;
             }
 
-            //TODO: switch-case
-            if (item.StrategyKind == DiscountStrategyKind.Percent)
+            //TODO: switch-case+
+            switch (item.StrategyKind)
             {
-                return criteria.StrategyFlags.HasFlag(StrategyFilterFlags.Percent);
-            }
+                case DiscountStrategyKind.Percent:
+                    return criteria.StrategyFlags.HasFlag(
+                        StrategyFilterFlags.Percent);
 
-            if (item.StrategyKind == DiscountStrategyKind.Certificate)
-            {
-                return criteria.StrategyFlags.HasFlag(StrategyFilterFlags.Certificate);
-            }
+                case DiscountStrategyKind.Certificate:
+                    return criteria.StrategyFlags.HasFlag(
+                        StrategyFilterFlags.Certificate);
 
-            return false;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
         /// Проверяет, что значение входит в диапазон.
         /// </summary>
-        private static bool IsWithinRange(decimal value, decimal? from, decimal? to)
+        private static bool IsWithinRange(
+            decimal value,
+            decimal? from,
+            decimal? to)
         {
             if (from.HasValue && value < from.Value)
             {
@@ -478,7 +525,8 @@ namespace WinFormsLB4
         /// <summary>
         /// Обновляет отображаемый список расчётов.
         /// </summary>
-        private void RefreshDisplay(IEnumerable<DiscountCalculation> calculations)
+        private void RefreshDisplay(
+            IEnumerable<DiscountCalculation> calculations)
         {
             _displayedCalculations.Clear();
 

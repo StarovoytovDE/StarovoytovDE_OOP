@@ -37,7 +37,6 @@
             this.textBoxValue = new System.Windows.Forms.TextBox();
             this.labelPurchaseAmount = new System.Windows.Forms.Label();
             this.textBoxPurchaseAmount = new System.Windows.Forms.TextBox();
-            this.buttonRandom = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBoxStrategy.SuspendLayout();
@@ -56,15 +55,13 @@
             // 
             // comboBoxStrategy
             // 
-            this.comboBoxStrategy.DropDownStyle = 
-                System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxStrategy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxStrategy.FormattingEnabled = true;
             this.comboBoxStrategy.Location = new System.Drawing.Point(6, 19);
             this.comboBoxStrategy.Name = "comboBoxStrategy";
             this.comboBoxStrategy.Size = new System.Drawing.Size(248, 21);
             this.comboBoxStrategy.TabIndex = 0;
-            this.comboBoxStrategy.SelectedIndexChanged += 
-                new System.EventHandler(this.ComboBoxStrategy_SelectedIndexChanged);
+            this.comboBoxStrategy.SelectedIndexChanged += new System.EventHandler(this.ComboBoxStrategy_SelectedIndexChanged);
             // 
             // groupBoxInputs
             // 
@@ -84,7 +81,7 @@
             this.labelValue.AutoSize = true;
             this.labelValue.Location = new System.Drawing.Point(6, 55);
             this.labelValue.Name = "labelValue";
-            this.labelValue.Size = new System.Drawing.Size(84, 13);
+            this.labelValue.Size = new System.Drawing.Size(74, 13);
             this.labelValue.TabIndex = 3;
             this.labelValue.Text = "Значение (X):";
             // 
@@ -94,15 +91,14 @@
             this.textBoxValue.Name = "textBoxValue";
             this.textBoxValue.Size = new System.Drawing.Size(112, 20);
             this.textBoxValue.TabIndex = 2;
-            this.textBoxValue.KeyPress += 
-                new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
+            this.textBoxValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
             // 
             // labelPurchaseAmount
             // 
             this.labelPurchaseAmount.AutoSize = true;
             this.labelPurchaseAmount.Location = new System.Drawing.Point(6, 26);
             this.labelPurchaseAmount.Name = "labelPurchaseAmount";
-            this.labelPurchaseAmount.Size = new System.Drawing.Size(82, 13);
+            this.labelPurchaseAmount.Size = new System.Drawing.Size(88, 13);
             this.labelPurchaseAmount.TabIndex = 1;
             this.labelPurchaseAmount.Text = "Сумма покупки:";
             // 
@@ -112,18 +108,7 @@
             this.textBoxPurchaseAmount.Name = "textBoxPurchaseAmount";
             this.textBoxPurchaseAmount.Size = new System.Drawing.Size(112, 20);
             this.textBoxPurchaseAmount.TabIndex = 0;
-            this.textBoxPurchaseAmount.KeyPress += 
-                new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
-            // 
-            // buttonRandom
-            // 
-            this.buttonRandom.Location = new System.Drawing.Point(12, 166);
-            this.buttonRandom.Name = "buttonRandom";
-            this.buttonRandom.Size = new System.Drawing.Size(260, 23);
-            this.buttonRandom.TabIndex = 2;
-            this.buttonRandom.Text = "Случайные данные";
-            this.buttonRandom.UseVisualStyleBackColor = true;
-            this.buttonRandom.Click += new System.EventHandler(this.ButtonRandom_Click);
+            this.textBoxPurchaseAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumericTextboxKeyPress);
             // 
             // buttonOk
             // 
@@ -152,7 +137,6 @@
             this.ClientSize = new System.Drawing.Size(284, 230);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
-            this.Controls.Add(this.buttonRandom);
             this.Controls.Add(this.groupBoxInputs);
             this.Controls.Add(this.groupBoxStrategy);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -177,7 +161,6 @@
         private System.Windows.Forms.TextBox textBoxValue;
         private System.Windows.Forms.Label labelPurchaseAmount;
         private System.Windows.Forms.TextBox textBoxPurchaseAmount;
-        private System.Windows.Forms.Button buttonRandom;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Button buttonCancel;
     }

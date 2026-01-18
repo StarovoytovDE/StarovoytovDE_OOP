@@ -22,32 +22,39 @@ namespace WinFormsLB4
                                                  DiscountStrategyKind strategyKind, 
                                                  decimal discountValue)
         {
-            DiscountStrategy strategy;
+            DiscountStrategyBase strategy;
 
             switch (strategyKind)
             {
-                //TODO: {}
+                //TODO: {}+
                 case DiscountStrategyKind.Percent:
+                {
                     strategy = new PercentageDiscount(discountValue);
                     break;
+                }
 
                 case DiscountStrategyKind.Certificate:
+                {
                     strategy = new CertificateDiscount(discountValue);
                     break;
+                }
 
                 default:
-                    throw new IncorrectArgumentException(nameof(strategyKind), 
+                {
+                    throw new IncorrectArgumentException(nameof(strategyKind),
                                             "Неизвестный тип стратегии скидки.");
+                }
             }
 
             var discount = strategy.CalculateDiscount(purchaseAmount);
             var finalPrice = strategy.CalculatePrice(purchaseAmount);
 
-            return new DiscountCalculation(purchaseAmount, 
-                                           strategyKind, 
-                                           discountValue, 
-                                           discount, 
-                                           finalPrice);
+            return new DiscountCalculation(
+                purchaseAmount, 
+                strategyKind, 
+                discountValue, 
+                discount, 
+                finalPrice);
         }
     }
 }

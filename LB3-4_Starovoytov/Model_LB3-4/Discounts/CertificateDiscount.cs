@@ -9,9 +9,8 @@ namespace Model_LB3_4.Discounts
     /// <summary>
     /// Использует фиксированное значение сертификата для уменьшения цены покупки.
     /// </summary>
-    public sealed class CertificateDiscount : DiscountStrategy
+    public sealed class CertificateDiscount : DiscountStrategyBase
     {
-        //TODO: XML+
         /// <summary>
         /// Хранит значение скидки по сертефикату.
         /// </summary>

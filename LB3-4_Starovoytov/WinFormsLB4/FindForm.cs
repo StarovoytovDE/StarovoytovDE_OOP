@@ -37,39 +37,59 @@ namespace WinFormsLB4
                 return;
             }
 
-            if (!TryGetOptionalDecimal(textBoxPurchaseFrom.Text, out var purchaseFrom))
+            if (!TryGetOptionalDecimal(textBoxPurchaseFrom.Text, 
+                out var purchaseFrom))
             {
-                ShowError($"Некорректное значение \"{UiText.FieldPurchaseAmount}: От\".");
+                ShowError($"Некорректное значение " +
+                    $"\"{UiText.FieldPurchaseAmount}: От\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(textBoxPurchaseTo.Text, out var purchaseTo))
+            if (!TryGetOptionalDecimal(textBoxPurchaseTo.Text, 
+                out var purchaseTo))
             {
-                ShowError($"Некорректное значение \"{UiText.FieldPurchaseAmount}: До\".");
+                ShowError($"Некорректное значение " +
+                    $"\"{UiText.FieldPurchaseAmount}: До\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(textBoxDiscountFrom.Text, out var discountFrom))
+            if (!TryGetOptionalDecimal(textBoxDiscountFrom.Text, 
+                out var discountFrom))
             {
-                ShowError($"Некорректное значение \"{UiText.FieldDiscountValue}: От\".");
+                ShowError($"Некорректное значение " +
+                    $"\"{UiText.FieldDiscountValue}: От\".");
                 return;
             }
 
-            if (!TryGetOptionalDecimal(textBoxDiscountTo.Text, out var discountTo))
+            if (!TryGetOptionalDecimal(textBoxDiscountTo.Text, 
+                out var discountTo))
             {
-                ShowError($"Некорректное значение \"{UiText.FieldDiscountValue}: До\".");
+                ShowError($"Некорректное значение " +
+                    $"\"{UiText.FieldDiscountValue}: До\".");
                 return;
             }
-            //TODO: RSDN
-            if (!ValidateNonNegative(purchaseFrom, purchaseTo, UiText.FieldPurchaseAmount) ||
-                !ValidateNonNegative(discountFrom, discountTo, UiText.FieldDiscountValue))
+            //TODO: RSDN+
+            if (!ValidateNonNegative(
+                purchaseFrom, 
+                purchaseTo, 
+                UiText.FieldPurchaseAmount)
+                || !ValidateNonNegative(
+                   discountFrom, 
+                   discountTo, 
+                   UiText.FieldDiscountValue))
             {
                 return;
             }
 
-            //TODO: RSDN
-            if (!ValidateRange(purchaseFrom, purchaseTo, UiText.FieldPurchaseAmount) ||
-                !ValidateRange(discountFrom, discountTo, UiText.FieldDiscountValue))
+            //TODO: RSDN+
+            if (!ValidateRange(
+                purchaseFrom, 
+                purchaseTo, 
+                UiText.FieldPurchaseAmount)
+                || !ValidateRange(
+                    discountFrom, 
+                    discountTo, 
+                    UiText.FieldDiscountValue))
             {
                 return;
             }
@@ -100,7 +120,9 @@ namespace WinFormsLB4
         /// Ограничивает ввод в числовые поля.
         /// Разрешает цифры, запятую, точку и Backspace.
         /// </summary>
-        private void NumericTextboxKeyPress(object sender, KeyPressEventArgs e)
+        private void NumericTextboxKeyPress(
+            object sender, 
+            KeyPressEventArgs e)
         {
             if (char.IsControl(e.KeyChar))
             {
@@ -143,7 +165,9 @@ namespace WinFormsLB4
         /// <summary>
         /// Пытается получить значение decimal, допускает пустое поле.
         /// </summary>
-        private static bool TryGetOptionalDecimal(string text, out decimal? value)
+        private static bool TryGetOptionalDecimal(
+            string text, 
+            out decimal? value)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -166,17 +190,22 @@ namespace WinFormsLB4
         /// <summary>
         /// Проверяет, что значения диапазона неотрицательны (если заданы).
         /// </summary>
-        private bool ValidateNonNegative(decimal? from, decimal? to, string fieldName)
+        private bool ValidateNonNegative(
+            decimal? from, 
+            decimal? to, 
+            string fieldName)
         {
             if (from.HasValue && from.Value < 0m)
             {
-                ShowError($"Поле \"{fieldName}: От\" не может быть отрицательным.");
+                ShowError($"Поле \"{fieldName}: " +
+                    $"От\" не может быть отрицательным.");
                 return false;
             }
 
             if (to.HasValue && to.Value < 0m)
             {
-                ShowError($"Поле \"{fieldName}: До\" не может быть отрицательным.");
+                ShowError($"Поле \"{fieldName}: " +
+                    $"До\" не может быть отрицательным.");
                 return false;
             }
 

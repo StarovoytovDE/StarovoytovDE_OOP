@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="DiscountCalculation.cs" />
     <Compile Include="DiscountCalculationFactory.cs" />
+    <Compile Include="DiscountStrategyKind.cs" />
     <Compile Include="FindForm.cs">
       <SubType>Form</SubType>
     </Compile>

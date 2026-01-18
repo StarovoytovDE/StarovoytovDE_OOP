@@ -50,7 +50,7 @@ namespace Program_LB3_4
         /// процентной или сертификатной.
         /// </summary>
         /// <returns>Экземпляр выбранной стратегии скидки.</returns>
-        private static DiscountStrategy ChooseStrategy()
+        private static DiscountStrategyBase ChooseStrategy()
         {
             while (true)
             {
@@ -62,12 +62,10 @@ namespace Program_LB3_4
                 var choice = Console.ReadLine();
                 switch (choice)
                 {
-                    //TODO: {}+
                     case "1":
                     {
                         while (true)
                         {
-                            //TODO: duplication+
                             var percentage = ReadDecimal($"Введите процент " +
                                $"скидки ({PercentageDiscount.MinPercentage}-" +
                                $"{PercentageDiscount.MaxPercentage}): ");
@@ -86,7 +84,6 @@ namespace Program_LB3_4
                     {
                         while (true)
                         {
-                            //TODO: RSDN+
                             var certificateValue = 
                                     ReadPositiveDecimal("Введите номинал " +
                                     "сертификата (в рублях): ");
@@ -149,7 +146,6 @@ namespace Program_LB3_4
                 {
                     return value;
                 }
-                //TODO: RSDN+
                 Console.WriteLine("Не удалось распознать число. Используйте " +
                     "точку или запятую в качестве разделителя дробной части.");
             }
@@ -165,7 +161,6 @@ namespace Program_LB3_4
         /// <returns>true — если распознавание удалось; иначе false.</returns>
         private static bool TryParseDecimal(string input, out decimal value)
         {
-            //TODO: RSDN+
             var styles = NumberStyles.AllowDecimalPoint 
                             | NumberStyles.AllowThousands 
                             | NumberStyles.AllowLeadingSign;

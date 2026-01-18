@@ -10,7 +10,7 @@ namespace Model_LB3_4
     /// <summary>
     /// Базовый класс для расчёта скидок на покупку.
     /// </summary>
-    public abstract class DiscountStrategy : IDiscountStrategy
+    public abstract class DiscountStrategyBase
     {
         /// <summary>
         /// Описание типа скидки.

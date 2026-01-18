@@ -42,8 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Discounts\CertificateDiscount.cs" />
-    <Compile Include="Discounts\DiscountStrategy.cs" />
-    <Compile Include="Discounts\IDiscountStrategy.cs" />
+    <Compile Include="Discounts\DiscountStrategyBase.cs" />
     <Compile Include="Discounts\PercentageDiscount.cs" />
     <Compile Include="IncorrectArgumentException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

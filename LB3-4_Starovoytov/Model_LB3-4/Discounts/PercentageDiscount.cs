@@ -9,9 +9,8 @@ namespace Model_LB3_4.Discounts
     /// <summary>
     /// Рассчитывает скидку как процент от суммы покупки.
     /// </summary>
-    public sealed class PercentageDiscount : DiscountStrategy
+    public sealed class PercentageDiscount : DiscountStrategyBase
     {
-        //TODO: XML+
         /// <summary>
         /// Хранит значение процента скидки.
         /// </summary>
