@@ -508,10 +508,8 @@ namespace WinFormsLB4
                 return false;
             }
 
-
             switch (item.StrategyKind)
             {
-                //TODO: {}+
                 case DiscountStrategyKind.Percent:
                 {
                     return criteria.StrategyFlags.HasFlag(
