@@ -10,12 +10,12 @@ namespace WinFormsLB4
     /// </summary>
     public partial class AddForm : Form
     {
-        //TODO: XML+
         /// <summary>
         /// Индекс стратегии расчёта скидки «Процент» в списке стратегий пользовательского интерфейса.
         /// </summary>
         private const int StrategyIndexPercent = 0;
 
+        //TODO: remove
         /// <summary>
         /// Индекс стратегии расчёта скидки «Сертификат» в списке стратегий пользовательского интерфейса.
         /// </summary>
@@ -156,7 +156,6 @@ namespace WinFormsLB4
                 ShowError("Сумма покупки не может быть отрицательной.");
                 return false;
             }
-            //TODO: switch-case+
             switch (strategyKind)
             {
                 case DiscountStrategyKind.Percent:

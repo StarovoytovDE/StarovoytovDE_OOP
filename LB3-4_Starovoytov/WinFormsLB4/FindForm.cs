@@ -68,7 +68,6 @@ namespace WinFormsLB4
                     $"\"{UiText.FieldDiscountValue}: До\".");
                 return;
             }
-            //TODO: RSDN+
             if (!ValidateNonNegative(
                 purchaseFrom, 
                 purchaseTo, 
@@ -81,7 +80,6 @@ namespace WinFormsLB4
                 return;
             }
 
-            //TODO: RSDN+
             if (!ValidateRange(
                 purchaseFrom, 
                 purchaseTo, 

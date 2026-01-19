@@ -14,7 +14,6 @@ namespace WinFormsLB4
     /// </summary>
     public partial class MainForm : Form
     {
-        //TODO: XML+
         /// <summary>
         /// Расширение файла для сохранения и загрузки данных о расчётах скидок.
         /// </summary>
@@ -58,7 +57,6 @@ namespace WinFormsLB4
             Text = UiText.MainFormTitle;
 
             ConfigureGrid();
-            //TODO: RSDN+
             dataGridViewMainForm.DataSource = _displayedCalculations;
 #if DEBUG
                         ApplyBuildConfigurationUi();
@@ -85,7 +83,6 @@ namespace WinFormsLB4
             dataGridViewMainForm.AutoGenerateColumns = false;
             dataGridViewMainForm.Columns.Clear();
 
-            //TODO: RSDN+
             dataGridViewMainForm.Columns.Add(CreateTextColumn(
                 "PurchaseAmount", 
                 "Сумма покупки", 
@@ -119,7 +116,6 @@ namespace WinFormsLB4
         /// <summary>
         /// Создаёт текстовую колонку таблицы.
         /// </summary>
-        /// //TODO: RSDN+
         private static DataGridViewTextBoxColumn CreateTextColumn(
             string dataPropertyName, 
             string headerText, 
@@ -311,7 +307,6 @@ namespace WinFormsLB4
             using (var form = new FindForm())
             {
                 if (form.ShowDialog(this) == DialogResult.OK
-                   //TODO: RSDN+
                    && form.Criteria != null)
                 {
                     _currentCriteria = form.Criteria;
@@ -485,9 +480,10 @@ namespace WinFormsLB4
                 return false;
             }
 
-            //TODO: switch-case+
+
             switch (item.StrategyKind)
             {
+                //TODO: {}
                 case DiscountStrategyKind.Percent:
                     return criteria.StrategyFlags.HasFlag(
                         StrategyFilterFlags.Percent);
