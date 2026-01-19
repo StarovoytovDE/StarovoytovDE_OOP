@@ -154,7 +154,8 @@ namespace WinFormsLB4
         }
 
         /// <summary>
-        /// Обработчик удаления выбранных расчётов (поддерживает множественное выделение).
+        /// Обработчик удаления выбранных расчётов 
+        /// (поддерживает множественное выделение).
         /// </summary>
         private void DeleteButton_Clicked(object sender, EventArgs e)
         {
@@ -165,6 +166,7 @@ namespace WinFormsLB4
                                 UiText.DeleteTitle, 
                                 MessageBoxButtons.OK, 
                                 MessageBoxIcon.Warning);
+
                 return;
             }
 
@@ -184,10 +186,36 @@ namespace WinFormsLB4
                 return;
             }
 
+            // Запоминаем состояние ДО удаления:
+            // если фильтр активен и сейчас удаляют ВСЕ отображаемые элементы
+            // — после удаления сбросим фильтр.
+            bool isFilterActive = _isFiltered && _currentCriteria != null;
+            int displayedCountBeforeDelete = _displayedCalculations.Count;
+
             // Удаляем выбранные элементы из общего списка.
             foreach (var item in toRemove)
             {
                 _allCalculations.Remove(item);
+            }
+
+            // Если в результате удаления данных вообще не осталось
+            // — фильтр тоже должен быть выключен.
+            if (_allCalculations.Count == 0)
+            {
+                _isFiltered = false;
+                _currentCriteria = null;
+                RefreshDisplay(_allCalculations);
+                return;
+            }
+
+            // Если фильтр был активен и удалили все элементы,
+            // которые были отображены — сбрасываем фильтрацию.
+            if (isFilterActive && toRemove.Count == displayedCountBeforeDelete)
+            {
+                _isFiltered = false;
+                _currentCriteria = null;
+                RefreshDisplay(_allCalculations);
+                return;
             }
 
             RefreshAfterChange();
@@ -483,17 +511,23 @@ namespace WinFormsLB4
 
             switch (item.StrategyKind)
             {
-                //TODO: {}
+                //TODO: {}+
                 case DiscountStrategyKind.Percent:
+                {
                     return criteria.StrategyFlags.HasFlag(
                         StrategyFilterFlags.Percent);
+                }
 
                 case DiscountStrategyKind.Certificate:
+                {
                     return criteria.StrategyFlags.HasFlag(
                         StrategyFilterFlags.Certificate);
+                }
 
                 default:
+                {
                     return false;
+                }
             }
         }
 

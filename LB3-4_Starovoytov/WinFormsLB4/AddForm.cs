@@ -11,15 +11,10 @@ namespace WinFormsLB4
     public partial class AddForm : Form
     {
         /// <summary>
-        /// Индекс стратегии расчёта скидки «Процент» в списке стратегий пользовательского интерфейса.
+        /// Индекс стратегии расчёта скидки «Процент»
+        /// в списке стратегий пользовательского интерфейса.
         /// </summary>
         private const int StrategyIndexPercent = 0;
-
-        //TODO: remove
-        /// <summary>
-        /// Индекс стратегии расчёта скидки «Сертификат» в списке стратегий пользовательского интерфейса.
-        /// </summary>
-        private const int StrategyIndexCertificate = 1;
 
         /// <summary>
         /// Созданный пользователем расчёт скидки.
@@ -38,7 +33,8 @@ namespace WinFormsLB4
         }
 
         /// <summary>
-        /// Заполняет список стратегий и устанавливает выбранную стратегию по умолчанию.
+        /// Заполняет список стратегий 
+        /// и устанавливает выбранную стратегию по умолчанию.
         /// </summary>
         private void InitializeStrategyComboBox()
         {
@@ -52,7 +48,9 @@ namespace WinFormsLB4
         /// Обработчик изменения выбранной стратегии.
         /// Переключает подпись поля параметра стратегии и очищает ввод.
         /// </summary>
-        private void ComboBoxStrategy_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxStrategy_SelectedIndexChanged(
+            object sender, 
+            EventArgs e)
         {
             ApplyStrategyUi();
             ClearInputFields();
@@ -144,7 +142,8 @@ namespace WinFormsLB4
         }
 
         /// <summary>
-        /// Проверяет корректность параметров расчёта в зависимости от выбранной стратегии.
+        /// Проверяет корректность параметров расчёта
+        /// в зависимости от выбранной стратегии.
         /// </summary>
         private bool ValidateStrategyValue(
             DiscountStrategyKind strategyKind, 
@@ -177,22 +176,25 @@ namespace WinFormsLB4
                 {
                     if (value < 0m)
                     {
-                        ShowError("Сумма сертификата не может быть отрицательной.");
+                        ShowError("Сумма сертификата не может " +
+                            "быть отрицательной.");
                         return false;
                     }
 
                     if (value < UiConstants.CertificateAmountMin
                         || value > UiConstants.CertificateAmountMax)
                     {
-                        ShowError($"Сумма сертификата должна быть в диапазоне " +
-                                            $"от {UiConstants.CertificateAmountMin} " +
-                                            $"до {UiConstants.CertificateAmountMax}.");
+                        ShowError(
+                            $"Сумма сертификата должна быть в диапазоне " +
+                            $"от {UiConstants.CertificateAmountMin} " +
+                            $"до {UiConstants.CertificateAmountMax}.");
                         return false;
                     }
 
                     if (value > purchaseAmount)
                     {
-                        ShowError("Сумма сертификата не может превышать сумму покупки.");
+                        ShowError("Сумма сертификата не может " +
+                            "превышать сумму покупки.");
                         return false;
                     }
 
@@ -234,7 +236,10 @@ namespace WinFormsLB4
         /// <summary>
         /// Пытается получить обязательное значение decimal из строки.
         /// </summary>
-        private bool TryGetRequiredDecimal(string text, out decimal value, string fieldName)
+        private bool TryGetRequiredDecimal(
+            string text, 
+            out decimal value, 
+            string fieldName)
         {
             value = 0m;
 
